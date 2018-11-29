@@ -10,12 +10,12 @@ import robot.RobotHandler;
 public class RobotController implements MissionExecutable{
 	
 	public static RobotController controller;
-	private List<RobotHandler> robots = new ArrayList<>();
+	public List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	
 	public RobotController(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
-			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1));
+			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i));
 		}
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));

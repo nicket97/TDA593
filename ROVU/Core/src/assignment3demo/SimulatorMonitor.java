@@ -7,28 +7,30 @@ import java.util.Set;
 import project.AbstractRobotSimulator;
 import project.AbstractSimulatorMonitor;
 import project.Point;
+import robot.RobotHandler;
 import simbad.sim.EnvironmentDescription;
 
-public class SimulatorMonitor extends AbstractSimulatorMonitor<Robot> {
-
-	public SimulatorMonitor(Set<Robot> robots, EnvironmentDescription e) {
+public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
+	Set<RobotHandler> r;
+	public SimulatorMonitor(Set<RobotHandler> robots, EnvironmentDescription e) {
 		super(robots, e);
+		r = robots;
 	}
 
 	
 
-	@Override
-	public void update(Robot arg0) {
+	public void update(RobotHandler arg0) {
 		System.out.println(arg0.getName());
 		System.out.println(arg0.getPosition());
 		
-		MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
-		MoveRobot(Main.robot2, new Point[] {new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)},new Point(6, -2.5));
-		MoveRobot(Main.robot3, new Point[] {new Point (2.5, 2.5),new Point (-6, 2.5)},new Point(6, 2.5)); //,new Point (-2.5, 2.5)
-		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
+		for(RobotHandler robot : r){
+			MoveRobot(robot, robot.getPath(), robot.startingPoint);
+		}
+		//MoveRobot(arg0, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
+		
 	}
 	
-	public void MoveRobot (Robot robot, Point[] commands, Point position){
+	public void MoveRobot (RobotHandler robot, Point[] commands, Point position){
 	
 		if(robot.isAtPosition(position)){
 			robot.setDestination(commands[0]);	
