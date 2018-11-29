@@ -32,8 +32,8 @@ public void run() {
 Point[][] path = {
 		{new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)}
 		,{new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)}
-,{new Point (2.5, 2.5),new Point (-6, 2.5),new Point(6, 2.5)},
-{new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)}};
+,{new Point (2.5, 2.5),new Point (-6, 2.5)},
+{new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6, -2.5)}};
 public Point[] getPath() {
 	return path[robotIndex];
 }
