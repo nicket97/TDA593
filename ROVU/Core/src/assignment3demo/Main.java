@@ -3,8 +3,10 @@ import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
+import controller.RobotController;
 import project.AbstractSimulatorMonitor;
 import project.Point;
+import robot.RobotHandler;
 import simbad.sim.AbstractWall;
 import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
@@ -48,17 +50,17 @@ public class Main {
 		AbstractWall roomWall2_2 = new VerticalWall(0f, -2.0f, 2.0f, e, color);
 		AbstractWall roomWall2_3 = new VerticalWall(0f, -3.0f, -5.0f, e, color);
 
-		Set<Robot> robots = new HashSet<>();
-		
-		 robot1 = new Robot(new Point(-6,-2.5), "XM1");
+		Set<RobotHandler> robots = new HashSet<>();
+		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
+		RobotController rc = new RobotController(4 ,startingPoints);
+		 /*robot1 = new Robot(new Point(-6,-2.5), "XM1");
 		 robot2 = new Robot(new Point(6,-2.5), "XM2");
 		 robot3 = new Robot(new Point(6, 2.5), "XM3");
-		 robot4 = new Robot(new Point(-6, 2.5), "XM4");
+		 robot4 = new Robot(new Point(-6, 2.5), "XM4");*/
 
-		robots.add(robot1);
-		robots.add(robot2);
-		robots.add(robot3);
-		robots.add(robot4);
+		for(RobotHandler r: rc.robots){
+			robots.add(r);
+		}
 				
 		AbstractSimulatorMonitor controller = new SimulatorMonitor(robots, e);
 
