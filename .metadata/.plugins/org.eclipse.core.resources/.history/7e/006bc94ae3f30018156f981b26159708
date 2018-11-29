@@ -1,0 +1,18 @@
+package robot;
+
+import java.awt.Point;
+
+import model.Mission;
+import project.AbstractRobotSimulator;
+
+public class RobotHandler extends AbstractRobotSimulator {
+
+public RobotHandler(Point position, String name) {
+	super(position, name);		
+	}
+	
+public void executeMission(Mission mission){
+		
+	}
+
+}
