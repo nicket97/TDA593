@@ -1,0 +1,4 @@
+INDEX VERSION 1.130+C:\Users\nicla\git\TDA593\.metadata\.plugins\org.eclipse.jdt.core
+565899265.index
+1721714348.index
+2148632965.index
