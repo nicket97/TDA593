@@ -80,3 +80,6 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
+
+# Log files
+*.log
