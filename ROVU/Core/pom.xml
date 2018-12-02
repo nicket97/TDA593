@@ -33,5 +33,10 @@
 			<artifactId>MDSDProject</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+		</dependency>
 	</dependencies>
 </project>
