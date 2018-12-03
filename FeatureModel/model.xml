@@ -2,8 +2,34 @@
 <featureModel>
     <properties/>
     <struct>
-        <and abstract="true" mandatory="true" name="FeatureModel">
-            <feature name="Base"/>
+        <and abstract="true" mandatory="true" name="ROVU_system">
+            <and mandatory="true" name="MissionEditor">
+                <feature mandatory="true" name="MissionCreation"/>
+                <feature mandatory="true" name="MissionEditing"/>
+            </and>
+            <and mandatory="true" name="RobotView">
+                <feature mandatory="true" name="ErrorReporting"/>
+            </and>
+            <and mandatory="true" name="RobotHandler">
+                <alt mandatory="true" name="SensorProcessor">
+                    <feature name="RangeSensor"/>
+                    <feature name="PositionSensor"/>
+                    <feature name="TireSensor"/>
+                </alt>
+                <or mandatory="true" name="PathFinder">
+                    <feature name="Dijkstra"/>
+                    <feature name="A_Star"/>
+                </or>
+                <feature name="NetworkHandler"/>
+            </and>
+            <feature mandatory="true" name="RobotController"/>
+            <and mandatory="true" name="RewardCalculator">
+                <feature mandatory="true" name="Timer"/>
+            </and>
+            <feature mandatory="true" name="Environment"/>
+            <and mandatory="true" name="ROVUView">
+                <feature mandatory="true" name="EmergencyStop"/>
+            </and>
         </and>
     </struct>
     <constraints/>

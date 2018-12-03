@@ -22,7 +22,7 @@
 				</dictionary>
 				<dictionary>
 					<key>source</key>
-					<value>src</value>
+					<value>features</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
