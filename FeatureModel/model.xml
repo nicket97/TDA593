@@ -30,6 +30,16 @@
             <and mandatory="true" name="ROVUView">
                 <feature mandatory="true" name="EmergencyStop"/>
             </and>
+            <alt abstract="true" name="Output">
+                <feature name="Screen"/>
+                <feature name="Speaker"/>
+            </alt>
+            <or abstract="true" name="Transportation">
+                <feature name="Wheels"/>
+                <feature name="Tracks"/>
+                <feature name="Propeller"/>
+            </or>
+            <feature name="PickUpArms"/>
         </and>
     </struct>
     <constraints/>
