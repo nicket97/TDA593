@@ -16,6 +16,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>resources</directory>
+				<includes>
+					<include>**/*.fxml</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 	<repositories>
 		<repository>
