@@ -10,6 +10,6 @@ public interface IEnvironment {
 	 * @param position
 	 * @return
 	 */
-	String getEnvironment (Point position);
+	Node getEnvironment (Point position);
 	
 }
