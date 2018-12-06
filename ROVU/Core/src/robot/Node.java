@@ -5,6 +5,11 @@ import java.util.List;
 
 import project.Point;
 
+/**
+ * Node class for use by algorithms
+ * @author  Niclas
+ */
+
 public class Node {
 	
     int weight;
