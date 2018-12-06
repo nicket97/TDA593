@@ -17,6 +17,13 @@ import robot.RobotHandler;
 import simbad.sim.EnvironmentDescription;
 
 @SuppressWarnings("unused")
+
+
+/**
+ * Test suite for testing various elements of the system
+ * @author Anthony
+ *
+ */
 public class TestSuite {
 	EnvironmentDescription testEnv = new EnvironmentDescription();
 	
