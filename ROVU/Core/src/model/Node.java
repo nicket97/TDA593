@@ -10,6 +10,8 @@ public class Node {
     boolean room;
     int roomID;
     Point point;
+    Node[] neighbours;
+    int distanceFromStart;
 
     public int getWeigth() {
         return weigth;
