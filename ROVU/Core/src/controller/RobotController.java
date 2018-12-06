@@ -7,6 +7,11 @@ import model.Mission;
 import project.Point;
 import robot.RobotHandler;
 
+/**
+ * Class for controlling all robots
+ * @author Anthony
+ * @author Niclas
+ */
 public class RobotController implements MissionExecutable{
 	
 	public static RobotController controller;
