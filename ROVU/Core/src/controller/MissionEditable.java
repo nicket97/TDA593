@@ -1,6 +1,6 @@
 package controller;
 
-import java.awt.Point;
+import project.Point;
 import java.util.List;
 
 import model.Mission;

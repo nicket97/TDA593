@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.*;
+import project.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +17,8 @@ public class Mission {
         List<String> points = new ArrayList<>();
         mission.forEach(point -> {
             double x = point.getX();
-            double y = point.getY();
-            String pointString = "(" + x + "," + y + ")";
+            double z = point.getZ();
+            String pointString = "(" + x + "," + z + ")";
             points.add(pointString);
         });
         return points.toString();
