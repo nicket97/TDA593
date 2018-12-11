@@ -15,6 +15,8 @@ public class MissionEditorView extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
     }
 
     public static void main (String[] args) {
