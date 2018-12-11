@@ -51,9 +51,13 @@ public class RobotController implements MissionExecutable{
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
 				if(r.isAvailable()){
-
+					if (currentMission.getMission().size() == 0){
+						notDone = false;
+					}
 				}
+
 			}
+
 		}
 
 
