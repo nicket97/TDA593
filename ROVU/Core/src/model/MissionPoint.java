@@ -62,4 +62,7 @@ public class MissionPoint {
     public boolean isDone() {
         return done;
     }
+    public void robotDoAction(){
+        action.performAction();
+    }
 }

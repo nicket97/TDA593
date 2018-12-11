@@ -33,7 +33,7 @@ public class RobotController implements MissionExecutable{
 
 
 	public Mission getMission(){
-	     return null;
+	     return currentMission;
 	}
 	
 	public void executeMission(Mission mission){
