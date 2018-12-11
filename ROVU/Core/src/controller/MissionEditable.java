@@ -1,9 +1,9 @@
 package controller;
 
-import project.Point;
 import java.util.List;
 
 import model.Mission;
+import model.MissionPoint;
 
 public interface MissionEditable {
 	
@@ -13,7 +13,7 @@ public interface MissionEditable {
 	 * @param missionPoints
 	 * @return
 	 */
-Mission createMission(List <Point>missionPoints);
+Mission createMission(List <MissionPoint>missionPoints);
 
 
     /** 
@@ -22,5 +22,5 @@ Mission createMission(List <Point>missionPoints);
      * @param missionPoints
      * @return
      */
-Mission editMission(Mission currentMission, List <Point>missionPoints);
+Mission editMission(Mission currentMission, List <MissionPoint>missionPoints);
 }
