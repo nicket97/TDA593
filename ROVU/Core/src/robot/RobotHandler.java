@@ -4,9 +4,15 @@ package robot;
 
 import model.Mission;
 
+
 import project.AbstractRobotSimulator;
 import project.Point;
 
+/**
+ * Class for controlling one robot
+ * @author Anthony
+ * @author Niclas
+ */
 public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 public Point startingPoint;
 public int robotIndex;

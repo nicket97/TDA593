@@ -24,9 +24,10 @@ hs_err_pid*
 
 .metadata
 .recommenders
-.idea
 ### macOS ###
 # General
 .DS_Store
 .AppleDouble
 .LSOverride
+
+/bin

@@ -7,6 +7,11 @@ import model.Mission;
 import project.Point;
 import robot.RobotHandler;
 
+/**
+ * Class for controlling all robots
+ * @author Anthony
+ * @author Niclas
+ */
 public class RobotController implements MissionExecutable{
 	
 	public static RobotController controller;
@@ -30,7 +35,9 @@ public class RobotController implements MissionExecutable{
 	}
 	
 	public void executeMission(Mission mission){
-		
+
+
+
 	}
 	
 	public void cancelExecution(){
@@ -38,8 +45,10 @@ public class RobotController implements MissionExecutable{
 	}
 	
 	public List getData(){
+
 		return null;
 	}
+
 	public static void main(String [] args){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
 		controller = new RobotController(4 , startingPoints);
