@@ -35,7 +35,9 @@ public class RobotController implements MissionExecutable{
 	}
 	
 	public void executeMission(Mission mission){
-		
+
+
+
 	}
 	
 	public void cancelExecution(){
