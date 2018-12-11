@@ -18,6 +18,7 @@ public class Timer implements Runnable {
                     e.printStackTrace();
                 }
             }
+            RewardCalculator.calculateReward();
         }
     }
     public void stopTimer(){
