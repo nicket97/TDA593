@@ -5,8 +5,11 @@ package robot;
 import model.Mission;
 
 
+import model.MissionPoint;
 import project.AbstractRobotSimulator;
 import project.Point;
+
+import java.util.PriorityQueue;
 
 /**
  * Class for controlling one robot
@@ -16,6 +19,9 @@ import project.Point;
 public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 public Point startingPoint;
 public int robotIndex;
+private boolean available;
+private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
+
 public RobotHandler(Point position, String name, int i) {
 	super(position, name);		
 	startingPoint = position;
@@ -28,7 +34,7 @@ public void executeMission(Mission mission){
 
 @Override
 public void run() {
-	
+	available = true;
 }
 /*
  * MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
@@ -49,4 +55,11 @@ public void setPath(Point [][] newpath){
 	this.path = newpath;
 }
 
+	public boolean isAvailable() {
+	return available;
+	}
+
+	public void stop() {
+
+	}
 }

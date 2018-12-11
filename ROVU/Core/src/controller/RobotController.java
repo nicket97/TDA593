@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Mission;
+import model.MissionPoint;
 import project.Point;
 import robot.RobotHandler;
 
@@ -17,6 +18,7 @@ public class RobotController implements MissionExecutable{
 	public static RobotController controller;
 	public List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
+	private Mission currentMission;
 	
 	public RobotController(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
@@ -35,12 +37,31 @@ public class RobotController implements MissionExecutable{
 	}
 	
 	public void executeMission(Mission mission){
+		boolean notDone = true;
+		currentMission = mission;
+		for(MissionPoint p: mission.getMissionPoints()){
+			int robotIndex = p.getRobot();
+			switch(robotIndex) {
+				case 1:
 
+					break;
+			}
+		}
+		while (notDone){
+			if(currentMission.getMission().size() > 0)
+			for (RobotHandler r : robots){
+				if(r.isAvailable()){
+
+				}
+			}
+		}
 
 
 	}
 	
 	public void cancelExecution(){
+		for (RobotHandler r : robots)
+			r.stop();
 		
 	}
 	

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -13,5 +14,13 @@ public class Mission {
     }
     public void pointDone(MissionPoint p){
 doneMissions.add(p);
+    }
+
+    public MissionPoint[] getMissionPoints() {
+        return (MissionPoint[]) mission.toArray();
+    }
+
+    public List<MissionPoint> getMission() {
+        return mission;
     }
 }
