@@ -9,6 +9,9 @@ public class MissionPoint {
     Point point;
     List<Constraint> constraints = new ArrayList<Constraint>();
     int priority;
+    RobotAction action;
+    boolean done = false;
+
     public MissionPoint(Point p){
         point = p;
         priority = 0;
@@ -25,6 +28,9 @@ public class MissionPoint {
         point = p;
         constraints = con;
         priority = prio;
+    }
+    public void done(){
+        done = true;
     }
 
 }

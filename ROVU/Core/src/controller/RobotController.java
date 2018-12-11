@@ -43,8 +43,10 @@ public class RobotController implements MissionExecutable{
 	}
 	
 	public List getData(){
+
 		return null;
 	}
+
 	public static void main(String [] args){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
 		controller = new RobotController(4 , startingPoints);
