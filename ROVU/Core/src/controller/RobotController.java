@@ -27,10 +27,10 @@ public class RobotController implements MissionExecutable{
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));
 		}
-		for(Thread t: robotThreads){
-			t.start();
-		}
+
 	}
+
+
 
 	public Mission getMission(){
 	     return null;
@@ -43,9 +43,25 @@ public class RobotController implements MissionExecutable{
 			int robotIndex = p.getRobot();
 			switch(robotIndex) {
 				case 1:
-
+					robots.get(0).addMissionPoint(p);
+					break;
+				case 2:
+					robots.get(1).addMissionPoint(p);
+					break;
+				case 3:
+					robots.get(2).addMissionPoint(p);
+					break;
+				case 4:
+					robots.get(3).addMissionPoint(p);
+					break;
+				default:
+					//TODO add general mission
 					break;
 			}
+			for (Thread t: robotThreads){
+				t.start();
+			}
+
 		}
 		while (notDone){
 			if(currentMission.getMission().size() > 0)

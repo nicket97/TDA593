@@ -62,4 +62,7 @@ public void setPath(Point [][] newpath){
 	public void stop() {
 
 	}
+
+	public void addMissionPoint(MissionPoint p) {
+	}
 }
