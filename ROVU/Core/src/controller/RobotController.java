@@ -64,6 +64,7 @@ public class RobotController implements MissionExecutable{
 
 		}
 		while (notDone){
+			currentMission.updateMissionList();
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
 				if(r.isAvailable()){
@@ -85,9 +86,12 @@ public class RobotController implements MissionExecutable{
 		
 	}
 	
-	public List getData(){
-
-		return null;
+	public List<DataObject> getData(){
+		List<DataObject> d = new ArrayList<>();
+		for (RobotHandler r: robots){
+			d.add(r.getData());
+		}
+		return d;
 	}
 
 	public static void main(String [] args){

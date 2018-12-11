@@ -58,4 +58,8 @@ public class MissionPoint {
         }
         return 0;
     }
+
+    public boolean isDone() {
+        return done;
+    }
 }

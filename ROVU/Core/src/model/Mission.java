@@ -23,4 +23,13 @@ doneMissions.add(p);
     public List<MissionPoint> getMission() {
         return mission;
     }
+
+    public void updateMissionList() {
+        for (int i = 0; i < mission.size(); i++){
+            if(mission.get(i).isDone()){
+                doneMissions.add(mission.get(i));
+                mission.remove(i);
+            }
+        }
+    }
 }

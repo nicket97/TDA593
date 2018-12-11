@@ -2,6 +2,7 @@ package robot;
 
 
 
+import controller.DataObject;
 import model.Mission;
 
 
@@ -64,5 +65,9 @@ public void setPath(Point [][] newpath){
 	}
 
 	public void addMissionPoint(MissionPoint p) {
+	}
+
+	public DataObject getData() {
+		return null;
 	}
 }
