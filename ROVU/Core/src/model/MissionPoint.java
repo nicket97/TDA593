@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MissionPoint {
-    Point point;
-    List<Constraint> constraints = new ArrayList<Constraint>();
-    int priority;
-    RobotAction action;
-    boolean done = false;
+    private Point point;
+    private List<Constraint> constraints = new ArrayList<Constraint>();
+    private int priority;
+    private RobotAction action;
+    private boolean done = false;
 
     public MissionPoint(Point p){
         point = p;
@@ -31,6 +31,14 @@ public class MissionPoint {
     }
     public void done(){
         done = true;
+    }
+
+    public double getX() {
+        return point.getX();
+    }
+
+    public double getZ() {
+        return point.getZ();
     }
 
 }
