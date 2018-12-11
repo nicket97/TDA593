@@ -99,7 +99,7 @@ public class A_Star extends PathFinder{
 		tk = new TreeMap<Double, Node>();
 		System.out.println("Null "+node.roomID);
 		for (Node e:node.neighbours){
-			if (!listContains(e,closed)){
+			if (!listContains(e,closed) && !e.wall){
 				Node temp = new Node(false, false, false, e.roomID, e.point);
 				temp.parent=node;
 				temp.neighbours=e.neighbours;
