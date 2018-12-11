@@ -12,20 +12,22 @@ public class MissionPoint {
     private RobotAction action;
     private boolean done = false;
 
-    public MissionPoint(Point p){
-        point = p;
+    public MissionPoint(double x, double z){
+        point = new Point(x, z);
         priority = 0;
     }
-    public MissionPoint(Point p, List<Constraint> con){
-        point = p;
+    public MissionPoint(double x, double z, List<Constraint> con){
+        point = new Point(x, z);
         constraints = con;
         priority = 0;
     }
-    public MissionPoint(Point p, int prio){
-        point = p;
+    public MissionPoint(double x, double z, int prio){
+        point = new Point(x, z);
         priority = prio;
-    } public MissionPoint(Point p, List<Constraint> con, int prio){
-        point = p;
+    }
+
+    public MissionPoint(double x, double z, List<Constraint> con, int prio){
+        point = new Point(x, z);
         constraints = con;
         priority = prio;
     }
