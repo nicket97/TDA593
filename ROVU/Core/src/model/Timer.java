@@ -1,10 +1,10 @@
 package model;
 
 public class Timer implements Runnable {
-    boolean running = true;
+    private RewardCalculator rewardCalculator;
+    private boolean running = true;
     @Override
     public void run() {
-
         while (true) {
             try {
                 Thread.sleep(2000);
@@ -18,7 +18,7 @@ public class Timer implements Runnable {
                     e.printStackTrace();
                 }
             }
-            RewardCalculator.calculateReward();
+            rewardCalculator.calculateReward();
         }
     }
     public void stopTimer(){
