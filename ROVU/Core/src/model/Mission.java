@@ -12,16 +12,17 @@ public class Mission {
         mission = missionPoints;
     }
 
+    // Simplified view of mission
     @Override
     public String toString() {
-//        List<String> points = new ArrayList<>();
-//        mission.forEach(point -> {
-//            double x = point.getX();
-//            double z = point.getZ();
-//            String pointString = "(" + x + "," + z + ")";
-//            points.add(pointString);
-//        });
-        return ""; // points.toString();
+        List<String> points = new ArrayList<>();
+        mission.forEach(point -> {
+            double x = point.getX();
+            double z = point.getZ();
+            String pointString = "(" + x + ", " + z + ")";
+            points.add(pointString);
+        });
+        return points.toString();
     }
 
     public void finishedPoint(MissionPoint p){
