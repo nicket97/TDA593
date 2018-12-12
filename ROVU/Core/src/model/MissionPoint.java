@@ -1,5 +1,6 @@
 package model;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import project.Point;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class MissionPoint {
         this(x, z);
         constraints.addAll(con);
     }
+
     public MissionPoint(double x, double z, int prio){
         this(x, z);
         priority = prio;
@@ -41,7 +43,22 @@ public class MissionPoint {
         priority = prio;
     }
 
-    public void done(){
+    public MissionPoint(double x, double z, RobotAction a) {
+        this(x, z);
+        action = a;
+    }
+
+    public MissionPoint(double x, double z, Constraint con, RobotAction a) {
+        this(x, z, con);
+        action = a;
+    }
+
+    public MissionPoint(double x, double z, List<Constraint> con, RobotAction a) {
+        this(x, z, con);
+        action = a;
+    }
+
+    public void done() {
         done = true;
     }
 
@@ -55,6 +72,33 @@ public class MissionPoint {
     
     @Override
     public String toString() {
-        return point.toString() + "\t prio:" +  priority + "\t cons:" + constraints.toString();
+        return point.toString() + "\t prio:" + priority + "\t cons:" + constraints.toString();
+    }
+
+    public int getRobot() {
+        for(Constraint c : constraints){
+            if (c == Constraint.ROBOT1){
+                return 1;
+            }
+            if (c == Constraint.ROBOT2){
+                return 2;
+            }
+            if (c == Constraint.ROBOT3){
+                return 3;
+            }
+            if (c == Constraint.ROBOT4){
+                return 4;
+            }
+
+        }
+        return 0;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void robotDoAction(){
+        action.performAction();
     }
 }
