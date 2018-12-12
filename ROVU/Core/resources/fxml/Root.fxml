@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -22,9 +23,9 @@
          <content>
             <AnchorPane prefHeight="400.0" prefWidth="600.0">
                <children>
-                  <ListView fx:id="pointListView" layoutX="351.0" layoutY="67.0" prefHeight="186.0" prefWidth="200.0" />
-                  <Label layoutX="351.0" layoutY="38.0" text="Mission Points" />
-                  <Button fx:id="createMissionBtn" layoutX="440.0" layoutY="272.0" mnemonicParsing="false" text="Create Mission" />
+                  <ListView fx:id="pointListView" layoutX="285.0" layoutY="68.0" prefHeight="231.0" prefWidth="293.0" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="22.0" />
+                  <Label layoutX="285.0" layoutY="38.0" text="Mission Points" />
+                  <Button fx:id="createMissionBtn" layoutX="468.0" layoutY="323.0" mnemonicParsing="false" text="Create Mission" AnchorPane.rightAnchor="22.0" />
                   <VBox layoutX="45.0" layoutY="38.0">
                      <children>
                         <Label text="Add Mission Point" />
@@ -32,18 +33,30 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="x: " />
+                                    <Label text="x:* " textFill="#ff5656" />
                                     <TextField prefHeight="27.0" prefWidth="32.0" fx:id="xTextfield" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="z:" />
+                                    <Label text="z:*" textFill="#ff5656" />
                                     <TextField fx:id="zTextfield" prefHeight="27.0" prefWidth="32.0" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
+                        <VBox prefHeight="125.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Priority:" />
+                              <TextField fx:id="prioTextfield">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Label text="Constraint:" />
+                              <ChoiceBox fx:id="constraintChoices" prefHeight="27.0" prefWidth="202.0" />
+                           </children>
+                        </VBox>
                         <Button fx:id="addPointBtn" mnemonicParsing="false" text="Add" />
                      </children>
                   </VBox>
