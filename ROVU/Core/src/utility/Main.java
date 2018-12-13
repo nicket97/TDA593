@@ -59,7 +59,8 @@ public class Main extends Application{
 					
 			AbstractSimulatorMonitor controller = new SimulatorMonitor(robots, e);
 
-			
+        // Launch the monitoring
+        launch(args);
 		
 		
 	}
