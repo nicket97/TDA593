@@ -28,6 +28,7 @@ public class RewardCalculator {
     }
 
     public int calculateReward() {
+
         int rewardPoints = -99; // If it returns -99, then something's gone wrong
         // TODO: Get the nodes from the RobotController
         List<Node> nodes = mockNodes();
@@ -42,6 +43,7 @@ public class RewardCalculator {
             rewardPoints = calculateProcedureB(nodes);
             if (inPhysicalArea) isA = !isA;
         }
+        System.out.println(rewardPoints);
         return rewardPoints;
     }
 

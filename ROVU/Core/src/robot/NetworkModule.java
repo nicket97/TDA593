@@ -5,7 +5,7 @@ import java.util.List;
 
 public class NetworkModule {
   public Socket socket;
-  
+  //Just a dummu class for showing the connection to the real
   public void sendData(List data){
 	 
   }

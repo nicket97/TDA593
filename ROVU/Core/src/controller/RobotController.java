@@ -5,6 +5,7 @@ import java.util.List;
 
 import model.Mission;
 import model.MissionPoint;
+import model.Timer;
 import project.Point;
 import robot.RobotHandler;
 
@@ -19,6 +20,8 @@ public class RobotController implements MissionExecutable{
 	public List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
+	private Timer timer = new Timer();
+	private Thread timerThread = new Thread(timer);
 	
 	public RobotController(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
@@ -27,6 +30,8 @@ public class RobotController implements MissionExecutable{
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));
 		}
+		timerThread.start();
+
 
 	}
 
