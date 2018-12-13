@@ -20,6 +20,7 @@ import java.util.PriorityQueue;
 public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 public Point startingPoint;
 public int robotIndex;
+
 private boolean available;
 private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
 
@@ -44,10 +45,16 @@ public void run() {
 		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
  */
 Point[][] path = {
-		{new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)}
-		,{new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)}
-,{new Point (2.5, 2.5),new Point (-6, 2.5)},
-{new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6, -2.5)}};
+		{new Point (-6.8, 2.5),new Point (-6.7, -2.3)}
+		,{new Point (-2.3, 2.5),new Point (-2.2, -2.3)}
+,{new Point (2.3, 2.5),new Point (2.0, -2.3)},
+{new Point (6.8, 2.5),new Point (6.3, -2.3)}};
+
+public int fin;
+public void setFin (int fin){
+	this.fin=fin;
+}
+
 public Point[] getPath() {
 	return path[robotIndex];
 }
@@ -58,6 +65,10 @@ public void setPath(Point [][] newpath){
 
 	public boolean isAvailable() {
 	return available;
+	}
+	
+	public void setAvailable(Boolean available) {
+		this.available=available;;
 	}
 
 	public void stop() {
