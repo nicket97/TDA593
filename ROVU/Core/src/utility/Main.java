@@ -26,38 +26,11 @@ import view.ROVUView;
 
 @SuppressWarnings("unused")
 public class Main extends Application{
-	
-	static RobotHandler robot1;
-	static RobotHandler robot2;
-	static RobotHandler robot3;
-	static RobotHandler robot4;
-	
-	 Stage stage = new Stage();
-	    public static Scene scene;
-	    
-	@SuppressWarnings("unused")
-	  public static void getScene(Parent root, Stage primaryStage){
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        scene = new Scene(root, screenBounds.getHeight() + 200, screenBounds.getHeight());
-        primaryStage.setTitle("ROVU view");
-        primaryStage.setX(0);
-        primaryStage.setY(10);
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
-        primaryStage.setOnCloseRequest(e -> {
-            e.consume();
-          //  closeProgram(primaryStage);
-            //TeacherController.alert.close();
-        });
-    }	
-	
-	
 	
 	public static void main(String[] args)  throws InterruptedException {
 
 		
-		    ROVUView exp = new ROVUView();
 	
 	    /**
 	     * Method to define the application window's characteristics. And to close the window when asked.
@@ -102,11 +75,10 @@ public class Main extends Application{
 		
 	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent Root = FXMLLoader.load(getClass().getResource("../view/ROVU.fxml"));
-        getScene(Root, primaryStage);
-		
-	}
+	 @Override
+	    public void start(Stage primaryStage) throws Exception {
+	        Application missionEditor = new MissionEditorView();
+	        missionEditor.start(primaryStage);
+	    }
 
 }
