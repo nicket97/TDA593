@@ -30,17 +30,6 @@ public class Main extends Application{
 	
 	public static void main(String[] args)  throws InterruptedException {
 
-		
-	
-	    /**
-	     * Method to define the application window's characteristics. And to close the window when asked.
-	     *
-	     * @param root
-	     * @param primaryStage
-	     *
-	     */
-	  
-		
 		    EnvironmentDescription e = new EnvironmentDescription();
 			
 			Color color = Color.BLUE;
