@@ -1,6 +1,7 @@
 package model;
 
 import controller.DataHandler;
+import controller.ROVUViewController;
 import controller.RobotController;
 import project.Point;
 
@@ -12,6 +13,7 @@ public class RewardCalculator {
     // TODO: Retrieve singleton RobotController as the DataHandler
     // DataHandler dataHandler = new RobotController();
     private boolean isA = true;
+    private ROVUViewController rvcontroller = new ROVUViewController();
 
     // Return a list of random nodes
     private List<Node> mockNodes() {
@@ -27,7 +29,12 @@ public class RewardCalculator {
         return nodes;
     }
 
-    public int calculateReward() {
+    public void calculateReward() {
+    	int reward = calculate();
+    	rvcontroller.updateReward(reward);
+    }
+    
+    public int calculate() {
         int rewardPoints = -99; // If it returns -99, then something's gone wrong
         // TODO: Get the nodes from the RobotController
         List<Node> nodes = mockNodes();
