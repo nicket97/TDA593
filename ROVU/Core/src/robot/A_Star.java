@@ -165,6 +165,19 @@ public class A_Star extends PathFinder{
 		System.out.println("Final "+nk.roomID);
 		
 	}
+		
+	public static List <Node> getRouteList(Node finalNode){
+		List <Node> path = new ArrayList<Node>();
+		Node par = new Node();
+		Node temp = new Node();
+		temp=finalNode;
+		while (par!=null){
+			path.add(temp);
+			par=temp.getParent();
+			temp=par;
+		}
+		return path;
+	}
 	
 	private static boolean listContains (Node check, List <Node>list){
 		for (Node temp:list){
