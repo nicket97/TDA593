@@ -22,7 +22,7 @@ import simbad.sim.HorizontalBoundary;
 import simbad.sim.HorizontalWall;
 import simbad.sim.VerticalBoundary;
 import simbad.sim.VerticalWall;
-import view.ROVUView;
+import view.MissionEditorView;
 
 @SuppressWarnings("unused")
 public class Main extends Application{
