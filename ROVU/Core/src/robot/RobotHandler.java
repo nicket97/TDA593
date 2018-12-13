@@ -10,6 +10,7 @@ import model.MissionPoint;
 import project.AbstractRobotSimulator;
 import project.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -78,5 +79,17 @@ public void setPath(List<Node> newpath){
 	DataObject data = new DataObject();
 	//TODO fix data object creation
 		return data;
+	}
+
+	public Point getStartingPoint() {
+	return startingPoint;
+	}
+
+	public Point[] getPathPositions() {
+	List<Point> points = new ArrayList<>();
+	for (Node n: this.getPath()){
+		points.add(n.point);
+	}
+	return (Point[]) points.toArray();
 	}
 }

@@ -24,7 +24,7 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 //		System.out.println(arg0.getPosition());
 //
 		for(RobotHandler robot : r){
-			MoveRobot(robot, robot.getPath(), robot.startingPoint);
+			MoveRobot(robot, robot.getPathPositions(), robot.getStartingPoint());
 		}
 		//MoveRobot(arg0, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
 		
