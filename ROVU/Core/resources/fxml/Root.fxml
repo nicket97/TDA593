@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MissionEditor">
+   <tabs>
+      <Tab closable="false" text="Premade missions">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ChoiceBox fx:id="missionChoices" layoutX="34.0" layoutY="91.0" prefHeight="27.0" prefWidth="515.0" />
+                  <Label layoutX="34.0" layoutY="61.0" text="Choose a mission" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab closable="false" text="Custom missions">
+         <content>
+            <AnchorPane prefHeight="400.0" prefWidth="600.0">
+               <children>
+                  <ListView fx:id="pointListView" layoutX="285.0" layoutY="68.0" prefHeight="231.0" prefWidth="293.0" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="22.0" />
+                  <Label layoutX="285.0" layoutY="38.0" text="Mission Points" />
+                  <Button fx:id="createMissionBtn" layoutX="468.0" layoutY="323.0" mnemonicParsing="false" text="Create Mission" AnchorPane.rightAnchor="22.0" />
+                  <VBox layoutX="45.0" layoutY="38.0">
+                     <children>
+                        <Label text="Add Mission Point" />
+                        <HBox layoutX="51.0" layoutY="94.0" prefHeight="65.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="x:* " textFill="#ff5656" />
+                                    <TextField prefHeight="27.0" prefWidth="32.0" fx:id="xTextfield" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="z:*" textFill="#ff5656" />
+                                    <TextField fx:id="zTextfield" prefHeight="27.0" prefWidth="32.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="125.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Priority:" />
+                              <TextField fx:id="prioTextfield">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Label text="Constraint:" />
+                              <ChoiceBox fx:id="constraintChoices" prefHeight="27.0" prefWidth="202.0" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="addPointBtn" mnemonicParsing="false" text="Add" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>

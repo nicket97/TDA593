@@ -20,9 +20,9 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 	
 
 	public void update(RobotHandler arg0) {
-		System.out.println(arg0.getName());
-		System.out.println(arg0.getPosition());
-		
+//		System.out.println(arg0.getName());
+//		System.out.println(arg0.getPosition());
+//
 		for(RobotHandler robot : r){
 			MoveRobot(robot, robot.getPath(), robot.startingPoint);
 		}
