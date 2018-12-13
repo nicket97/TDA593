@@ -84,4 +84,9 @@ public class Node {
         }
 
     }
+    
+    @Override
+    public String toString() {
+        return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + " id:" + roomID + "\n";
+    }
 }

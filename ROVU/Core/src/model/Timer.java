@@ -1,7 +1,8 @@
 package model;
 
 public class Timer implements Runnable {
-    boolean running = true;
+    private RewardCalculator rewardCalculator = new RewardCalculator();
+    private boolean running = true;
     @Override
     public void run() {
 
@@ -18,7 +19,7 @@ public class Timer implements Runnable {
                     e.printStackTrace();
                 }
             }
-            RewardCalculator.calculateReward();
+            rewardCalculator.calculateReward();
         }
     }
     public void stopTimer(){
