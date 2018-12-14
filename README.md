@@ -1,9 +1,17 @@
 # TDA593
 
-## Open with IntelliJ
+## Open with an IDE
+### IntelliJ
 It's easier to not clone via IntelliJ's version control. Clone the project with the command line. In IntelliJ, choose `File > Open`, and pick the folder **TDA593/ROVU/Core/** to open. This is the easiest solution, since IntelliJ messes it up if you open up the enclosing folder, it won't be able to locate the `src`-folder. 
 
 Set your Project SDK to version **1.8** in `File > Project Structure...`.
+
+### Eclipse
+1. Clone the repo with the command line.
+2. In Eclipse, choose `File > Open Projects from File System...`.
+3. Click **Show other specialized import wizards**.
+4. Select ` Maven > Existing Maven Projects`.
+5. Navigate to your local copy of the repo and select the option with `pom.xml` named **mdsd**.
 
 ## Git Workflow
 1. Stand on the branch that you want to work on. `git checkout <branchname>`
@@ -19,4 +27,4 @@ Set your Project SDK to version **1.8** in `File > Project Structure...`.
 9. Merge the branch with your local branch `git merge <local_branchname>`
 10. Push your changes: `git push`
 
-And voila! It should work. If you are unsure about anything, don't hesitate to ask! :) 
+And voila! It should work. If you are unsure about anything, don't hesitate to ask! :)
