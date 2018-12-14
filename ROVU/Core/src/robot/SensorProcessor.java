@@ -9,7 +9,7 @@ public class SensorProcessor {
 		return null;
 	}
 	
-	public List getErrorData(){
+	public List<?> getErrorData(){
 		return null;
 	}
 	

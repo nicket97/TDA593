@@ -22,6 +22,7 @@ public Point startingPoint;
 public int robotIndex;
 
 private boolean available;
+@SuppressWarnings("unused")
 private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
 
 public RobotHandler(Point position, String name, int i) {

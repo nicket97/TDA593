@@ -73,7 +73,6 @@ public class Node {
         this.wall = wall;
         this.wifi = wifi;
         this.eating = eat;
-        this.room = room;
         this.roomID = id;
         this.point = p;
         if (wall){

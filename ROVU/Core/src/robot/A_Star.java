@@ -1,15 +1,11 @@
 package robot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
-import project.Point;
 import model.Mission;
+import project.Point;
 
 
 /**
@@ -23,7 +19,6 @@ public class A_Star extends PathFinder{
 
 
 	private static List <Node> map;
-	private double [] distances;
 	private static Node start;
 	private static Node destination;
 	
@@ -52,7 +47,7 @@ public class A_Star extends PathFinder{
 		}
 		fringe = new ArrayList<>(tk.values());
 		fringe.remove(0);//remove goal*/
-		tk = new TreeMap();
+		TreeMap<Double, Node> tk = new TreeMap<>();
 		
 		for (int i=0;i<start.neighbours.length;i++){
 			double dist =linearPath(start.neighbours[i].point,destination.point); //compute heuristic distance for each node
@@ -77,13 +72,13 @@ public class A_Star extends PathFinder{
 		} else if (!(fringe.get(0).roomID==(destination.roomID))){
 			//fringe.remove(0);
 			System.out.println("Here  "+ fringe.get(0).roomID);
-			Node temp=fringe.remove(0);
-			if (!listContains(temp,closed)){
-				System.out.println("Tempclosed "+!closed.contains(temp));
-				closed.add(temp);
-				neighborFringe (temp);
+			Node currentNode=fringe.remove(0);
+			if (!listContains(currentNode,closed)){
+				System.out.println("Tempclosed "+!closed.contains(currentNode));
+				closed.add(currentNode);
+				neighborFringe (currentNode);
 				findRoute();
-		}
+			}
 			
 
 					
@@ -95,23 +90,20 @@ public class A_Star extends PathFinder{
 	
 	
 	private static void neighborFringe (Node node){
-		int i=0;
-		tk = new TreeMap<Double, Node>();
+		TreeMap<Double, Node> tk = new TreeMap<>();
 		System.out.println("Null "+node.roomID);
 		for (Node e:node.neighbours){
 			if (!listContains(e,closed) && !e.wall){
-				Node temp = new Node(false, false, false, e.roomID, e.point);
-				temp.parent=node;
-				temp.neighbours=e.neighbours;
-				System.out.println("ID  "+temp.roomID );
-				temp.distance=node.distance+linearPath(node.point,temp.point);//linearPath=1, always the same
+				Node currentNode = new Node(false, false, false, e.roomID, e.point);
+				currentNode.parent=node;
+				currentNode.neighbours=e.neighbours;
+				System.out.println("ID  "+currentNode.roomID );
+				currentNode.distance=node.distance+linearPath(node.point,currentNode.point);//linearPath=1, always the same
 				double tempLin = linearPath(node.point,destination.point);
-				temp.linear=temp.distance+tempLin;
-				//tk.put(temp.linear, temp);
-				sortedPut(temp,fringe);
+				currentNode.linear=currentNode.distance+tempLin;
+				//tk.put(temp.linear, currentNode);
+				sortedPut(currentNode,fringe);
 				System.out.println("Tempmap "+tk.size());
-				
-				i++;
 			}
 		}
 
@@ -161,7 +153,7 @@ public class A_Star extends PathFinder{
 
 		
 		fringe.add(start);
-				Node nk =findRoute();
+		Node nk =findRoute();
 		System.out.println("Final "+nk.roomID);
 		
 	}
@@ -188,8 +180,8 @@ public class A_Star extends PathFinder{
 		return false;		
 	}
 	
-	
-	public List getPath(Mission mission){
+	@Override
+	public List<Node> getPath(Mission mission){
 		return null;
 	}
 	

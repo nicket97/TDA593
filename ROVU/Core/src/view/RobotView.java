@@ -1,5 +1,5 @@
 package view;
 
-public class RobotView {
+public class RobotView implements IRobotView {
 
 }

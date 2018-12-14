@@ -1,10 +1,9 @@
 package model;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-import project.Point;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import project.Point;
 
 public class MissionPoint {
     private Point point;

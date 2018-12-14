@@ -6,7 +6,7 @@ import model.Mission;
 
 public abstract class PathFinder {
 
-	public List getPath (Mission mission){
+	public List<Node> getPath (Mission mission){
 		return null;
 	}
 	

@@ -31,45 +31,31 @@ public class RobotController implements MissionExecutable{
 	}
 
 
-
+	@Override
 	public Mission getMission(){
 	     return currentMission;
 	}
 	
+	@Override
 	public void executeMission(Mission mission){
-		boolean notDone = true;
 		currentMission = mission;
 		for(MissionPoint p: mission.getMissionPoints()){
 			int robotIndex = p.getRobot();
-			switch(robotIndex) {
-				case 1:
-					robots.get(0).addMissionPoint(p);
-					break;
-				case 2:
-					robots.get(1).addMissionPoint(p);
-					break;
-				case 3:
-					robots.get(2).addMissionPoint(p);
-					break;
-				case 4:
-					robots.get(3).addMissionPoint(p);
-					break;
-				default:
-					//TODO add general mission
-					break;
+			if(robotIndex <= robots.size()) {
+				robots.get(robotIndex).addMissionPoint(p);
 			}
 			for (Thread t: robotThreads){
 				t.start();
 			}
 
 		}
-		while (notDone){
+		mission_loop:while (true){
 			currentMission.updateMissionList();
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
 				if(r.isAvailable()){
 					if (currentMission.getMission().size() == 0){
-						notDone = false;
+						break mission_loop;
 					}
 				}
 
@@ -80,12 +66,14 @@ public class RobotController implements MissionExecutable{
 
 	}
 	
+	@Override
 	public void cancelExecution(){
 		for (RobotHandler r : robots)
 			r.stop();
 		
 	}
-	
+
+	@Override
 	public List<DataObject> getData(){
 		List<DataObject> d = new ArrayList<>();
 		for (RobotHandler r: robots){

@@ -1,6 +1,5 @@
 package robot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Mission;
@@ -12,7 +11,7 @@ import model.Mission;
  *
  */
 
-public class Dijkstra {
+public class Dijkstra extends PathFinder {
 
 	private static List <Node> settledNodes;
 	private static List <Node> unsettledNodes;
@@ -24,7 +23,8 @@ public class Dijkstra {
 
 	
 	
-	private static Node Find(){
+	@SuppressWarnings("unused")
+	private static Node find(){
 		
 		System.out.println("Suke"+ (start==null));
 		settledNodes.add(start);
@@ -70,8 +70,8 @@ public class Dijkstra {
 	
 
 
-	
-	public List getPath(Mission mission){
+	@Override
+	public List<Node> getPath(Mission mission){
 		if (!destination.predecessors.isEmpty()){
 			return destination.predecessors;
 		}

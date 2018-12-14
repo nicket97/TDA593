@@ -6,7 +6,7 @@ import java.util.List;
 public class NetworkModule {
   public Socket socket;
   
-  public void sendData(List data){
+  public void sendData(List<?> data){
 	 
   }
   
@@ -14,11 +14,11 @@ public class NetworkModule {
 	  return null;
   }
   
-  public List messageToData(String data){
+  public List<?> messageToData(String data){
 	  return null;
   }
   
-  public List getSensorData(){
+  public List<?> getSensorData(){
 	  return null;
   }
   

@@ -31,7 +31,7 @@ public class TestSuite {
 	
 	Set<RobotHandler> testSet = new HashSet<>();
 	
-	AbstractSimulatorMonitor testController;
+	AbstractSimulatorMonitor<RobotHandler> testController;
 	
 	  @Before
       public void setUp() {	  

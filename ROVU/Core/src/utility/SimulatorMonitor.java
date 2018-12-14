@@ -3,11 +3,7 @@ package utility;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
-import model.Mission;
-import model.MissionPoint;
-import project.AbstractRobotSimulator;
 import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.RobotHandler;
@@ -26,8 +22,6 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 //		System.out.println(arg0.getName());
 //		System.out.println(arg0.getPosition());
 //
-		List <MissionPoint> Mp = new ArrayList < MissionPoint>();
-		//Mp.add(new MissionPoint);
 
 		List <RobotHandler> r1 = new ArrayList <RobotHandler>();
 		int t=0;

@@ -1,12 +1,10 @@
 package model;
 
-import controller.DataHandler;
-import controller.RobotController;
-import project.Point;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import project.Point;
 
 public class RewardCalculator {
     // TODO: Retrieve singleton RobotController as the DataHandler

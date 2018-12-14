@@ -57,7 +57,7 @@ public class Main extends Application{
 				robots.add(r);
 			}
 					
-			AbstractSimulatorMonitor controller = new SimulatorMonitor(robots, e);
+			AbstractSimulatorMonitor<RobotHandler> controller = new SimulatorMonitor(robots, e);
 
         // Launch the monitoring
         launch(args);

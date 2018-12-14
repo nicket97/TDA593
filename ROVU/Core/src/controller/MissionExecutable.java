@@ -30,6 +30,6 @@ public interface MissionExecutable {
 	 * Gets data from the robot (sensors, position etc)
 	 * @return
 	 */
-	List getData();
+	List<DataObject> getData();
 	
 }
