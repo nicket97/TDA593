@@ -1,5 +1,9 @@
 package robot;
 
+
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +13,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import project.Point;
+import simbad.sim.Boundary;
+import simbad.sim.Wall;
+import utility.Main;
 import model.Mission;
 
 
@@ -22,19 +29,35 @@ import model.Mission;
 public class A_Star extends PathFinder{
 
 
-	private static List <Node> map;
-	private double [] distances;
-	private static Node start;
-	private static Node destination;
+	public static List <Boundary> bounds;
+	public static List <Wall> walls;
 	
-	private static List <Node> fringe;
-	private static List <Node> closed;
-	static TreeMap<Double, Node> tk;
+	
+	private  List <Node> map;
+
+	private  Node start;
+	private  Node destination;
+	
+	private  List <Node> fringe;
+	private  List <Node> closed;
+
 	
 	
 	public void findPath(){
 		//fringe.add(start);
 		findRoute();
+	}
+	
+	public void setMap(List <Node> map){
+		this.map=map;
+		this.closed=  new ArrayList <Node>();
+		this.fringe = new ArrayList <Node>();
+	}
+	
+	public void setStartDestination (Node start,Node destination){
+		this.start=start;
+		this.destination=destination;
+		fringe.add(start);
 	}
 	
 	private static double linearPath(Point start, Point end){
@@ -43,7 +66,7 @@ public class A_Star extends PathFinder{
 		return xDif+zDif;
 	}
 	
-	public static void computeLinearPath(){
+	public  void computeLinearPath(){
 		/*Map tk = new TreeMap();
 		
 		for (int i=0;i<map.size();i++){
@@ -52,34 +75,31 @@ public class A_Star extends PathFinder{
 		}
 		fringe = new ArrayList<>(tk.values());
 		fringe.remove(0);//remove goal*/
-		tk = new TreeMap();
+	
 		
 		for (int i=0;i<start.neighbours.length;i++){
 			double dist =linearPath(start.neighbours[i].point,destination.point); //compute heuristic distance for each node
 			start.neighbours[i].distance=(dist+1);
-			tk.put(dist+1, start.neighbours[i]);
+		
 		}
-		fringe = new ArrayList<>(tk.values());
+
 		System.out.println("Frin  "+fringe.size());
 		//fringe.remove(0);
 	}
 	
-	private static Node findRoute(){
+	public  Node findRoute(){
+		System.out.println("FRINGE=========="+fringe==null);
 		if(fringe.size()!=0){
 			System.out.println("Roomnow "+fringe.get(0).roomID);
 		}
-		System.out.println("Listsize "+fringe.size());
 		if (fringe.isEmpty()){
 			return null;
 		} else if ((fringe.get(0).roomID==(destination.roomID))){
-			System.out.println("YES "+  fringe.get(0).roomID);
 			return fringe.get(0); //found goal
 		} else if (!(fringe.get(0).roomID==(destination.roomID))){
 			//fringe.remove(0);
-			System.out.println("Here  "+ fringe.get(0).roomID);
 			Node temp=fringe.remove(0);
 			if (!listContains(temp,closed)){
-				System.out.println("Tempclosed "+!closed.contains(temp));
 				closed.add(temp);
 				neighborFringe (temp);
 				findRoute();
@@ -94,9 +114,9 @@ public class A_Star extends PathFinder{
 	}
 	
 	
-	private static void neighborFringe (Node node){
+	private  void neighborFringe (Node node){
 		int i=0;
-		tk = new TreeMap<Double, Node>();
+
 		System.out.println("Null "+node.roomID);
 		for (Node e:node.neighbours){
 			if (!listContains(e,closed) && !e.wall){
@@ -109,7 +129,7 @@ public class A_Star extends PathFinder{
 				temp.linear=temp.distance+tempLin;
 				//tk.put(temp.linear, temp);
 				sortedPut(temp,fringe);
-				System.out.println("Tempmap "+tk.size());
+
 				
 				i++;
 			}
@@ -130,16 +150,150 @@ public class A_Star extends PathFinder{
 				return true;
 			}
 		}
-		list.add(put);
+		list.add(put); 
 		return false;
 	}
 	
+	
+	public static Node [] neighbouring (Node check, int scale, boolean diagonal, List <Node> map){
+		//-10,-1,+1,+10
+		//-11,-10,-9,-1,+1,+9,+10,+11
+        List <Node> temp = new ArrayList<Node> ();
+		if (!diagonal){ //adding 4 neighbors
+			
+		try {temp.add(map.get(map.indexOf(check)-scale));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)-1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)+1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)+scale));			
+			}catch (Exception e){System.out.println("No element here");}
+		
+		} else { //adding 8 neighbors	
+			
+		try {temp.add(map.get(map.indexOf(check)-scale-1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)-scale));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)-scale+1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)-1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)+1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)+scale-1));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)+scale));			
+			}catch (Exception e){System.out.println("No element here");}
+		try {temp.add(map.get(map.indexOf(check)+scale+1));			
+			}catch (Exception e){System.out.println("No element here");}		
+		}
+		
+		Node [] ret = new Node [temp.size()];
+		for (int n=0;n<temp.size();n++){
+			ret[n]=temp.get(n);
+		}
+		return ret;	
+	}
+	
+	
+	public  Node pointNode (Point p) {
+		for (Node v:map){
+			Rectangle2D.Double temp = new Rectangle2D.Double(v.getPoint().getX()-0.3,v.getPoint().getX()-0.3,0.3,0.3);
+			if (temp.contains(p.getX(), p.getZ())){
+				return v;
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	public  List<Node> generateEmptyGrid(int scale, double coefficient){
+		List <Node> exmap = new ArrayList<Node> ();
+		int z=0;
+		/*for (int i=1;i<scale+1;i++){//i=1;i<scale+1
+			for (int k=1;k<scale+1;k++){
+			Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
+					BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
+			exmap.add(temp);
+			map.add(temp);
+			z++;
+			}
+			
+		}*/
+	
+		for (int i=-scale/2;i<0/2;i++){ //upper right
+			for (int k=-scale/2;k<0;k++){
+				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
+						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
+				exmap.add(temp);
+				System.out.println("Null "+map==null);
+				System.out.println("Null2== "+temp==null);
+				map.add(temp);
+				z++;
+			}
+			for (int k=0;k<scale/2+1;k++){
+				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
+						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
+				exmap.add(temp);
+				map.add(temp);
+				z++;
+			}
+		}
+		
+		for (int i=0;i<scale/2+1;i++){ //upper right
+			for (int k=-scale/2;k<0;k++){
+				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
+						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
+				exmap.add(temp);
+				map.add(temp);
+				z++;
+			}
+			for (int k=0;k<scale/2+1;k++){
+				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
+						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
+				exmap.add(temp);
+				map.add(temp);
+				z++;
+			}
+		}
+		for (Node v:map){
+			
+			Node [] neigh = neighbouring (v, scale, false, map);
+
+			v.neighbours=neigh;
+			
+			}
+		return map;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//Testing class
 	public static void main (String [] args){
-		map = new ArrayList <Node>();
-		closed=  new ArrayList <Node>();
-		fringe=new ArrayList <Node>();
-		Node n1= new Node(false, false, false, 0, new Point (0,0));
+		
+
+
+	
+		//map = new ArrayList <Node>();
+		//closed=  new ArrayList <Node>();
+		//fringe=new ArrayList <Node>();
+		/*Node n1= new Node(false, false, false, 0, new Point (0,0));
 		Node n2= new Node(false, false, false, 1, new Point (0,1));
 		Node n3= new Node(false, false, false, 2, new Point (0,2));
 		Node n4= new Node(false, false, false, 3, new Point (1,1));
@@ -151,35 +305,87 @@ public class A_Star extends PathFinder{
 		n2.neighbours=z2;
 		n3.neighbours=z3;
 		n4.neighbours=z4;
-		map.add(n1);
+		/*map.add(n1);
 		map.add(n2);
 		map.add(n3);
 		map.add(n4);
 		start=n1;
-		destination=n2;
+		destination=n2;*/
+		
+		//0.3f - wall thickness
+        //20x20f area
+		//20/0.3 =66
+		//400/0.3 = 1333
+		List <Node> exmap = new ArrayList<Node> ();
+	/*	int z=0;
+		for (int i=1;i<67;i++){//i=1;i<scale+1
+			for (int k=1;k<67;k++){
+			Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(0.3*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
+					BigDecimal.valueOf(0.3*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
+			exmap.add(temp);
+			map.add(temp);
+			z++;
+			}			
+		}
+
+		for (Node v:map){
+			
+		Node [] neigh = neighbouring (v, 66, false, map);
+
+		v.neighbours=neigh;
+		
+		}
 		
 
+		start=map.get(72);
+		destination=map.get(2); 
 		
 		fringe.add(start);
 				Node nk =findRoute();
 		System.out.println("Final "+nk.roomID);
-		
+		*/
+	/*	List <Node> test = generateEmptyGrid(66,0.3);
+		start=map.get(72);
+		destination=map.get(2); 
+		for (Node v:map){
+			
+			Node [] neigh = neighbouring (v, 66, false, map);
+
+			v.neighbours=neigh;
+			
+			}
+		fringe.add(start);
+				Node nk =findRoute();
+				List <Node> routeC = getRouteList(nk);
+		for (Node x:test){
+			System.out.println("X= "+x.getPoint().getX()+ " Z="+x.getPoint().getZ());
+		}
+		for (Node b:routeC){
+			System.out.println("WW="+b.roomID);
+		}
+		*/
 	}
 		
-	public static List <Node> getRouteList(Node finalNode){
+	public  List <Node> getRouteList(Node finalNode){
 		List <Node> path = new ArrayList<Node>();
+		List <Node> toReturn = new ArrayList<Node>();
 		Node par = new Node();
 		Node temp = new Node();
 		temp=finalNode;
 		while (par!=null){
-			path.add(temp);
+			System.out.println("Inside==PointX======"+temp.getPoint().getX()+" PointZ======"+temp.getPoint().getZ());
+			path.add(0,temp);
 			par=temp.getParent();
 			temp=par;
+		}	
+
+		for (Node temp2:path){
+			System.out.println("Returning==PointX======"+temp2.getPoint().getX()+" PointZ======"+temp2.getPoint().getZ());
 		}
 		return path;
 	}
 	
-	private static boolean listContains (Node check, List <Node>list){
+	private  boolean listContains (Node check, List <Node>list){
 		for (Node temp:list){
 			if (temp.roomID==check.roomID){
 				return true;

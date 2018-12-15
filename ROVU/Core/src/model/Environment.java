@@ -1,16 +1,28 @@
 package model;
 
+import java.awt.Color;
+
 import java.awt.Point;
 import java.util.Map;
+
+import simbad.sim.AbstractWall;
+import simbad.sim.Boundary;
+import simbad.sim.EnvironmentDescription;
+import simbad.sim.HorizontalBoundary;
+import simbad.sim.HorizontalWall;
+import simbad.sim.VerticalBoundary;
+import simbad.sim.VerticalWall;
 
 public class Environment implements IEnvironment {
     private Node[][] map;
     int xSize;
     int ySize;
     
+   /* EnvironmentDescription e = new EnvironmentDescription();
 	
-	/**
-	Hospital map for assignment 5 with 4 surgery rooms and consulting room
+	Color color = Color.BLUE;
+	//0.3f
+	//Hospital map for assignment 5 with 4 surgery rooms and consulting room
 	
 		Boundary H1 = new HorizontalBoundary(-9.0f, 5.0f, -5.0f, e, color);
 		Boundary H2 = new HorizontalBoundary(9.0f, 5.0f, -5.0f, e, color);
@@ -27,6 +39,7 @@ public class Environment implements IEnvironment {
 		AbstractWall roomWallV4 = new VerticalWall(0f, 5.5f, 3.5f, e, color);
 		AbstractWall roomWallV5 = new VerticalWall(0f, 8.0f, 9.0f, e, color);
 		*/
+    
 	
 	public Environment (Node[][] map){
 
