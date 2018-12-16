@@ -14,6 +14,10 @@ import java.util.TreeMap;
 
 import project.Point;
 import simbad.sim.Boundary;
+import simbad.sim.HorizontalBoundary;
+import simbad.sim.HorizontalWall;
+import simbad.sim.VerticalBoundary;
+import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
 import utility.Main;
 import model.Mission;
@@ -29,8 +33,8 @@ import model.Mission;
 public class A_Star extends PathFinder{
 
 
-	public static List <Boundary> bounds;
-	public static List <Wall> walls;
+	private  List <Boundary> bounds;
+	private  List <Wall> walls;
 	
 	
 	private  List <Node> map;
@@ -41,7 +45,10 @@ public class A_Star extends PathFinder{
 	private  List <Node> fringe;
 	private  List <Node> closed;
 
-	
+	public void setWalls(List <Boundary> bounds, List <Wall> walls){
+		this.bounds=bounds;
+		this.walls=walls;
+	}
 	
 	public void findPath(){
 		//fringe.add(start);
@@ -87,6 +94,10 @@ public class A_Star extends PathFinder{
 		//fringe.remove(0);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public  Node findRoute(){
 		System.out.println("FRINGE=========="+fringe==null);
 		if(fringe.size()!=0){
@@ -113,7 +124,10 @@ public class A_Star extends PathFinder{
 
 	}
 	
-	
+	/**
+	 * 
+	 * @param node
+	 */
 	private  void neighborFringe (Node node){
 		int i=0;
 
@@ -139,11 +153,20 @@ public class A_Star extends PathFinder{
 		//System.out.println("frin2  "+fringe.get(0).roomID);
 	}
 	
+	
+	/**
+	 * 
+	 * @param put
+	 * @param list
+	 * @return
+	 */
 	private static boolean sortedPut (Node put, List <Node>list){
+		
 		if (list.isEmpty()){
 			list.add(put);
 			return true;
 		}
+		
 		for (int i=0;i<list.size();i++){
 			if (list.get(i).distance>=put.distance){
 				list.add(i, put);
@@ -155,6 +178,15 @@ public class A_Star extends PathFinder{
 	}
 	
 	
+	
+	/**
+	 * 
+	 * @param check
+	 * @param scale
+	 * @param diagonal
+	 * @param map
+	 * @return
+	 */
 	public static Node [] neighbouring (Node check, int scale, boolean diagonal, List <Node> map){
 		//-10,-1,+1,+10
 		//-11,-10,-9,-1,+1,+9,+10,+11
@@ -197,10 +229,15 @@ public class A_Star extends PathFinder{
 		return ret;	
 	}
 	
-	
-	public  Node pointNode (Point p) {
+	/**
+	 * 
+	 * @param p
+	 * @param coefficient
+	 * @return
+	 */	
+	public  Node pointNode (Point p, double coefficient) {
 		for (Node v:map){
-			Rectangle2D.Double temp = new Rectangle2D.Double(v.getPoint().getX()-0.3,v.getPoint().getX()-0.3,0.3,0.3);
+			Rectangle2D.Double temp = nodeRect(v, coefficient);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
 			if (temp.contains(p.getX(), p.getZ())){
 				return v;
 			}
@@ -208,8 +245,85 @@ public class A_Star extends PathFinder{
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param node
+	 * @param coefficient
+	 * @return
+	 */
+	public Rectangle2D.Double nodeRect (Node node, double coefficient){
+		Rectangle2D.Double temp = new Rectangle2D.Double(node.getPoint().getX(),node.getPoint().getZ(),coefficient,coefficient);
+		return temp;
+	}
 	
+	/**
+	 * 
+	 * @param wall
+	 * @return
+	 */
+	//horizontal->(X,Zbegin,Zend),middle
+	//vertical->(Z,Xbegin,Xend),middle
+
+	public Rectangle2D.Double verticalWallRect (VerticalWall wall){ //Float p1z, Float p1x, Float p2x
+
+			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(Math.abs(wall.getP1x()-Math.abs(wall.getP2x()))),0.3);
+			return temp;
+
+	}
 	
+	/**
+	 * 
+	 * @param wall
+	 * @return
+	 */
+	public Rectangle2D.Double horizontalWallRect (HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
+
+		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),Math.abs(Math.abs(wall.getP1z()-Math.abs(wall.getP2z()))),0.3);
+		return temp;
+
+	}
+	
+	/**
+	 * 
+	 * @param wall
+	 * @return
+	 */
+	public Rectangle2D.Double verticalBoundaryRect (VerticalBoundary wall){ //Float p1z, Float p1x, Float p2x
+		
+			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(Math.abs(wall.getP1x()-Math.abs(wall.getP2x()))),0.3);
+			return temp;
+	
+	}
+	
+	/**
+	 * 
+	 * @param wall
+	 * @return
+	 */
+	public Rectangle2D.Double horizontalBoundaryRect (HorizontalBoundary wall){ //Float p1z, Float p1x, Float p2x
+
+		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),Math.abs(Math.abs(wall.getP1z()-Math.abs(wall.getP2z()))),0.3);
+		return temp;
+
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @param coefficient
+	 * @return
+	 */
+	public Point getNodeCenter(Node node, double coefficient){
+		Point temp = new Point (node.getPoint().getX()+coefficient/2,node.getPoint().getZ()+coefficient/2);
+		return temp;		
+	}
+	
+	/**
+	 * 
+	 * @param scale
+	 * @param coefficient
+	 * @return
+	 */
 	public  List<Node> generateEmptyGrid(int scale, double coefficient){
 		List <Node> exmap = new ArrayList<Node> ();
 		int z=0;
@@ -223,8 +337,9 @@ public class A_Star extends PathFinder{
 			}
 			
 		}*/
-	
+	    
 		for (int i=-scale/2;i<0/2;i++){ //upper right
+			
 			for (int k=-scale/2;k<0;k++){
 				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
 						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
@@ -271,11 +386,49 @@ public class A_Star extends PathFinder{
 	
 	
 	
+	//horizontal->(X,Zbegin,Zend)
+	//vertical->(Z,Xbegin,Xend)
 	
-	
-	
-	
-	
+	/**
+	 * 
+	 * @param toWall
+	 * @param bounds
+	 * @param walls
+	 * @return
+	 */
+	public List<Node> walling (List<Node> toWall, double coefficient){
+		List <Rectangle2D.Double> obstacles = new ArrayList <Rectangle2D.Double>();
+		Rectangle2D.Double temp;
+		for (Boundary b:bounds){
+		    if (b.getClass()==VerticalBoundary.class){		    	
+		    	temp=verticalBoundaryRect((VerticalBoundary)b);
+		    	obstacles.add(temp);
+		    }else{
+		    	temp=horizontalBoundaryRect((HorizontalBoundary)b);
+		    	obstacles.add(temp);
+		    }
+		}
+		
+		for (Wall w:walls){
+		    if (w.getClass()==VerticalWall.class){		    	
+		    	temp=verticalWallRect((VerticalWall)w);
+		    	obstacles.add(temp);
+		    }else{
+		    	temp=horizontalWallRect((HorizontalWall)w);
+		    	obstacles.add(temp);
+		    }
+		}
+		
+		for (Rectangle2D.Double n:obstacles){
+			for (Node v:toWall){
+			if (nodeRect(v,coefficient).intersects(n)){
+				v.setWall(true);
+			}
+			}
+		}
+		
+		return toWall;		
+	}
 	
 	
 	
@@ -366,6 +519,12 @@ public class A_Star extends PathFinder{
 		*/
 	}
 		
+	
+	/**
+	 * 
+	 * @param finalNode
+	 * @return
+	 */
 	public  List <Node> getRouteList(Node finalNode){
 		List <Node> path = new ArrayList<Node>();
 		List <Node> toReturn = new ArrayList<Node>();
@@ -385,6 +544,12 @@ public class A_Star extends PathFinder{
 		return path;
 	}
 	
+	/**
+	 * 
+	 * @param check
+	 * @param list
+	 * @return
+	 */
 	private  boolean listContains (Node check, List <Node>list){
 		for (Node temp:list){
 			if (temp.roomID==check.roomID){
@@ -394,7 +559,9 @@ public class A_Star extends PathFinder{
 		return false;		
 	}
 	
-	
+	/**
+	 * 
+	 */
 	public List getPath(Mission mission){
 		return null;
 	}

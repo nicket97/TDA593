@@ -72,14 +72,15 @@ public class Main extends Application{
 			
 			Set<RobotHandler> robots = new HashSet<>();
 			//Point[] startingPoints = {new Point(-6.8,-2.5), new Point(-2.3,-2.5), new Point(2.3,-2.5), new Point(6.8,-2.5)};
-			Point[] startingPoints = {new Point(-8,-10)};
+			Point[] startingPoints = {new Point(-7.5,-9.5)};
 			RobotController rc = new RobotController(1 ,startingPoints);
 
 			for(RobotHandler r: rc.robots){
 				robots.add(r);
 			}
 					
-			AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(robots, e);
+			AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(robots, e,bounds,walls);
+			
 
         // Launch the monitoring
         launch(args);
