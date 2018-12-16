@@ -42,7 +42,10 @@ public class Main extends Application{
 			walls=new ArrayList<Wall>();
 			
 			
-			Boundary H1 = new HorizontalBoundary(-9.0f, 5.0f, -5.0f, e, color);
+			
+			AbstractWall test1 = new HorizontalWall(-5.5f, -10.0f, -8.0f, e, color); 
+			walls.add(test1);
+			/*Boundary H1 = new HorizontalBoundary(-9.0f, 5.0f, -5.0f, e, color);
 			Boundary H2 = new HorizontalBoundary(9.0f, 5.0f, -5.0f, e, color);
 			Boundary V3 = new VerticalBoundary(5.0f, 9.0f, -9.0f, e, color);
 			Boundary V4 = new VerticalBoundary(-5.0f, -9.0f, 9.0f, e, color);
@@ -68,14 +71,16 @@ public class Main extends Application{
 			walls.add(roomWallV3);
 			walls.add(roomWallV4);
 			walls.add(roomWallV5);
-			
-			
+			*/
+			//-9.2==pathZ==
 			Set<RobotHandler> robots = new HashSet<>();
 			//Point[] startingPoints = {new Point(-6.8,-2.5), new Point(-2.3,-2.5), new Point(2.3,-2.5), new Point(6.8,-2.5)};
-			Point[] startingPoints = {new Point(-7.5,-9.5)};
+			Point[] startingPoints = {new Point(-7,-8)};
 			RobotController rc = new RobotController(1 ,startingPoints);
 
+			
 			for(RobotHandler r: rc.robots){
+				//r.setDestination(new Point (-9,-8));
 				robots.add(r);
 			}
 					

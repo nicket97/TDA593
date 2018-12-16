@@ -137,7 +137,7 @@ public class A_Star extends PathFinder{
 				Node temp = new Node(false, false, false, e.roomID, e.point);
 				temp.parent=node;
 				temp.neighbours=e.neighbours;
-				System.out.println("ID  "+temp.roomID );
+				//System.out.println("Fringe neighbor = "+ );
 				temp.distance=node.distance+linearPath(node.point,temp.point);//linearPath=1, always the same
 				double tempLin = linearPath(node.point,destination.point);
 				temp.linear=temp.distance+tempLin;
@@ -187,23 +187,40 @@ public class A_Star extends PathFinder{
 	 * @param map
 	 * @return
 	 */
-	public static Node [] neighbouring (Node check, int scale, boolean diagonal, List <Node> map){
+	public static Node [] neighbouring (Node check, double coefficient, boolean diagonal, List <Node> map){
 		//-10,-1,+1,+10
 		//-11,-10,-9,-1,+1,+9,+10,+11
         List <Node> temp = new ArrayList<Node> ();
 		if (!diagonal){ //adding 4 neighbors
+			for (Node w:map)	{
+				double cX=check.getPoint().getX();
+				double cZ=check.getPoint().getZ();
+				if (w.getPoint().getX()==cX-coefficient && w.getPoint().getZ()==cZ){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX+coefficient && w.getPoint().getZ()==cZ){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX && w.getPoint().getZ()==cZ-coefficient){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX && w.getPoint().getZ()==cZ+coefficient){
+					temp.add(w);
+				}
+			}
 			
-		try {temp.add(map.get(map.indexOf(check)-scale));			
+			
+		/*try {temp.add(map.get(map.indexOf(check)-scale));			
 			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)-1));			
+		try {if (check.getPoint().getX()!=-10){temp.add(map.get(map.indexOf(check)-1));	}		
 			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)+1));			
+		try {if (check.getPoint().getX()!=10){temp.add(map.get(map.indexOf(check)+1));	}		
 			}catch (Exception e){System.out.println("No element here");}
 		try {temp.add(map.get(map.indexOf(check)+scale));			
 			}catch (Exception e){System.out.println("No element here");}
-		
+		*/
 		} else { //adding 8 neighbors	
-			
+		/*	
 		try {temp.add(map.get(map.indexOf(check)-scale-1));			
 			}catch (Exception e){System.out.println("No element here");}
 		try {temp.add(map.get(map.indexOf(check)-scale));			
@@ -219,7 +236,7 @@ public class A_Star extends PathFinder{
 		try {temp.add(map.get(map.indexOf(check)+scale));			
 			}catch (Exception e){System.out.println("No element here");}
 		try {temp.add(map.get(map.indexOf(check)+scale+1));			
-			}catch (Exception e){System.out.println("No element here");}		
+			}catch (Exception e){System.out.println("No element here");}	*/	
 		}
 		
 		Node [] ret = new Node [temp.size()];
@@ -266,7 +283,7 @@ public class A_Star extends PathFinder{
 
 	public Rectangle2D.Double verticalWallRect (VerticalWall wall){ //Float p1z, Float p1x, Float p2x
 
-			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(Math.abs(wall.getP1x()-Math.abs(wall.getP2x()))),0.3);
+			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
 			return temp;
 
 	}
@@ -278,7 +295,7 @@ public class A_Star extends PathFinder{
 	 */
 	public Rectangle2D.Double horizontalWallRect (HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
 
-		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),Math.abs(Math.abs(wall.getP1z()-Math.abs(wall.getP2z()))),0.3);
+		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),0.3,Math.abs(wall.getP2z()-(wall.getP1z())));
 		return temp;
 
 	}
@@ -290,7 +307,8 @@ public class A_Star extends PathFinder{
 	 */
 	public Rectangle2D.Double verticalBoundaryRect (VerticalBoundary wall){ //Float p1z, Float p1x, Float p2x
 		
-			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(Math.abs(wall.getP1x()-Math.abs(wall.getP2x()))),0.3);
+		    System.out.println("InsideRect:"+Math.abs(wall.getP1x())+"  "+Math.abs(wall.getP2x()));
+			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
 			return temp;
 	
 	}
@@ -302,7 +320,7 @@ public class A_Star extends PathFinder{
 	 */
 	public Rectangle2D.Double horizontalBoundaryRect (HorizontalBoundary wall){ //Float p1z, Float p1x, Float p2x
 
-		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),Math.abs(Math.abs(wall.getP1z()-Math.abs(wall.getP2z()))),0.3);
+		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),0.3,Math.abs(wall.getP1z()-wall.getP2z()));
 		return temp;
 
 	}
@@ -376,8 +394,12 @@ public class A_Star extends PathFinder{
 		}
 		for (Node v:map){
 			
-			Node [] neigh = neighbouring (v, scale, false, map);
+			Node [] neigh = neighbouring (v, coefficient, false, map);
 
+			/*for (Node d:neigh){
+				System.out.println("NeighborrayX=="+v.getPoint().getX()+"  Z=="+v.getPoint().getZ());
+				System.out.println("Neighborray-addedX=="+d.getPoint().getX()+"  Z=="+d.getPoint().getZ());
+			}*/
 			v.neighbours=neigh;
 			
 			}
@@ -397,6 +419,7 @@ public class A_Star extends PathFinder{
 	 * @return
 	 */
 	public List<Node> walling (List<Node> toWall, double coefficient){
+		toWall=this.map;//test
 		List <Rectangle2D.Double> obstacles = new ArrayList <Rectangle2D.Double>();
 		Rectangle2D.Double temp;
 		for (Boundary b:bounds){
@@ -415,6 +438,7 @@ public class A_Star extends PathFinder{
 		    	obstacles.add(temp);
 		    }else{
 		    	temp=horizontalWallRect((HorizontalWall)w);
+		    	System.out.println("RectangleX, Y, W, H: "+temp.getX()+" "+temp.getY()+" "+temp.getWidth()+" "+temp.getHeight()+" ");
 		    	obstacles.add(temp);
 		    }
 		}
