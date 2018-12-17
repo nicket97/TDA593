@@ -208,35 +208,36 @@ public class A_Star extends PathFinder{
 					temp.add(w);
 				}
 			}
-			
-			
-		/*try {temp.add(map.get(map.indexOf(check)-scale));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {if (check.getPoint().getX()!=-10){temp.add(map.get(map.indexOf(check)-1));	}		
-			}catch (Exception e){System.out.println("No element here");}
-		try {if (check.getPoint().getX()!=10){temp.add(map.get(map.indexOf(check)+1));	}		
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)+scale));			
-			}catch (Exception e){System.out.println("No element here");}
-		*/
+
 		} else { //adding 8 neighbors	
-		/*	
-		try {temp.add(map.get(map.indexOf(check)-scale-1));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)-scale));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)-scale+1));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)-1));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)+1));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)+scale-1));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)+scale));			
-			}catch (Exception e){System.out.println("No element here");}
-		try {temp.add(map.get(map.indexOf(check)+scale+1));			
-			}catch (Exception e){System.out.println("No element here");}	*/	
+			for (Node w:map)	{
+				double cX=check.getPoint().getX();
+				double cZ=check.getPoint().getZ();
+				if (w.getPoint().getX()==cX-coefficient && w.getPoint().getZ()==cZ){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX-coefficient && w.getPoint().getZ()==cZ-coefficient){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX+coefficient && w.getPoint().getZ()==cZ){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX+coefficient && w.getPoint().getZ()==cZ+coefficient){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX && w.getPoint().getZ()==cZ-coefficient){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX-coefficient && w.getPoint().getZ()==cZ+coefficient){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX && w.getPoint().getZ()==cZ+coefficient){
+					temp.add(w);
+				}
+				if (w.getPoint().getX()==cX+coefficient && w.getPoint().getZ()==cZ-coefficient){
+					temp.add(w);
+				}
+			}
 		}
 		
 		Node [] ret = new Node [temp.size()];
