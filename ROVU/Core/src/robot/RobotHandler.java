@@ -45,7 +45,7 @@ public void run() {
 		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
  */
 Point[][] path = {
-		{new Point (-6.8, 2.5),new Point (-6.7, -2.3)}
+		{new Point (-6.8, -1.5),new Point (-6.7, -2.3)}
 		,{new Point (-2.3, 2.5),new Point (-2.2, -2.3)}
 ,{new Point (2.3, 2.5),new Point (2.0, -2.3)},
 {new Point (6.8, 2.5),new Point (6.3, -2.3)}};

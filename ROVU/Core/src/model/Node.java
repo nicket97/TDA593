@@ -1,24 +1,45 @@
 package model;
 
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.util.Pair;
 import project.Point;
 
+/**
+ * Node class for use by algorithms
+ * @author  Niclas
+ */
+
 public class Node {
-    int weigth;
-    boolean wall;
+	
+	
+    public int weight;
+    private List <String> physicalArea;
+    private String logicalArea;
+    private boolean physical;
+    public boolean wall;
     boolean wifi;
     boolean eating;
     boolean room;
-    int roomID;
-    Point point;
-    Node[] neighbours;
-    int distanceFromStart;
+    public int nodeID;
+    public int roomID;
+    public Point point;
+    public Node[] neighbours;
+    public int distanceFromStart;
+    
+    public double distance;
+    public double linear;
+    public Node parent;
+    public List <Node> predecessors;
 
-    public int getWeigth() {
-        return weigth;
+    public int getWeight() {
+        return weight;
     }
 
-    public void setWeigth(int weigth) {
-        this.weigth = weigth;
+    public void setWeigth(int weight) {
+        this.weight = weight;
     }
 
     public boolean isWall() {
@@ -53,40 +74,73 @@ public class Node {
         this.room = room;
     }
 
-    public int getRoomID() {
-        return roomID;
+    public int getNodeID() {
+        return nodeID;
     }
 
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
+    public void setNodeID(int roomID) {
+        this.nodeID = roomID;
     }
 
     public Point getPoint() {
         return point;
     }
 
+    public void setDistStart(int startDist){   	
+    	this.distanceFromStart=startDist;
+    }
+	
+    public Node getParent(){
+    	return this.parent;
+    }
+	
+    public String getPhysical(){
+    	return this.physicalArea;
+    }
+    
+    public Node() {
+		//for pathfinder algorithm
+    }
+    
+    public void setNeighbors(Node [] neighbors){
+    	this.neighbours=neighbors;
+    }
+	
     public void setPoint(Point point) {
         this.point = point;
     }
+    
     public Node(boolean wall, boolean wifi, boolean eat, int id, Point p){
-
+    	predecessors = new ArrayList <Node>();
         this.wall = wall;
         this.wifi = wifi;
         this.eating = eat;
-        this.room = room;
-        this.roomID = id;
+        this.nodeID = id;
         this.point = p;
+        this.physicalArea= new ArrayList <String>();
+        this.logicalArea="default";
         if (wall){
-            weigth = 999999;
+            weight = 999999;
         }
         else{
-            weigth = 1;
+            weight = 1;
         }
 
     }
-    
-    @Override
-    public String toString() {
-        return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + " id:" + roomID + "\n";
-    }
+
+	public void setLogical(String value) {
+		if (value.equalsIgnoreCase("wifi")){
+			this.wifi=true;
+			this.logicalArea=value;
+		}else if (value.equalsIgnoreCase("eating")){
+			this.eating=true;
+			this.logicalArea=value;
+		}
+		
+	}
+
+	public void setPhysical(String value) {
+			this.physical=true;
+			this.physicalArea.add(value);		
+	}
 }

@@ -1,6 +1,8 @@
 package model;
 
-import java.awt.Point;
+import java.util.List;
+
+import project.Point;
 
 public interface IEnvironment {
 
@@ -10,6 +12,8 @@ public interface IEnvironment {
 	 * @param position
 	 * @return
 	 */
-	Node getEnvironment (Point position);
+	public Node getEnvironment (Point position);
+	
+	public List<Node> getMap();
 	
 }
