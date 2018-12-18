@@ -48,16 +48,7 @@ public class Environment implements IEnvironment {
 		this.walls=walls;
 	}
 	
-	/**
-	 * 
-	 * @param coef
-	 */
-	public void setCoefficient (double coef){
-		this.coefficient=coef;
-		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.innerSpace = new ArrayList <Rectangle2D.Double>();
-	}
+
 	
 	/**
 	 * 
@@ -383,11 +374,12 @@ public class Environment implements IEnvironment {
 	
     
 	
-	public Environment (List <Node> map){ 
-
-
-		this.map=map;
-
+	public Environment (Double coefficient){ 
+		this.coefficient=coefficient;
+		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
+		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
+		this.innerSpace = new ArrayList <Rectangle2D.Double>();
+		this.map=new ArrayList <Node>();
 	}
 	
 	public List<Node> getMap(){

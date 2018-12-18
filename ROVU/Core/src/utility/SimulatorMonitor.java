@@ -39,7 +39,7 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 
 	public void update(RobotHandler arg0) {
 		
-
+		/*
 		RobotHandler [] arr = new RobotHandler [r.size()];
 		boolean check=true;
 		if (check){
@@ -76,15 +76,45 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 		for (Point g:com){
 			System.out.println("Path array PointX======"+g.getX()+" PointZ======"+g.getZ());
 		}
-		
-		
-
 		}
+		*/
+		List <MissionPoint> Mp = new ArrayList < MissionPoint>();
+		//Mp.add(new MissionPoint);
 
-
-
-		//MoveRobot(arr[0], tewr, arr[0].startingPoint);
-
+		List <RobotHandler> r1 = new ArrayList <RobotHandler>();
+		int t=0;
+		while (t<4){
+		for (RobotHandler g:r){
+			if (g.robotIndex==t){
+				r1.add(g);
+				t++;
+			}
+		}}
+		r1.get(0).setFin(1);
+		 
+		for(int i=0;i<r1.size();i++){
+			RobotHandler robot=r1.get(i);
+            Point []dest = robot.getPath();
+			if (!robot.isAtPosition(dest[1]) && (robot.fin==1) ){
+			MoveRobot(robot, robot.getPath(), robot.startingPoint);
+			}
+			//System.out.println("Pos: "+robot.isAtPosition(dest[1])+ " "+(robot.robotIndex)+" "+robot.fin);
+			if ((robot.fin!=3) && robot.isAtPosition(dest[1]) && !robot.isAvailable()){
+				robot.setAvailable(true);
+				robot.setFin(3);
+				
+				
+				if (r1.get(i).robotIndex!=r1.size()-1){
+				System.out.println ("Next=========================:"+r1.get(r1.indexOf(robot)+1).robotIndex);
+				
+				r1.get(r1.indexOf(robot)+1).setFin(1);
+				}
+				
+			}
+	
+		}
+		//MoveRobot(arg0, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
+		
 	}
 	
 	public void MoveRobot (RobotHandler robot, Point[] commands, Point position){
@@ -98,7 +128,6 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 			Point end = commands[i];
 			
 			if(robot.isAtPosition(start)){
-			System.out.println("Ending=="+end.getX()+" "+end.getZ());
 			robot.setDestination(end);
 			}	
 		}

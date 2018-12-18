@@ -19,11 +19,10 @@ public class Hospital extends Environment{
 	private  List <Boundary> bounds;
 	private  List <Wall> walls;
 	
-	public Hospital(List<Node> map) {	
-		super(map);
+	public Hospital(Double coefficient, EnvironmentDescription e) {	
+		super(coefficient);
 		bounds=new ArrayList<Boundary>();
 		walls=new ArrayList<Wall>();
-		  EnvironmentDescription e = new EnvironmentDescription();
 			
 			Color color = Color.BLUE;
 			Boundary H1 = new HorizontalBoundary(-9.0f, 5.0f, -5.0f, e, color);

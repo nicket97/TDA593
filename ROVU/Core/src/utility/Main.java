@@ -14,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.Hospital;
+import model.Node;
 import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.RobotHandler;
@@ -41,19 +43,14 @@ public class Main extends Application{
 			bounds = new ArrayList<Boundary>();
 			walls=new ArrayList<Wall>();
 			
-			
-			
-			AbstractWall test1 = new HorizontalWall(-5.5f, -10.0f, -8.0f, e, color); 
-			walls.add(test1);
+			Hospital host = new Hospital(1.0,e);
 
 			Set<RobotHandler> robots = new HashSet<>();
-			//Point[] startingPoints = {new Point(-6.8,-2.5), new Point(-2.3,-2.5), new Point(2.3,-2.5), new Point(6.8,-2.5)};
-			Point[] startingPoints = {new Point(-8,-10)};
-			RobotController rc = new RobotController(1 ,startingPoints);
+			Point[] startingPoints = {new Point(-6.8,-2.5), new Point(-2.3,-2.5), new Point(2.3,-2.5), new Point(6.8,-2.5)};
+			RobotController rc = new RobotController(4 ,startingPoints);
 			
 			
 			for(RobotHandler r: rc.robots){
-				r.setDestination(new Point (-8,-8));
 				robots.add(r);
 			}
 					
