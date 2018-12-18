@@ -39,7 +39,8 @@ public class TestSuite {
 		 testSet.add(testSubject);
 		 testController = new SimulatorMonitor(testSet, testEnv);
 		 Point[] startingPoints = {new Point(2.0,2.0)};
-		 RobotController rc = new RobotController(1 ,startingPoints);
+		 RobotController rc = RobotController.getController();
+		 rc.addRobots(1 ,startingPoints);
 	  }
 
 		@Test

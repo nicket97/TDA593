@@ -18,43 +18,43 @@ import view.MissionEditorView;
 public class Main extends Application{
 	
 	public static void main(String[] args)  throws InterruptedException {
-		    EnvironmentDescription e = new EnvironmentDescription();
-			Color color = Color.BLUE;
+        EnvironmentDescription e = new EnvironmentDescription();
+        Color color = Color.BLUE;
 
-			Hospital hospital = new Hospital(0.5,e);
-			hospital.generateEmptyGrid(40, 0.5);
-			Set<RobotHandler> robots = new HashSet<>();
+        Hospital hospital = new Hospital(0.5,e);
+        hospital.generateEmptyGrid(40, 0.5);
+        Set<RobotHandler> robots = new HashSet<>();
+        Point[] startingPoints = {new Point(-6,-2.5), new Point(-1.5,-2.5), new Point(1.5,-2.5), new Point(6,-2.5)};
+        Point[] middlePoints = {new Point(-6.8,2.5), new Point(-2.3,2.5), new Point(2.3,2.5), new Point(6.8,2.5)};
+        Point[] endPoints = {new Point(-7.5,-4), new Point(-3,-4), new Point(3,-4), new Point(7.5,-4)};
 
-			Point[] startingPoints = {new Point(-6,-2.5), new Point(-1.5,-2.5), new Point(1.5,-2.5), new Point(6,-2.5)};
-			Point[] middlePoints = {new Point(-6.8,2.5), new Point(-2.3,2.5), new Point(2.3,2.5), new Point(6.8,2.5)};
-			Point[] endPoints = {new Point(-7.5,-4), new Point(-3,-4), new Point(3,-4), new Point(7.5,-4)};
-			RobotController rc = new RobotController(4, startingPoints);
-			
-			int u=0;
+        RobotController rc = RobotController.getController();
+        rc.addRobots(4 ,startingPoints);
 
-			for(RobotHandler r: rc.robots){
-				for (int h=0;h<startingPoints.length;h++){
-					if (startingPoints[h].getX()==r.getStartingPoint().getX() &&
-						startingPoints[h].getZ()==r.getStartingPoint().getZ()){
-						u=h;
-					}
-				}
-				// concatenate the first path and second path
-				Point [] firstPath = task(hospital,startingPoints[u], middlePoints[u]);
-				Point [] secondPath = task(hospital,middlePoints[u],endPoints[u]);
-				List <Point> concat = new ArrayList<Point>(Arrays.asList(firstPath));
-				concat.addAll(Arrays.asList(secondPath));
+        int u=0;
+        for(RobotHandler r: rc.robots){
+            for (int h=0;h<startingPoints.length;h++){
+                if (startingPoints[h].getX()==r.getStartingPoint().getX() &&
+                    startingPoints[h].getZ()==r.getStartingPoint().getZ()){
+                    u=h;
+                }
+            }
+            // concatenate the first path and second path
+            Point [] firstPath = task(hospital,startingPoints[u], middlePoints[u]);
+            Point [] secondPath = task(hospital,middlePoints[u],endPoints[u]);
+            List <Point> concat = new ArrayList<Point>(Arrays.asList(firstPath));
+            concat.addAll(Arrays.asList(secondPath));
 
-				// Return it as an array
-				Point [] way = new Point [concat.size()];
-				concat.toArray(way);
+            // Return it as an array
+            Point [] way = new Point [concat.size()];
+            concat.toArray(way);
 
-				for (Point f : way){
-					System.out.println("For robot "+r.getName()+" X:"+f.getX()+ " Z:"+f.getZ());
-				}
-				r.setPath(way);
-				robots.add(r);
-			}
+            for (Point f : way){
+                System.out.println("For robot "+r.getName()+" X:"+f.getX()+ " Z:"+f.getZ());
+            }
+            r.setPath(way);
+            robots.add(r);
+        }
 
         AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(robots, e);
 
