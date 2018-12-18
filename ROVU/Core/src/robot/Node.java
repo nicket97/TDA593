@@ -82,7 +82,15 @@ public class Node {
     public void setDistStart(int startDist){   	
     	this.distanceFromStart=startDist;
     }
-    
+	
+    public Node getParent(){
+    	return this.parent;
+    }
+	
+    public Node() {
+		//for pathfinder algorithm
+    }
+	
     public void setPoint(Point point) {
         this.point = point;
     }
