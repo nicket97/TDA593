@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 public class ROVUViewController implements Initializable {
 	@FXML Label score;
 	public void updateReward(int reward) {
-		score.setText(Integer.toString(reward));
+		score.setText("Score: " + Integer.toString(reward));
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

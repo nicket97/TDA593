@@ -5,6 +5,6 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ROVUViewController">
 	<children>
-		<Label fx:id="score" text="0"/>
+		<Label fx:id="score" text="Score: 0"/>
 	</children>
 </AnchorPane>
