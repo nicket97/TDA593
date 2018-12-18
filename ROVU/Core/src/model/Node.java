@@ -94,7 +94,7 @@ public class Node {
     	return this.parent;
     }
 	
-    public String getPhysical(){
+    public List<String> getPhysical(){
     	return this.physicalArea;
     }
     

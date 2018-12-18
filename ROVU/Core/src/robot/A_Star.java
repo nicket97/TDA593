@@ -1,25 +1,11 @@
 package robot;
 
 
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import model.Node;
 import project.Point;
-import simbad.sim.Boundary;
-import simbad.sim.HorizontalBoundary;
-import simbad.sim.HorizontalWall;
-import simbad.sim.VerticalBoundary;
-import simbad.sim.VerticalWall;
-import simbad.sim.Wall;
-import utility.Main;
 import model.Mission;
 
 

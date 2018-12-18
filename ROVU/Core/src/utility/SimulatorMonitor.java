@@ -77,10 +77,7 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 			System.out.println("Path array PointX======"+g.getX()+" PointZ======"+g.getZ());
 		}
 		
-		for (Node c:list){
-			System.out.println("Logical??? "+c.isLogical()+"  PointXlog=="+c.getPoint().getX()+" PointZlog=="+c.getPoint().getZ());
-			System.out.println("Physical??? "+c.isPhysical()+"  PointXp=="+c.getPoint().getX()+" PointZp=="+c.getPoint().getZ());
-		}
+		
 
 		}
 
