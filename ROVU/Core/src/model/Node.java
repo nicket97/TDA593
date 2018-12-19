@@ -15,11 +15,11 @@ import project.Point;
 public class Node {
 	
 	
-    public int weight;
+    private int weight;
     private List <String> physicalArea;
     private String logicalArea;
     private boolean physical;
-    public boolean wall;
+    private boolean wall;
     private boolean wifi;
     private boolean eating;
     private boolean room;

@@ -89,7 +89,7 @@ public class A_Star extends PathFinder{
 		int i=0;
 
 		for (Node e:node.getNeighbours()){
-			if (!listContains(e,closed) && !e.wall){
+			if (!listContains(e,closed) && !e.isWall()){
 				Node temp = new Node(false, false, false, e.getNodeID(), e.getPoint());
 				temp.setParent(node);
 				temp.setNeighbours(e.getNeighbours());

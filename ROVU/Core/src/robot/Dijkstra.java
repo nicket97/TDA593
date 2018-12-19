@@ -36,7 +36,7 @@ public class Dijkstra {
 			if (check.equals(destination)){
 				return destination;
 			}
-			int newDist = current.getDistanceFromStart()+check.weight; //distance between nodes
+			int newDist = current.getDistanceFromStart()+check.getWeight(); //distance between nodes
 			
 			for (Node e:settledNodes){ //check if evaluated node's distance from start is shortest
 				if (e.getDistanceFromStart()>check.getDistanceFromStart()){
@@ -61,7 +61,7 @@ public class Dijkstra {
 		for (Node e:check.getNeighbours()){
 					if (!settledNodes.contains(e))	{ //choose yet unvisited node            // && !e.wall
 						e.getPredecessors().add(check);		//add current node to predecessors
-						int distStart = check.getDistanceFromStart()+e.weight;
+						int distStart = check.getDistanceFromStart()+e.getWeight();
 						e.setDistStart(distStart); 
 						return e;  //return new node
 					}		
