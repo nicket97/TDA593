@@ -57,14 +57,14 @@ public class A_Star extends PathFinder{
 	public  Node findRoute(){
 		System.out.println("FRINGE=========="+fringe==null);
 		if(fringe.size()!=0){
-			System.out.println("Roomnow "+fringe.get(0).nodeID);
+			System.out.println("Roomnow "+fringe.get(0).getNodeID());
 		}
 		if (fringe.isEmpty()){
 			System.out.println("Unable to find path");
 			return null;
-		} else if ((fringe.get(0).nodeID==(destination.nodeID))){
+		} else if ((fringe.get(0).getNodeID()==(destination.getNodeID()))){
 			return fringe.get(0); //found goal
-		} else if (!(fringe.get(0).nodeID==(destination.nodeID))){
+		} else if (!(fringe.get(0).getNodeID()==(destination.getNodeID()))){
 			//fringe.remove(0);
 			Node temp=fringe.remove(0);
 			if (!listContains(temp,closed)){
@@ -88,15 +88,15 @@ public class A_Star extends PathFinder{
 	private  void neighborFringe (Node node){
 		int i=0;
 
-		for (Node e:node.neighbours){
+		for (Node e:node.getNeighbours()){
 			if (!listContains(e,closed) && !e.wall){
-				Node temp = new Node(false, false, false, e.nodeID, e.point);
-				temp.parent=node;
-				temp.neighbours=e.neighbours;
+				Node temp = new Node(false, false, false, e.getNodeID(), e.getPoint());
+				temp.setParent(node);
+				temp.setNeighbours(e.getNeighbours());
 				//System.out.println("Fringe neighbor = "+ );
-				temp.distance=node.distance+linearPath(node.point,temp.point);//linearPath=1, always the same
-				double tempLin = linearPath(node.point,destination.point);
-				temp.linear=temp.distance+tempLin;
+				temp.setDistance(node.getDistance()+linearPath(node.getPoint(),temp.getPoint()));//linearPath=1, always the same
+				double tempLin = linearPath(node.getPoint(),destination.getPoint());
+				temp.setLinear(temp.getDistance()+tempLin);
 				//tk.put(temp.linear, temp);
 				sortedPut(temp,fringe);
 
@@ -124,7 +124,7 @@ public class A_Star extends PathFinder{
 		}
 		
 		for (int i=0;i<list.size();i++){
-			if (list.get(i).distance>=put.distance){
+			if (list.get(i).getDistance()>=put.getDistance()){
 				list.add(i, put);
 				return true;
 			}
@@ -168,7 +168,7 @@ public class A_Star extends PathFinder{
 	 */
 	private  boolean listContains (Node check, List <Node>list){
 		for (Node temp:list){
-			if (temp.nodeID==check.nodeID){
+			if (temp.getNodeID()==check.getNodeID()){
 				return true;
 			}
 		}

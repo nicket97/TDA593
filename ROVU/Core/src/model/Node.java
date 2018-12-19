@@ -20,19 +20,19 @@ public class Node {
     private String logicalArea;
     private boolean physical;
     public boolean wall;
-    boolean wifi;
-    boolean eating;
-    boolean room;
-    public int nodeID;
-    public int roomID;
-    public Point point;
-    public Node[] neighbours;
-    public int distanceFromStart;
+    private boolean wifi;
+    private boolean eating;
+    private boolean room;
+    private int nodeID;
+    private int roomID;
+    private Point point;
+    private Node[] neighbours;
+    private int distanceFromStart;
     
-    public double distance;
-    public double linear;
-    public Node parent;
-    public List <Node> predecessors;
+    private double distance;
+    private double linear;
+    private Node parent;
+    private List <Node> predecessors;
 
     public int getWeight() {
         return weight;
@@ -42,7 +42,15 @@ public class Node {
         this.weight = weight;
     }
 
-    public boolean isWall() {
+    public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public boolean isWall() {
         return wall;
     }
 
@@ -78,8 +86,8 @@ public class Node {
         return nodeID;
     }
 
-    public void setNodeID(int nodeID) {
-        this.nodeID = nodeID;
+    public void setNodeID(int roomID) {
+        this.nodeID = roomID;
     }
 
     public Point getPoint() {
@@ -87,7 +95,7 @@ public class Node {
     }
 
     public void setDistStart(int startDist){   	
-    	this.distanceFromStart=startDist;
+    	this.setDistanceFromStart(startDist);
     }
 	
     public Node getParent(){
@@ -103,7 +111,7 @@ public class Node {
     }
     
     public void setNeighbors(Node [] neighbors){
-    	this.neighbours=neighbors;
+    	this.setNeighbours(neighbors);
     }
 	
     public void setPoint(Point point) {
@@ -111,7 +119,7 @@ public class Node {
     }
     
     public Node(boolean wall, boolean wifi, boolean eat, int id, Point p){
-    	predecessors = new ArrayList <Node>();
+    	setPredecessors(new ArrayList <Node>());
         this.wall = wall;
         this.wifi = wifi;
         this.eating = eat;
@@ -148,4 +156,40 @@ public class Node {
     public String toString() {
         return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + " id:" + roomID + "\n";
     }
+
+	public List <Node> getPredecessors() {
+		return predecessors;
+	}
+
+	public void setPredecessors(List <Node> predecessors) {
+		this.predecessors = predecessors;
+	}
+
+	public Node[] getNeighbours() {
+		return neighbours;
+	}
+
+	public void setNeighbours(Node[] neighbours) {
+		this.neighbours = neighbours;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
+	}
+
+	public double getLinear() {
+		return linear;
+	}
+
+	public void setLinear(double linear) {
+		this.linear = linear;
+	}
+
+	public int getDistanceFromStart() {
+		return distanceFromStart;
+	}
+
+	public void setDistanceFromStart(int distanceFromStart) {
+		this.distanceFromStart = distanceFromStart;
+	}
 }

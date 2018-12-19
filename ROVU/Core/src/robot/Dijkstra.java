@@ -36,10 +36,10 @@ public class Dijkstra {
 			if (check.equals(destination)){
 				return destination;
 			}
-			int newDist = current.distanceFromStart+check.weight; //distance between nodes
+			int newDist = current.getDistanceFromStart()+check.weight; //distance between nodes
 			
 			for (Node e:settledNodes){ //check if evaluated node's distance from start is shortest
-				if (e.distanceFromStart>check.distanceFromStart){
+				if (e.getDistanceFromStart()>check.getDistanceFromStart()){
 					shortest=true;
 				}else{
 					shortest=false;
@@ -58,10 +58,10 @@ public class Dijkstra {
 	}
 	
 	private static Node Evaluate (Node check){
-		for (Node e:check.neighbours){
+		for (Node e:check.getNeighbours()){
 					if (!settledNodes.contains(e))	{ //choose yet unvisited node            // && !e.wall
-						e.predecessors.add(check);		//add current node to predecessors
-						int distStart = check.distanceFromStart+e.weight;
+						e.getPredecessors().add(check);		//add current node to predecessors
+						int distStart = check.getDistanceFromStart()+e.weight;
 						e.setDistStart(distStart); 
 						return e;  //return new node
 					}		
@@ -73,8 +73,8 @@ public class Dijkstra {
 
 	
 	public List getPath(Mission mission){
-		if (!destination.predecessors.isEmpty()){
-			return destination.predecessors;
+		if (!destination.getPredecessors().isEmpty()){
+			return destination.getPredecessors();
 		}
 		return null;
 	}
