@@ -23,18 +23,15 @@ import simbad.sim.Wall;
 
 public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 	Point [] com ;
-	public  List <Boundary> bounds;
-	public  List <Wall> walls;
-	private List<RobotHandler> trs;
+	private List<RobotHandler> robotList;
 
 	
 	Set<RobotHandler> r;
-	public SimulatorMonitor(Set<RobotHandler> robots, EnvironmentDescription e,List <Boundary> bounds, List <Wall> walls) {
+	public SimulatorMonitor(Set<RobotHandler> robots, EnvironmentDescription e) {
 		super(robots, e);
 		r = robots;
-		this.walls=walls;
-		this.bounds=bounds;
-		 trs = new ArrayList<RobotHandler>();
+
+		 robotList = new ArrayList<RobotHandler>();
 	}
 
 
@@ -42,15 +39,15 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 	public void update(RobotHandler arg0) {
 		
 		for (RobotHandler j:r){
-			trs.add(j);
+			robotList.add(j);
 		}
 		
 		//List <RobotHandler> trs = new ArrayList <RobotHandler>();
 
-		trs.get(0).setFin(1);
+		robotList.get(0).setFin(1);
 		 
-		for(int i=0;i<trs.size();i++){
-			RobotHandler robot=trs.get(i);
+		for(int i=0;i<robotList.size();i++){
+			RobotHandler robot=robotList.get(i);
             Point []dest = robot.getPath();
 			if (!robot.isAtPosition(dest[dest.length-1]) && (robot.fin==1) ){
 			MoveRobot(robot, robot.getPath(), robot.startingPoint);
@@ -61,10 +58,10 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 				robot.setFin(3);
 				
 				
-				if (trs.get(i).robotIndex!=trs.size()-1){
-				System.out.println ("Next=========================:"+trs.get(trs.indexOf(robot)+1).robotIndex);
+				if (robotList.get(i).robotIndex!=robotList.size()-1){
+				System.out.println ("Next=========================:"+robotList.get(robotList.indexOf(robot)+1).robotIndex);
 				
-				trs.get(trs.indexOf(robot)+1).setFin(1);
+				robotList.get(robotList.indexOf(robot)+1).setFin(1);
 				}
 				
 			}

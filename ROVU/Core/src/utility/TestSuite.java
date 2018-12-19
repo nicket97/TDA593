@@ -37,7 +37,7 @@ public class TestSuite {
       public void setUp() {	  
 		 testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0);
 		 testSet.add(testSubject);
-		 testController = new SimulatorMonitor(testSet, testEnv, null, null);
+		 testController = new SimulatorMonitor(testSet, testEnv);
 		 Point[] startingPoints = {new Point(2.0,2.0)};
 		 RobotController rc = new RobotController(1 ,startingPoints);
 	  }

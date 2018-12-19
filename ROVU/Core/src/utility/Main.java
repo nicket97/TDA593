@@ -32,9 +32,6 @@ import view.MissionEditorView;
 
 @SuppressWarnings("unused")
 public class Main extends Application{
-
-	public static List <Boundary> bounds;
-	public static List <Wall> walls;
 	
 	public static void main(String[] args)  throws InterruptedException {
 
@@ -42,8 +39,6 @@ public class Main extends Application{
 			
 		    
 			Color color = Color.BLUE;
-			bounds = new ArrayList<Boundary>();
-			walls=new ArrayList<Wall>();
 			
 			Hospital host = new Hospital(0.5,e); 
 			host.generateEmptyGrid(40, 0.5);
@@ -92,7 +87,7 @@ public class Main extends Application{
 				robots.add(r);
 			}
 					
-			AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(robots, e,bounds,walls);
+			AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(robots, e);
 			
 
         // Launch the monitoring
