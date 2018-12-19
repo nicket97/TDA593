@@ -53,8 +53,8 @@ public class TestSuite {
 		
 		@Test
 		public void robotMoveTest_1() {
-			Point[][] testPath = {
-					{new Point (4.0,4.0), new Point (-2.0,4.0)}};
+			Point[] testPath = {
+					new Point (4.0,4.0), new Point (-2.0,4.0)};
 			testSubject.setPath(testPath);
 		    try {
 				TimeUnit.SECONDS.sleep(10);
@@ -67,8 +67,8 @@ public class TestSuite {
 		
 		@Test
 		public void robotMoveTest_2() {
-			Point[][] testPath = {
-					{new Point (-2.0,-2.0)}};
+			Point[] testPath = 
+					{new Point (-2.0,-2.0)};
 			testSubject.setPath(testPath);
 		    try {
 				TimeUnit.SECONDS.sleep(15);

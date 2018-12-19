@@ -33,6 +33,7 @@ public class Hospital extends Environment{
 			bounds.add(H2);
 			bounds.add(V3);
 			bounds.add(V4);
+			
 			AbstractWall roomWallH1 = new HorizontalWall(4.5f, 0.0f, -5.0f, e, color);
 			AbstractWall roomWallH2 = new HorizontalWall(0f, 0.0f, -5.0f, e, color);
 			AbstractWall roomWallH3 = new HorizontalWall(-4.5f, 0.0f, -5.0f, e, color);
@@ -50,6 +51,9 @@ public class Hospital extends Environment{
 			walls.add(roomWallV3);
 			walls.add(roomWallV4);
 			walls.add(roomWallV5);
+			
+			
+			
 			super.setWalls(bounds, walls);
 			
 			List <Rectangle2D.Double> building = new ArrayList <Rectangle2D.Double>();

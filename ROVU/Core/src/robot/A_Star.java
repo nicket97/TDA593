@@ -60,6 +60,7 @@ public class A_Star extends PathFinder{
 			System.out.println("Roomnow "+fringe.get(0).nodeID);
 		}
 		if (fringe.isEmpty()){
+			System.out.println("Unable to find path");
 			return null;
 		} else if ((fringe.get(0).nodeID==(destination.nodeID))){
 			return fringe.get(0); //found goal
@@ -87,7 +88,6 @@ public class A_Star extends PathFinder{
 	private  void neighborFringe (Node node){
 		int i=0;
 
-		System.out.println("Null "+node.nodeID);
 		for (Node e:node.neighbours){
 			if (!listContains(e,closed) && !e.wall){
 				Node temp = new Node(false, false, false, e.nodeID, e.point);
@@ -148,7 +148,7 @@ public class A_Star extends PathFinder{
 		Node temp = new Node();
 		temp=finalNode;
 		while (par!=null){
-			System.out.println("Inside==PointX======"+temp.getPoint().getX()+" PointZ======"+temp.getPoint().getZ());
+			//System.out.println("Inside==PointX======"+temp.getPoint().getX()+" PointZ======"+temp.getPoint().getZ());
 			path.add(0,temp);
 			par=temp.getParent();
 			temp=par;

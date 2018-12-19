@@ -203,8 +203,13 @@ public class Environment implements IEnvironment {
 	//vertical->(Z,Xbegin,Xend),middle
 
 	public Rectangle2D.Double verticalWallRect (VerticalWall wall){ //Float p1z, Float p1x, Float p2x
-
-			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
+		float side=0;
+		if (wall.getP2x()<wall.getP1x()){
+			side=wall.getP2x();
+		}else{
+			side=wall.getP1x();
+		}
+			Rectangle2D.Double temp = new Rectangle2D.Double(side,wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
 			return temp;
 
 	}
@@ -215,8 +220,14 @@ public class Environment implements IEnvironment {
 	 * @return
 	 */
 	public Rectangle2D.Double horizontalWallRect (HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
-
-		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),0.3,Math.abs(wall.getP2z()-(wall.getP1z())));
+//-4.5f, 0.0f, -5.0f
+		float side=0;
+		if (wall.getP2z()<wall.getP1z()){
+			side=wall.getP2z();
+		}else{
+			side=wall.getP1z();
+		}
+		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,side,0.3,Math.abs(wall.getP2z()-(wall.getP1z())));
 		return temp;
 
 	}
@@ -227,9 +238,14 @@ public class Environment implements IEnvironment {
 	 * @return
 	 */
 	public Rectangle2D.Double verticalBoundaryRect (VerticalBoundary wall){ //Float p1z, Float p1x, Float p2x
-		
+		float side=0;
+		if (wall.getP2x()<wall.getP1x()){
+			side=wall.getP2x();
+		}else{
+			side=wall.getP1x();
+		}
 		    System.out.println("InsideRect:"+Math.abs(wall.getP1x())+"  "+Math.abs(wall.getP2x()));
-			Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x(),wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
+			Rectangle2D.Double temp = new Rectangle2D.Double(side,wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
 			return temp;
 	
 	}
@@ -240,8 +256,13 @@ public class Environment implements IEnvironment {
 	 * @return
 	 */
 	public Rectangle2D.Double horizontalBoundaryRect (HorizontalBoundary wall){ //Float p1z, Float p1x, Float p2x
-
-		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,wall.getP1z(),0.3,Math.abs(wall.getP1z()-wall.getP2z()));
+		float side=0;
+		if (wall.getP2z()<wall.getP1z()){
+			side=wall.getP2z();
+		}else{
+			side=wall.getP1z();
+		}
+		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,side,0.3,Math.abs(wall.getP1z()-wall.getP2z()));
 		return temp;
 
 	}

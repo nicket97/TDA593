@@ -44,11 +44,9 @@ public void run() {
 		MoveRobot(Main.robot3, new Point[] {new Point (2.5, 2.5),new Point (-6, 2.5)},new Point(6, 2.5)); //,new Point (-2.5, 2.5)
 		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
  */
-Point[][] path = {
-		{new Point (-6.8, 2.5),new Point (-6.7, -2.3)}
-		,{new Point (-2.3, 2.5),new Point (-2.2, -2.3)}
-,{new Point (2.3, 2.5),new Point (2.0, -2.3)},
-{new Point (6.8, 2.5),new Point (6.3, -2.3)}};
+Point[]path;
+
+
 
 public int fin;
 public void setFin (int fin){
@@ -56,11 +54,12 @@ public void setFin (int fin){
 }
 
 public Point[] getPath() {
-	return path[robotIndex];
+	return this.path;
 }
 
-public void setPath(Point [][] newpath){
+public void setPath(Point [] newpath){
 	this.path = newpath;
+
 }
 
 	public boolean isAvailable() {
