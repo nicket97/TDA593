@@ -12,15 +12,22 @@ import robot.RobotHandler;
  * Class for controlling all robots
  * @author Anthony
  * @author Niclas
+ * @author Madeleine
  */
 public class RobotController implements MissionExecutable{
 	
-	public static RobotController controller;
-	public List<RobotHandler> robots = new ArrayList<>();
+	private static final RobotController controller = new RobotController();
+	private List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
-	
-	public RobotController(int numberOfRobots, Point[] startingPoints) {
+
+	private RobotController(){	}
+
+	public static RobotController getController(){
+		return controller;
+	}
+
+	public void addRobots(int numberOfRobots, Point[] startingPoints){
 		for(int i = 0; i <numberOfRobots; i++){
 			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i));
 		}
@@ -29,9 +36,6 @@ public class RobotController implements MissionExecutable{
 		}
 
 	}
-
-
-
 	public Mission getMission(){
 	     return currentMission;
 	}
@@ -94,8 +98,12 @@ public class RobotController implements MissionExecutable{
 		return d;
 	}
 
+	public List<RobotHandler> getRobots() {
+	    return this.robots;
+    }
+
 	public static void main(String [] args){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
-		controller = new RobotController(4 , startingPoints);
+		controller.addRobots(4 , startingPoints);
 	}
 }
