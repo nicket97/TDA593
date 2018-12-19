@@ -78,8 +78,8 @@ public class Node {
         return nodeID;
     }
 
-    public void setNodeID(int roomID) {
-        this.nodeID = roomID;
+    public void setNodeID(int nodeID) {
+        this.nodeID = nodeID;
     }
 
     public Point getPoint() {
