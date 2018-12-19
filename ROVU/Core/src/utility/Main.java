@@ -65,14 +65,14 @@ public class Main extends Application{
 						u=h;
 					}
 				}
-				Point [] com=task(host,startingPoints[u], middlePoints[u]);
-				Point [] com2 = task(host,middlePoints[u],endPoints[u]);
+				Point [] firstPath=task(host,startingPoints[u], middlePoints[u]);
+				Point [] secondPath = task(host,middlePoints[u],endPoints[u]);
 				List <Point> concat = new ArrayList<Point>();
-				for (Point p:com){
+				for (Point p:firstPath){
 					concat.add(p);
 				}
-				for (int y=1;y<com2.length;y++){
-					concat.add(com2[y]);
+				for (int y=1;y<secondPath.length;y++){
+					concat.add(secondPath[y]);
 				}
 				
 				Point [] way = new Point [concat.size()];
