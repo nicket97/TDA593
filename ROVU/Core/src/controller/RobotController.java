@@ -16,8 +16,8 @@ import robot.RobotHandler;
  */
 public class RobotController implements MissionExecutable{
 	
-	public static final RobotController controller = new RobotController();
-	public List<RobotHandler> robots = new ArrayList<>();
+	private static final RobotController controller = new RobotController();
+	private List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 
@@ -97,6 +97,10 @@ public class RobotController implements MissionExecutable{
 		}
 		return d;
 	}
+
+	public List<RobotHandler> getRobots() {
+	    return this.robots;
+    }
 
 	public static void main(String [] args){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};

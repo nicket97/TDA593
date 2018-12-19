@@ -32,7 +32,7 @@ public class Main extends Application{
         rc.addRobots(4 ,startingPoints);
 
         int u=0;
-        for(RobotHandler r: rc.robots){
+        for(RobotHandler r: rc.getRobots()){
             for (int h=0;h<startingPoints.length;h++){
                 if (startingPoints[h].getX()==r.getStartingPoint().getX() &&
                     startingPoints[h].getZ()==r.getStartingPoint().getZ()){
