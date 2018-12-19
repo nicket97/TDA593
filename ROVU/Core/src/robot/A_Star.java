@@ -17,10 +17,6 @@ import model.Mission;
  */
 
 public class A_Star extends PathFinder{
-
-	
-
-
 	private  Node start;
 	private  Node destination;
 	
@@ -34,7 +30,7 @@ public class A_Star extends PathFinder{
 	}
 	
 	
-	public void setStartDestination (Node start,Node destination){
+	public void init(Node start, Node destination){
 		this.closed=  new ArrayList <Node>();
 		this.fringe = new ArrayList <Node>();
 		this.start=start;
@@ -47,38 +43,30 @@ public class A_Star extends PathFinder{
 		double xDif = Math.abs(Math.abs(start.getX())-Math.abs(end.getX()));
 		return xDif+zDif;
 	}
-	
 
-	
 	/**
 	 * 
 	 * @return
 	 */
 	public  Node findRoute(){
-		System.out.println("FRINGE=========="+fringe==null);
-		if(fringe.size()!=0){
-			System.out.println("Roomnow "+fringe.get(0).getNodeID());
-		}
-		if (fringe.isEmpty()){
-			System.out.println("Unable to find path");
-			return null;
-		} else if ((fringe.get(0).getNodeID()==(destination.getNodeID()))){
-			return fringe.get(0); //found goal
-		} else if (!(fringe.get(0).getNodeID()==(destination.getNodeID()))){
-			//fringe.remove(0);
-			Node temp=fringe.remove(0);
-			if (!listContains(temp,closed)){
-				closed.add(temp);
-				neighborFringe (temp);
-				findRoute();
-		}
-			
+		if (fringe == null || fringe.isEmpty()) {
+            System.out.println("Unable to find path");
+		    return null;
+        }
 
-					
-		}
-		//System.out.println(fringe.get(0).roomID);
+        System.out.println("Current room"+fringe.get(0).getNodeID());
+
+        if (fringe.get(0).getNodeID() == destination.getNodeID()) {
+		    return fringe.get(0); // Found goal
+        } else {
+		    Node temp = fringe.remove(0);
+		    if (!listContains(temp, closed)) {
+		        closed.add(temp);
+		        neighborFringe(temp);
+		        findPath();
+            }
+        }
 		return findRoute();
-
 	}
 	
 	/**
@@ -86,27 +74,17 @@ public class A_Star extends PathFinder{
 	 * @param node
 	 */
 	private  void neighborFringe (Node node){
-		int i=0;
-
-		for (Node e:node.getNeighbours()){
+		for (Node e:node.getNeighbors()){
 			if (!listContains(e,closed) && !e.isWall()){
 				Node temp = new Node(false, false, false, e.getNodeID(), e.getPoint());
 				temp.setParent(node);
-				temp.setNeighbours(e.getNeighbours());
-				//System.out.println("Fringe neighbor = "+ );
+				temp.setNeighbors(e.getNeighbors());
 				temp.setDistance(node.getDistance()+linearPath(node.getPoint(),temp.getPoint()));//linearPath=1, always the same
 				double tempLin = linearPath(node.getPoint(),destination.getPoint());
 				temp.setLinear(temp.getDistance()+tempLin);
-				//tk.put(temp.linear, temp);
 				sortedPut(temp,fringe);
-
-				
-				i++;
 			}
 		}
-
-		//fringe = new ArrayList<>(tk.values());
-		//System.out.println("frin2  "+fringe.get(0).roomID);
 	}
 	
 	
@@ -117,7 +95,6 @@ public class A_Star extends PathFinder{
 	 * @return
 	 */
 	private static boolean sortedPut (Node put, List <Node>list){
-		
 		if (list.isEmpty()){
 			list.add(put);
 			return true;
@@ -133,9 +110,6 @@ public class A_Star extends PathFinder{
 		return false;
 	}
 
-	
-
-	
 	/**
 	 * 
 	 * @param finalNode
@@ -154,8 +128,8 @@ public class A_Star extends PathFinder{
 			temp=par;
 		}	
 
-		for (Node temp2:path){
-			System.out.println("Returning==PointX======"+temp2.getPoint().getX()+" PointZ======"+temp2.getPoint().getZ());
+		for (Node node:path){
+			System.out.println("Returning==PointX======"+node.getPoint().getX()+" PointZ======"+node.getPoint().getZ());
 		}
 		return path;
 	}
@@ -166,7 +140,7 @@ public class A_Star extends PathFinder{
 	 * @param list
 	 * @return
 	 */
-	private  boolean listContains (Node check, List <Node>list){
+	private boolean listContains (Node check, List <Node>list){
 		for (Node temp:list){
 			if (temp.getNodeID()==check.getNodeID()){
 				return true;

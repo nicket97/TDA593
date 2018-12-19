@@ -46,7 +46,7 @@ public class TestSuite {
 		public void robotPositioningTest() {
 		    Point initialPosition;
 		    Point testPoint = new Point (2.0,2.0);
-		    initialPosition = testSubject.startingPoint;
+		    initialPosition = testSubject.getStartingPoint();
 		    Assert.assertTrue(initialPosition.getX()==testPoint.getX());
 		    Assert.assertTrue(initialPosition.getZ()==testPoint.getZ());
 		}

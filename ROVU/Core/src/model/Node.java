@@ -13,20 +13,13 @@ import project.Point;
  */
 
 public class Node {
-	
-	
     private int weight;
     private List <String> physicalArea;
     private String logicalArea;
-    private boolean physical;
-    private boolean wall;
-    private boolean wifi;
-    private boolean eating;
-    private boolean room;
-    private int nodeID;
-    private int roomID;
+    private boolean physical, wall, wifi, eating, room;
+    private int nodeID, roomID;
     private Point point;
-    private Node[] neighbours;
+    private Node[] neighbors;
     private int distanceFromStart;
     
     private double distance;
@@ -38,7 +31,7 @@ public class Node {
         return weight;
     }
 
-    public void setWeigth(int weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
@@ -86,8 +79,8 @@ public class Node {
         return nodeID;
     }
 
-    public void setNodeID(int roomID) {
-        this.nodeID = roomID;
+    public void setNodeID(int nodeID) {
+        this.nodeID = nodeID;
     }
 
     public Point getPoint() {
@@ -109,11 +102,7 @@ public class Node {
     public Node() {
 		//for pathfinder algorithm
     }
-    
-    public void setNeighbors(Node [] neighbors){
-    	this.setNeighbours(neighbors);
-    }
-	
+
     public void setPoint(Point point) {
         this.point = point;
     }
@@ -165,12 +154,12 @@ public class Node {
 		this.predecessors = predecessors;
 	}
 
-	public Node[] getNeighbours() {
-		return neighbours;
+	public Node[] getNeighbors() {
+		return neighbors;
 	}
 
-	public void setNeighbours(Node[] neighbours) {
-		this.neighbours = neighbours;
+	public void setNeighbors(Node[] neighbors) {
+		this.neighbors = neighbors;
 	}
 
 	public void setParent(Node parent) {

@@ -1,6 +1,5 @@
 package robot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Mission;
@@ -21,33 +20,27 @@ public class Dijkstra {
 	private static Node destination;
 	private static Node start;
 
-	
-
-	
-	
 	private static Node Find(){
-		
 		System.out.println("Suke"+ (start==null));
 		settledNodes.add(start);
 		Node current = start;
 		while (!unsettledNodes.isEmpty()){ //while there are still unvisited nodes
-			Node check = Evaluate(current);
+			Node check = evaluate(current);
 			boolean shortest = false;
-			if (check.equals(destination)){
+			if (check != null && check.equals(destination)){
 				return destination;
 			}
-			int newDist = current.getDistanceFromStart()+check.getWeight(); //distance between nodes
-			
+
+			int newDist = current.getDistanceFromStart() + check.getWeight(); //distance between nodes
 			for (Node e:settledNodes){ //check if evaluated node's distance from start is shortest
-				if (e.getDistanceFromStart()>check.getDistanceFromStart()){
-					shortest=true;
-				}else{
-					shortest=false;
-				}				
+				if (e.getDistanceFromStart() > check.getDistanceFromStart()){
+					shortest = true;
+				}
 			}
+
 			System.out.println("Shortest  "+shortest);
-			if (newDist>tempPath ){ 
-				tempPath=newDist;
+			if (newDist >tempPath){
+				tempPath = newDist;
 			}			
 			unsettledNodes.remove(current);
 			settledNodes.add(current);	
@@ -57,19 +50,17 @@ public class Dijkstra {
 		return null;
 	}
 	
-	private static Node Evaluate (Node check){
-		for (Node e:check.getNeighbours()){
-					if (!settledNodes.contains(e))	{ //choose yet unvisited node            // && !e.wall
-						e.getPredecessors().add(check);		//add current node to predecessors
-						int distStart = check.getDistanceFromStart()+e.getWeight();
-						e.setDistStart(distStart); 
-						return e;  //return new node
-					}		
+	private static Node evaluate (Node check){
+		for (Node e:check.getNeighbors()){
+			if (!settledNodes.contains(e))	{ //choose yet unvisited node            // && !e.wall
+				e.getPredecessors().add(check);		//add current node to predecessors
+				int distStart = check.getDistanceFromStart()+e.getWeight();
+				e.setDistStart(distStart);
+				return e;  //return new node
+			}
 		}
 		return null;
 	}
-	
-
 
 	
 	public List getPath(Mission mission){
@@ -113,25 +104,6 @@ public class Dijkstra {
 		destination=n5;
 		Node jk=Find();
 		System.out.println("System  "+(jk.predecessors.get(1).eating));
-		
-		
 	}
-	
-	
-	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+*/
 }
