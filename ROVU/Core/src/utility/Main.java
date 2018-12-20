@@ -72,10 +72,11 @@ public class Main extends Application{
         A_Star test = new A_Star();
         test.init(hospital.pointNode(start, 0.5), hospital.pointNode(finish, 0.5)); //-6.8,-2.5
         List <Node> rpath = test.getRouteList(test.findRoute());
-        Point [] commands = new Point [rpath.size()];
+        Point [] commands = new Point [rpath.size()+1];
         for (int m=0;m<rpath.size();m++){
             commands[m]=hospital.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
         }
+		commands[commands.length-1]=finish;
         return commands;
     }
 
