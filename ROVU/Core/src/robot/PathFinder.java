@@ -3,6 +3,7 @@ package robot;
 import java.util.List;
 
 import model.Mission;
+import model.Node;
 
 public abstract class PathFinder {
 

@@ -1,11 +1,15 @@
 package model;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import controller.DataHandler;
+import controller.RobotController;
 import project.Point;
 
+@SuppressWarnings("unused")
 public class RewardCalculator {
     // TODO: Retrieve singleton RobotController as the DataHandler
     // DataHandler dataHandler = new RobotController();
@@ -28,7 +32,7 @@ public class RewardCalculator {
     public int calculateReward() {
         int rewardPoints = -99; // If it returns -99, then something's gone wrong
         // TODO: Get the nodes from the RobotController
-        List<Node> nodes = mockNodes();
+        List<Node> nodes = mockNodes(); 
         boolean inPhysicalArea = inPhysicalArea(nodes);
         boolean inLogicalArea = inLogicalArea(nodes);
         // TODO: Implement PhysicalAreas, else it won't calculate anything
@@ -41,7 +45,7 @@ public class RewardCalculator {
             if (inPhysicalArea) isA = !isA;
         }
         return rewardPoints;
-    }
+    } 
 
     private int calculateProcedureA(List<Node> nodes) {
         int points = 0;

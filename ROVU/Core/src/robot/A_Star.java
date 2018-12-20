@@ -2,9 +2,9 @@ package robot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import model.Mission;
+import model.Node;
 import project.Point;
 
 
@@ -16,20 +16,25 @@ import project.Point;
  */
 
 public class A_Star extends PathFinder{
-
-
-	private static List <Node> map;
-	private static Node start;
-	private static Node destination;
+	//private  Node start;
+	private  Node destination;
 	
-	private static List <Node> fringe;
-	private static List <Node> closed;
-	static TreeMap<Double, Node> tk;
-	
+	private  List <Node> fringe;
+	private  List <Node> closed;
+
 	
 	public void findPath(){
 		//fringe.add(start);
 		findRoute();
+	}
+	
+	
+	public void init(Node start, Node destination){
+		this.closed=  new ArrayList <Node>();
+		this.fringe = new ArrayList <Node>();
+		//this.start=start;
+		this.destination=destination;
+		fringe.add(start);
 	}
 	
 	private static double linearPath(Point start, Point end){
@@ -37,149 +42,115 @@ public class A_Star extends PathFinder{
 		double xDif = Math.abs(Math.abs(start.getX())-Math.abs(end.getX()));
 		return xDif+zDif;
 	}
-	
-	public static void computeLinearPath(){
-		/*Map tk = new TreeMap();
-		
-		for (int i=0;i<map.size();i++){
-			double dist =linearPath(map.get(i).point,destination.point); //compute heuristic distance for each node
-			tk.put(dist, map.get(i));
-		}
-		fringe = new ArrayList<>(tk.values());
-		fringe.remove(0);//remove goal*/
-		TreeMap<Double, Node> tk = new TreeMap<>();
-		
-		for (int i=0;i<start.neighbours.length;i++){
-			double dist =linearPath(start.neighbours[i].point,destination.point); //compute heuristic distance for each node
-			start.neighbours[i].distance=(dist+1);
-			tk.put(dist+1, start.neighbours[i]);
-		}
-		fringe = new ArrayList<>(tk.values());
-		System.out.println("Frin  "+fringe.size());
-		//fringe.remove(0);
-	}
-	
-	private static Node findRoute(){
-		if(fringe.size()!=0){
-			System.out.println("Roomnow "+fringe.get(0).roomID);
-		}
-		System.out.println("Listsize "+fringe.size());
-		if (fringe.isEmpty()){
-			return null;
-		} else if ((fringe.get(0).roomID==(destination.roomID))){
-			System.out.println("YES "+  fringe.get(0).roomID);
-			return fringe.get(0); //found goal
-		} else if (!(fringe.get(0).roomID==(destination.roomID))){
-			//fringe.remove(0);
-			System.out.println("Here  "+ fringe.get(0).roomID);
-			Node currentNode=fringe.remove(0);
-			if (!listContains(currentNode,closed)){
-				System.out.println("Tempclosed "+!closed.contains(currentNode));
-				closed.add(currentNode);
-				neighborFringe (currentNode);
-				findRoute();
-			}
-			
 
-					
-		}
-		//System.out.println(fringe.get(0).roomID);
+	/**
+	 * 
+	 * @return
+	 */
+	public  Node findRoute(){
+		if (fringe == null || fringe.isEmpty()) {
+            System.out.println("Unable to find path");
+		    return null;
+        }
+
+        System.out.println("Current room"+fringe.get(0).getNodeID());
+
+        if (fringe.get(0).getNodeID() == destination.getNodeID()) {
+		    return fringe.get(0); // Found goal
+        } else {
+		    Node temp = fringe.remove(0);
+		    if (!listContains(temp, closed)) {
+		        closed.add(temp);
+		        neighborFringe(temp);
+		        findPath();
+            }
+        }
 		return findRoute();
-
 	}
 	
-	
-	private static void neighborFringe (Node node){
-		TreeMap<Double, Node> tk = new TreeMap<>();
-		System.out.println("Null "+node.roomID);
-		for (Node e:node.neighbours){
-			if (!listContains(e,closed) && !e.wall){
-				Node currentNode = new Node(false, false, false, e.roomID, e.point);
-				currentNode.parent=node;
-				currentNode.neighbours=e.neighbours;
-				System.out.println("ID  "+currentNode.roomID );
-				currentNode.distance=node.distance+linearPath(node.point,currentNode.point);//linearPath=1, always the same
-				double tempLin = linearPath(node.point,destination.point);
-				currentNode.linear=currentNode.distance+tempLin;
-				//tk.put(temp.linear, currentNode);
-				sortedPut(currentNode,fringe);
-				System.out.println("Tempmap "+tk.size());
+	/**
+	 * 
+	 * @param node
+	 */
+	private  void neighborFringe (Node node){
+		for (Node e:node.getNeighbors()){
+			if (!listContains(e,closed) && !e.isWall()){
+				Node temp = new Node(false, false, false, e.getNodeID(), e.getPoint());
+				temp.setParent(node);
+				temp.setNeighbors(e.getNeighbors());
+				temp.setDistance(node.getDistance()+linearPath(node.getPoint(),temp.getPoint()));//linearPath=1, always the same
+				double tempLin = linearPath(node.getPoint(),destination.getPoint());
+				temp.setLinear(temp.getDistance()+tempLin);
+				sortedPut(temp,fringe);
 			}
 		}
-
-		//fringe = new ArrayList<>(tk.values());
-		//System.out.println("frin2  "+fringe.get(0).roomID);
 	}
 	
+	
+	/**
+	 * 
+	 * @param put
+	 * @param list
+	 * @return
+	 */
 	private static boolean sortedPut (Node put, List <Node>list){
 		if (list.isEmpty()){
 			list.add(put);
 			return true;
 		}
+		
 		for (int i=0;i<list.size();i++){
-			if (list.get(i).distance>=put.distance){
+			if (list.get(i).getDistance()>=put.getDistance()){
 				list.add(i, put);
 				return true;
 			}
 		}
-		list.add(put);
+		list.add(put); 
 		return false;
 	}
-	
-	//Testing class
-	public static void main (String [] args){
-		map = new ArrayList <Node>();
-		closed=  new ArrayList <Node>();
-		fringe=new ArrayList <Node>();
-		Node n1= new Node(false, false, false, 0, new Point (0,0));
-		Node n2= new Node(false, false, false, 1, new Point (0,1));
-		Node n3= new Node(false, false, false, 2, new Point (0,2));
-		Node n4= new Node(false, false, false, 3, new Point (1,1));
-		Node [] z1 = {n2};
-		Node [] z2 = {n1,n3,n4};
-		Node [] z3 = {n2};
-		Node [] z4 = {n2};
-		n1.neighbours=z1;
-		n2.neighbours=z2;
-		n3.neighbours=z3;
-		n4.neighbours=z4;
-		map.add(n1);
-		map.add(n2);
-		map.add(n3);
-		map.add(n4);
-		start=n1;
-		destination=n2;
-		
 
-		
-		fringe.add(start);
-		Node nk =findRoute();
-		System.out.println("Final "+nk.roomID);
-		
-	}
-		
-	public static List <Node> getRouteList(Node finalNode){
+	/**
+	 * 
+	 * @param finalNode
+	 * @return
+	 */
+	public  List <Node> getRouteList(Node finalNode){
 		List <Node> path = new ArrayList<Node>();
+		//List <Node> toReturn = new ArrayList<Node>();
 		Node par = new Node();
 		Node temp = new Node();
 		temp=finalNode;
 		while (par!=null){
-			path.add(temp);
+			//System.out.println("Inside==PointX======"+temp.getPoint().getX()+" PointZ======"+temp.getPoint().getZ());
+			path.add(0,temp);
 			par=temp.getParent();
 			temp=par;
+		}	
+
+		for (Node node:path){
+			System.out.println("Returning==PointX======"+node.getPoint().getX()+" PointZ======"+node.getPoint().getZ());
 		}
 		return path;
 	}
 	
-	private static boolean listContains (Node check, List <Node>list){
+	/**
+	 * 
+	 * @param check
+	 * @param list
+	 * @return
+	 */
+	private boolean listContains (Node check, List <Node>list){
 		for (Node temp:list){
-			if (temp.roomID==check.roomID){
+			if (temp.getNodeID()==check.getNodeID()){
 				return true;
 			}
 		}
 		return false;		
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public List<Node> getPath(Mission mission){
 		return null;

@@ -39,22 +39,23 @@ public class TestSuite {
 		 testSet.add(testSubject);
 		 testController = new SimulatorMonitor(testSet, testEnv);
 		 Point[] startingPoints = {new Point(2.0,2.0)};
-		 RobotController rc = new RobotController(1 ,startingPoints);
+		 RobotController rc = RobotController.getController();
+		 rc.addRobots(1 ,startingPoints);
 	  }
 
 		@Test
 		public void robotPositioningTest() {
 		    Point initialPosition;
 		    Point testPoint = new Point (2.0,2.0);
-		    initialPosition = testSubject.startingPoint;
+		    initialPosition = testSubject.getStartingPoint();
 		    Assert.assertTrue(initialPosition.getX()==testPoint.getX());
 		    Assert.assertTrue(initialPosition.getZ()==testPoint.getZ());
 		}
 		
 		@Test
 		public void robotMoveTest_1() {
-			Point[][] testPath = {
-					{new Point (4.0,4.0), new Point (-2.0,4.0)}};
+			Point[] testPath = {
+					new Point (4.0,4.0), new Point (-2.0,4.0)};
 			testSubject.setPath(testPath);
 		    try {
 				TimeUnit.SECONDS.sleep(10);
@@ -67,8 +68,8 @@ public class TestSuite {
 		
 		@Test
 		public void robotMoveTest_2() {
-			Point[][] testPath = {
-					{new Point (-2.0,-2.0)}};
+			Point[] testPath = 
+					{new Point (-2.0,-2.0)};
 			testSubject.setPath(testPath);
 		    try {
 				TimeUnit.SECONDS.sleep(15);
