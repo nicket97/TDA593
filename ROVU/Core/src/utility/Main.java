@@ -43,7 +43,8 @@ public class Main extends Application{
             Point [] firstPath = task(hospital,startingPoints[u], middlePoints[u]);
             Point [] secondPath = task(hospital,middlePoints[u],endPoints[u]);
             List <Point> concat = new ArrayList<Point>(Arrays.asList(firstPath));
-            concat.addAll(Arrays.asList(secondPath));
+            // Exclude first point of secondPath to avoid duplicate points
+            concat.addAll(Arrays.asList(secondPath).subList(1,secondPath.length));
 
             // Return it as an array
             Point [] way = new Point [concat.size()];
