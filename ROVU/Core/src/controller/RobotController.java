@@ -47,7 +47,7 @@ public class RobotController implements MissionExecutable{
 		currentMission = mission;
 		for(MissionPoint p: mission.getMissionPoints()){
 			int robotIndex = p.getRobot();
-			if(robotIndex <= robots.size()) {
+			if(robotIndex < robots.size()) {
 				robots.get(robotIndex).addMissionPoint(p);
 			}
 			for (Thread t: robotThreads){
