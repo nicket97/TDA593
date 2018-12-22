@@ -70,6 +70,10 @@ public class University extends Environment {
 		List<Rectangle2D.Double> building = new ArrayList<Rectangle2D.Double>();
 		building.add(new Rectangle2D.Double(-8, -4, 16, 8));
 		super.defineInnerSpace(building);
+		
+		List<Rectangle2D.Double> corridor = new ArrayList<Rectangle2D.Double>();
+		corridor.add(new Rectangle2D.Double(-8, -1, 16, 2));
+		super.defineNonRoomSpace(corridor);
 
 		super.addLogicalArea(new Rectangle2D.Double(-8, -3, 9, 8), "Wifi");
 		super.addLogicalArea(new Rectangle2D.Double(2.5, 2, 3, 2), "Eating");
