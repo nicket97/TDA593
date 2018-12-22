@@ -27,6 +27,7 @@ public class Environment implements IEnvironment {
     private List <Pair<Rectangle2D.Double,String>> logicalAreas;
     private List <Pair<Rectangle2D.Double,String>> physicalAreas;
     private List <Rectangle2D.Double> innerSpace;
+    private List <Rectangle2D.Double> noRoom;
     private  List <Boundary> bounds;
 	private  List <Wall> walls;
 	private double coefficient;
@@ -56,6 +57,14 @@ public class Environment implements IEnvironment {
 	 */
 	public void defineInnerSpace(List <Rectangle2D.Double> inner){
 		this.innerSpace=inner;
+	}
+	
+	/**
+	 * 
+	 * @param otherAreas
+	 */
+	public void defineNonRoomSpace(List <Rectangle2D.Double> otherAreas){
+		this.noRoom=otherAreas;
 	}
 	
 	/**
@@ -340,6 +349,15 @@ public class Environment implements IEnvironment {
 				}
 			}
 		}
+		
+		if (!noRoom.isEmpty()){
+		for (Rectangle2D.Double nRoom:noRoom){
+			for (Node x:map){
+				if (nodeRect(x,coefficient).intersects(nRoom)){
+					x.setRoom(false);
+				}
+			}
+		}}
 		return map;
 	}
 	
@@ -400,6 +418,7 @@ public class Environment implements IEnvironment {
 		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.innerSpace = new ArrayList <Rectangle2D.Double>();
+		this.noRoom = new ArrayList <Rectangle2D.Double>();
 		this.map=new ArrayList <Node>();
 	}
 	
