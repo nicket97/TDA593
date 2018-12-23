@@ -23,13 +23,19 @@ public class A_Star extends PathFinder{
 	private  List <Node> fringe;
 	private  List <Node> closed;
 
-	
-	public void findPath(){
-		//fringe.add(start);
-		findRoute();
+	/**
+	 * Method to get route to the destination node
+	 * @return
+	 */
+	public List <Node> findPath(){
+		return getRouteList(findRoute());
 	}
 	
-	
+	/**
+	 * Method to set start and destination for calculating the route
+	 * @param start
+	 * @param destination
+	 */
 	public void init(Node start, Node destination){
 		this.closed=  new ArrayList <Node>();
 		this.fringe = new ArrayList <Node>();
@@ -38,6 +44,12 @@ public class A_Star extends PathFinder{
 		fringe.add(start);
 	}
 	
+	/**
+	 * Method for obtaining estimation of distance between two points
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	private static double linearPath(Point start, Point end){
 		double zDif = Math.abs(Math.abs(start.getZ())-Math.abs(end.getZ()));
 		double xDif = Math.abs(Math.abs(start.getX())-Math.abs(end.getX()));
@@ -45,7 +57,7 @@ public class A_Star extends PathFinder{
 	}
 
 	/**
-	 * 
+	 * Method for calculating route to the destination node
 	 * @return
 	 */
 	public  Node findRoute(){
@@ -70,7 +82,7 @@ public class A_Star extends PathFinder{
 	}
 	
 	/**
-	 * 
+	 * Method to check neighbors of current evaluated node in algorithm
 	 * @param node
 	 */
 	private  void neighborFringe (Node node){
@@ -89,7 +101,7 @@ public class A_Star extends PathFinder{
 	
 	
 	/**
-	 * 
+	 * Method to put node in the evaluation list according to its distance from destination
 	 * @param put
 	 * @param list
 	 * @return
@@ -111,7 +123,7 @@ public class A_Star extends PathFinder{
 	}
 
 	/**
-	 * 
+	 * Method to get list of nodes forming the route
 	 * @param finalNode
 	 * @return
 	 */
@@ -135,7 +147,7 @@ public class A_Star extends PathFinder{
 	}
 	
 	/**
-	 * 
+	 * Method for checking if list contains certain node
 	 * @param check
 	 * @param list
 	 * @return

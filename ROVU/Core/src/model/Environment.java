@@ -36,7 +36,7 @@ public class Environment implements IEnvironment {
 	private  List <Node> map;
     
     /**
-	 * 
+	 * Method to add walls to grid
 	 * @param check
 	 * @param scale
 	 * @param diagonal
@@ -52,7 +52,7 @@ public class Environment implements IEnvironment {
 
 	
 	/**
-	 * 
+	 * Method to define space belonging to building(s) on the grid
 	 * @param inner
 	 */
 	public void defineInnerSpace(List <Rectangle2D.Double> inner){
@@ -60,7 +60,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to define non-room building parts (corridors/hallways etc.)
 	 * @param otherAreas
 	 */
 	public void defineNonRoomSpace(List <Rectangle2D.Double> otherAreas){
@@ -68,7 +68,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to add physical area to the grid
 	 * @param space
 	 * @param name
 	 */
@@ -78,7 +78,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to add logical area to the grid
 	 * @param space
 	 * @param name
 	 */
@@ -88,7 +88,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to place added physical and logical areas onto the grid
 	 */
 	public void addAreasToMap(){
 		for (Pair<Rectangle2D.Double,String> log:logicalAreas){
@@ -108,7 +108,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to find and add node's neighbors
 	 * @param check
 	 * @param coefficient
 	 * @param diagonal
@@ -176,7 +176,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get a Node containing requested point
 	 * @param p
 	 * @param coefficient
 	 * @return
@@ -193,7 +193,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to obtain the space occupied by node (in form of rectangle)
 	 * @param node
 	 * @param coefficient
 	 * @return
@@ -204,12 +204,10 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing vertical wall and add it to grid
 	 * @param wall
 	 * @return
 	 */
-	//horizontal->(X,Zbegin,Zend),middle
-	//vertical->(Z,Xbegin,Xend),middle
 
 	public Rectangle2D.Double verticalWallRect (VerticalWall wall){ //Float p1z, Float p1x, Float p2x
 		float side=0;
@@ -224,7 +222,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing horizontal wall and add it to grid
 	 * @param wall
 	 * @return
 	 */
@@ -242,7 +240,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing vertical boundary and add it to grid
 	 * @param wall
 	 * @return
 	 */
@@ -260,7 +258,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing horizontal boundary and add it to grid
 	 * @param wall
 	 * @return
 	 */
@@ -277,7 +275,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get center of the node
 	 * @param node
 	 * @param coefficient
 	 * @return
@@ -288,7 +286,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method for generating grid
 	 * @param scale
 	 * @param coefficient
 	 * @return
@@ -367,7 +365,7 @@ public class Environment implements IEnvironment {
 	//vertical->(Z,Xbegin,Xend)
 	
 	/**
-	 * 
+	 * Method to place walls onto the grid
 	 * @param toWall
 	 * @param bounds
 	 * @param walls
