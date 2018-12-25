@@ -26,14 +26,16 @@ public class University extends Environment {
 
 		Color color = Color.GRAY;
 
-		Boundary w1 = new HorizontalBoundary(-8.0f, -4.0f, 4.0f, e, color);
-		Boundary w2 = new HorizontalBoundary(8.0f, 4.0f, -4.0f, e, color);
+		Boundary w1 = new HorizontalBoundary(-8.0f, -4.0f, -0.7f, e, color);
+		Boundary w2 = new HorizontalBoundary(-8.0f, 0.7f, 4.0f, e, color);
+		Boundary w3 = new HorizontalBoundary(8.0f, 4.0f, -4.0f, e, color);
 		bounds.add(w1);
 		bounds.add(w2);
-		Boundary w3 = new VerticalBoundary(4.0f, -8f, 8.0f, e, color);
-		Boundary w4 = new VerticalBoundary(-4.0f, -8.0f, 8.0f, e, color);
 		bounds.add(w3);
+		Boundary w4 = new VerticalBoundary(4.0f, -8f, 8.0f, e, color);
+		Boundary w5 = new VerticalBoundary(-4.0f, -8.0f, 8.0f, e, color);
 		bounds.add(w4);
+		bounds.add(w5);
 
 		AbstractWall roomWallH1 = new HorizontalWall(-5f, -4f, -1f, e, color);
 		AbstractWall roomWallH2 = new HorizontalWall(0f, -4f, -1f, e, color);
