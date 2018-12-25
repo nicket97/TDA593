@@ -337,7 +337,7 @@ public class Environment implements IEnvironment {
 			v.setNeighbors(neigh);
 			
 			}
-		walling(map,coefficient);
+		
 		addAreasToMap();
 		
 		for (Rectangle2D.Double inn:innerSpace){
@@ -356,6 +356,7 @@ public class Environment implements IEnvironment {
 				}
 			}
 		}}
+		walling(map,coefficient);
 		return map;
 	}
 	
