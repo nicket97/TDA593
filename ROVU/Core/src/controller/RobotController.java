@@ -45,49 +45,48 @@ public class RobotController implements MissionExecutable{
 	public Mission getMission(){
 	     return currentMission;
 	}
-	
-	public void executeMission(Mission mission){
-		boolean notDone = true;
-		currentMission = mission;
-		for(MissionPoint p: mission.getMissionPoints()){
-			int robotIndex = p.getRobot();
-			switch(robotIndex) {
-				case 1:
-					robots.get(0).addMissionPoint(p);
-					break;
-				case 2:
-					robots.get(1).addMissionPoint(p);
-					break;
-				case 3:
-					robots.get(2).addMissionPoint(p);
-					break;
-				case 4:
-					robots.get(3).addMissionPoint(p);
-					break;
-				default:
-					//TODO add general mission
-					break;
-			}
-			for (Thread t: robotThreads){
-				t.start();
-			}
 
-		}
+	public void setMission(Mission mission) {
+	    currentMission = mission;
+    }
+
+	public void executeMission(){
+	    if (currentMission == null) throw new Error ("Mission is null");
+		boolean notDone = true;
+        currentMission.getMission().forEach(missionPoint -> {
+            int robotIndex = missionPoint.getRobot();
+            switch (robotIndex) {
+                case 1:
+                    robots.get(0).addMissionPoint(missionPoint);
+                    break;
+                case 2:
+                    robots.get(1).addMissionPoint(missionPoint);
+                    break;
+                case 3:
+                    robots.get(2).addMissionPoint(missionPoint);
+                    break;
+                case 4:
+                    robots.get(3).addMissionPoint(missionPoint);
+                    break;
+                default:
+                    //TODO add general mission
+                    break;
+            }
+        });
+
+        robotThreads.forEach(Thread::start);
+
 		while (notDone){
 			currentMission.updateMissionList();
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
-				if(r.isAvailable()){
+				if (r.isAvailable()){
 					if (currentMission.getMission().size() == 0){
 						notDone = false;
 					}
 				}
-
 			}
-
 		}
-
-
 	}
 	
 	public void cancelExecution(){

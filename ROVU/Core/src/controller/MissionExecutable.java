@@ -7,17 +7,21 @@ import model.Mission;
 public interface MissionExecutable {
 
 	/**
+	 * Set the current mission to be used
+	 * @param mission
+	 */
+	void setMission(Mission mission);
+
+	/**
 	 * Gets mission from MissionEditor
 	 * @return
 	 */
 	Mission getMission();
-	
-	
+
 	/**
 	 * Executes selected mission
-	 * @param mission
 	 */
-	void executeMission(Mission mission);
+	void executeMission();
 	
 	
 	/**

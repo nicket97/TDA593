@@ -30,10 +30,6 @@ public class Mission {
         finishedMission.add(p);
     }
 
-    public MissionPoint[] getMissionPoints() {
-        return (MissionPoint[]) mission.toArray();
-    }
-
     public List<MissionPoint> getMission() {
         return mission;
     }
