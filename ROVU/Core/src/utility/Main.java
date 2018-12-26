@@ -5,8 +5,7 @@ import java.util.*;
 import controller.RobotController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Hospital;
-import model.Node;
+import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.A_Star;
@@ -27,6 +26,21 @@ public class Main extends Application{
         Point[] startingPoints = {new Point(-6,-2.5), new Point(-1.5,-2.5), new Point(1.5,-2.5), new Point(6,-2.5)};
         Point[] middlePoints = {new Point(-6.8,2.5), new Point(-2.3,2.5), new Point(2.3,2.5), new Point(6.8,2.5)};
         Point[] endPoints = {new Point(-7.5,-4), new Point(-3,-4), new Point(3,-4), new Point(7.5,-4)};
+
+        // Hard-coded missions for different robots
+        List<MissionPoint> mission = new ArrayList<>();
+        mission.add(new MissionPoint(-6, -2.5, Constraint.ROBOT1));
+        mission.add(new MissionPoint(-6.8, 2.5, Constraint.ROBOT1));
+        mission.add(new MissionPoint(-7.5, -4, Constraint.ROBOT1));
+        mission.add(new MissionPoint(-1.5, -2.5, Constraint.ROBOT2));
+        mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT2));
+        mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2));
+        mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3));
+        mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT3));
+        mission.add(new MissionPoint(3, -4, Constraint.ROBOT3));
+        mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4));
+        mission.add(new MissionPoint(6.8, 2.5, Constraint.ROBOT4));
+        mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4));
 
         RobotController rc = RobotController.getController();
         rc.addRobots(4 ,startingPoints);
