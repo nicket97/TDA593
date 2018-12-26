@@ -65,9 +65,8 @@ public class A_Star extends PathFinder{
             System.out.println("Unable to find path");
 		    return null;
         }
-
-        System.out.println("Current room"+fringe.get(0).getNodeID());
-
+//		System.out.println("Current room"+fringe.get(0).getNodeID());
+        
         if (fringe.get(0).getNodeID() == destination.getNodeID()) {
 		    return fringe.get(0); // Found goal
         } else {
