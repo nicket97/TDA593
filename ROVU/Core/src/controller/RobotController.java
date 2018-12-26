@@ -1,12 +1,14 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import model.*;
+import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.RobotHandler;
+import utility.SimulatorMonitor;
 
 /**
  * Class for controlling all robots
@@ -94,6 +96,18 @@ public class RobotController implements MissionExecutable{
 			r.stop();
 		
 	}
+
+	public void initSimulator() {
+	    if (currentEnvironment == null || currentEnvironment.getEnvironmentDescription() == null) {
+	        throw new Error("There's no environment description set!");
+        }
+
+        if (robots == null) {
+	        throw new Error("No existing robots");
+        }
+
+        AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
+    }
 	
 	public List<DataObject> getData(){
 		List<DataObject> d = new ArrayList<>();

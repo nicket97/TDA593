@@ -31,6 +31,11 @@ public class Main extends Application{
         RobotController rc = RobotController.getController();
         rc.addRobots(4 ,startingPoints);
         rc.setEnvironment(hospital);
+        rc.setMission(new Mission(mission));
+        // TODO: Use the two following methods to execute the hard-coded missions
+        // TODO: or the ones given from MissionEditor
+//        rc.initSimulator(); // We shouldn't expose our robots outside the robotController
+//        rc.executeMission();
 
         int u=0;
         for(RobotHandler r: rc.getRobots()){
