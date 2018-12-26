@@ -24,20 +24,21 @@ public class RobotController implements MissionExecutable{
 	private Mission currentMission;
 	private Environment currentEnvironment;
 
-	private RobotController(){	}
+	private RobotController() {}
 
-	public static RobotController getController(){
+	public static RobotController getController() {
 		return controller;
 	}
 
-	public void addRobots(int numberOfRobots, Point[] startingPoints){
+	// TODO: Better initialization of robots' starting points
+    // Can be confusing since we mix Point and MissionPoint
+	public void addRobots(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
 			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i));
 		}
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));
 		}
-
 	}
 
 	public void setEnvironment(Environment e) {
@@ -92,9 +93,7 @@ public class RobotController implements MissionExecutable{
 	}
 	
 	public void cancelExecution(){
-		for (RobotHandler r : robots)
-			r.stop();
-		
+		robots.forEach(RobotHandler::stop);
 	}
 
 	public void initSimulator() {
@@ -117,6 +116,7 @@ public class RobotController implements MissionExecutable{
 		return d;
 	}
 
+	// TODO: REMOVE THIS METHOD, should not expose robots outside of this class
 	public List<RobotHandler> getRobots() {
 	    return this.robots;
     }

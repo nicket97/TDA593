@@ -43,7 +43,7 @@ public class Main extends Application{
         mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4));
 
         RobotController rc = RobotController.getController();
-        rc.addRobots(4 ,startingPoints);
+        rc.addRobots(4, startingPoints);
         rc.setEnvironment(hospital);
         rc.setMission(new Mission(mission));
         // TODO: Use the two following methods to execute the hard-coded missions
@@ -51,6 +51,9 @@ public class Main extends Application{
 //        rc.initSimulator(); // We shouldn't expose our robots outside the robotController
 //        rc.executeMission();
 
+        // TODO: Remove the following section of directly manipulating the robots
+        // TODO: Niclas to implement the run method of the RobotHandler to utilise
+        // TODO: Anthony's pathfinding algorithm
         int u=0;
         for(RobotHandler r: rc.getRobots()){
             for (int h=0;h<startingPoints.length;h++){
@@ -89,6 +92,8 @@ public class Main extends Application{
         missionEditor.start(primaryStage);
     }
 
+    // TODO: Move this to the RobotHandler so it can find its own path given
+    // TODO: its personal mission
     private static Point [] task (Hospital hospital, Point start, Point finish){
         A_Star test = new A_Star();
         test.init(hospital.pointNode(start, 0.5), hospital.pointNode(finish, 0.5)); //-6.8,-2.5
