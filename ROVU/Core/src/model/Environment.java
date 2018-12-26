@@ -30,10 +30,18 @@ public class Environment implements IEnvironment {
     private  List <Boundary> bounds;
 	private  List <Wall> walls;
 	private double coefficient;
-	
-	
+	private EnvironmentDescription environmentDescription;
 	private  List <Node> map;
-    
+
+	public Environment (Double coefficient, EnvironmentDescription environmentDescription){
+		this.coefficient=coefficient;
+		this.environmentDescription = environmentDescription;
+		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
+		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
+		this.innerSpace = new ArrayList <Rectangle2D.Double>();
+		this.map=new ArrayList <Node>();
+	}
+
     /**
 	 * 
 	 * @param check
@@ -390,26 +398,18 @@ public class Environment implements IEnvironment {
 		
 		return toWall;		
 	}
-	
-	
-	
-    
-	
-	public Environment (Double coefficient){ 
-		this.coefficient=coefficient;
-		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.innerSpace = new ArrayList <Rectangle2D.Double>();
-		this.map=new ArrayList <Node>();
-	}
+
 	
 	public List<Node> getMap(){
 		return this.map;
 	}
 	
 	public Node getEnvironment (Point position){
-
 		Node temp = pointNode (position, coefficient);
 		return temp;
+	}
+
+	public EnvironmentDescription getEnvironmentDescription() {
+		return environmentDescription;
 	}
 }
