@@ -21,7 +21,7 @@ public class Hospital extends Environment {
 
 	public Hospital(Double coefficient, EnvironmentDescription e) {
 		
-		super(coefficient);
+		super(coefficient,e);
 		bounds = new ArrayList<Boundary>();
 		walls = new ArrayList<Wall>();
 

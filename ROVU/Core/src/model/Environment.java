@@ -32,7 +32,7 @@ public class Environment implements IEnvironment {
 	private  List <Wall> walls;
 	private double coefficient;
 	
-	
+	private EnvironmentDescription environmentDescription;
 	private  List <Node> map;
     
     /**
@@ -412,8 +412,9 @@ public class Environment implements IEnvironment {
 	
     
 	
-	public Environment (Double coefficient){ 
+	public Environment (Double coefficient,EnvironmentDescription environmentDescription){ 
 		this.coefficient=coefficient;
+		this.environmentDescription=environmentDescription;
 		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.innerSpace = new ArrayList <Rectangle2D.Double>();

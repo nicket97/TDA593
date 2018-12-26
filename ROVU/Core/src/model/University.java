@@ -18,11 +18,10 @@ public class University extends Environment {
 	private List<Boundary> bounds;
 	private List<Wall> walls;
 
-	public University(Double coefficient) {
-		super(coefficient);
+	public University(Double coefficient, EnvironmentDescription e) {
+		super(coefficient,e);
 		bounds = new ArrayList<Boundary>();
 		walls = new ArrayList<Wall>();
-		EnvironmentDescription e = new EnvironmentDescription();
 
 		Color color = Color.GRAY;
 
