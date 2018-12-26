@@ -23,13 +23,14 @@ public class Main extends Application{
 
         Hospital hospital = new Hospital(0.5,e);
         hospital.generateEmptyGrid(40, 0.5);
-        Set<RobotHandler> robots = new HashSet<>();
+        Set<RobotHandler> simRobots = new HashSet<>();
         Point[] startingPoints = {new Point(-6,-2.5), new Point(-1.5,-2.5), new Point(1.5,-2.5), new Point(6,-2.5)};
         Point[] middlePoints = {new Point(-6.8,2.5), new Point(-2.3,2.5), new Point(2.3,2.5), new Point(6.8,2.5)};
         Point[] endPoints = {new Point(-7.5,-4), new Point(-3,-4), new Point(3,-4), new Point(7.5,-4)};
 
         RobotController rc = RobotController.getController();
         rc.addRobots(4 ,startingPoints);
+        rc.setEnvironment(hospital);
 
         int u=0;
         for(RobotHandler r: rc.getRobots()){
@@ -54,10 +55,10 @@ public class Main extends Application{
                 System.out.println("For robot "+r.getName()+" X:"+f.getX()+ " Z:"+f.getZ());
             }
             r.setPath(way);
-            robots.add(r);
+            simRobots.add(r);
         }
 
-        AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(robots, e);
+        AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(simRobots, e);
 
         // Launch the monitoring
         // launch(args);

@@ -2,9 +2,9 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import model.Mission;
-import model.MissionPoint;
+import model.*;
 import project.Point;
 import robot.RobotHandler;
 
@@ -20,6 +20,7 @@ public class RobotController implements MissionExecutable{
 	private List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
+	private Environment currentEnvironment;
 
 	private RobotController(){	}
 
@@ -36,6 +37,11 @@ public class RobotController implements MissionExecutable{
 		}
 
 	}
+
+	public void setEnvironment(Environment e) {
+	    currentEnvironment = e;
+    }
+
 	public Mission getMission(){
 	     return currentMission;
 	}
@@ -106,4 +112,15 @@ public class RobotController implements MissionExecutable{
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
 		controller.addRobots(4 , startingPoints);
 	}
+
+	public List<Node> getNodes() {
+	    if (currentEnvironment == null) {
+	        throw new Error ("There's no environment set!");
+        }
+	    List<Node> nodes = new ArrayList<>();
+	    robots.forEach(robot -> {
+	        nodes.add(currentEnvironment.getEnvironment(robot.getPosition()));
+        });
+	    return nodes;
+    }
 }
