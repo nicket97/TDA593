@@ -54,8 +54,6 @@ public class A_Star extends PathFinder{
 		    return null;
         }
 
-        System.out.println("Current room"+fringe.get(0).getNodeID());
-
         if (fringe.get(0).getNodeID() == destination.getNodeID()) {
 		    return fringe.get(0); // Found goal
         } else {
