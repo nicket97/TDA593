@@ -27,6 +27,7 @@ public class Environment implements IEnvironment {
     private List <Pair<Rectangle2D.Double,String>> logicalAreas;
     private List <Pair<Rectangle2D.Double,String>> physicalAreas;
     private List <Rectangle2D.Double> innerSpace;
+    private List <Rectangle2D.Double> noRoom;
     private  List <Boundary> bounds;
 	private  List <Wall> walls;
 	private double coefficient;
@@ -43,7 +44,7 @@ public class Environment implements IEnvironment {
 	}
 
     /**
-	 * 
+	 * Method to add walls to grid
 	 * @param check
 	 * @param scale
 	 * @param diagonal
@@ -59,7 +60,7 @@ public class Environment implements IEnvironment {
 
 	
 	/**
-	 * 
+	 * Method to define space belonging to building(s) on the grid
 	 * @param inner
 	 */
 	public void defineInnerSpace(List <Rectangle2D.Double> inner){
@@ -67,7 +68,15 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to define non-room building parts (corridors/hallways etc.)
+	 * @param otherAreas
+	 */
+	public void defineNonRoomSpace(List <Rectangle2D.Double> otherAreas){
+		this.noRoom=otherAreas;
+	}
+	
+	/**
+	 * Method to add physical area to the grid
 	 * @param space
 	 * @param name
 	 */
@@ -77,7 +86,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to add logical area to the grid
 	 * @param space
 	 * @param name
 	 */
@@ -87,7 +96,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to place added physical and logical areas onto the grid
 	 */
 	public void addAreasToMap(){
 		for (Pair<Rectangle2D.Double,String> log:logicalAreas){
@@ -107,7 +116,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to find and add node's neighbors
 	 * @param check
 	 * @param coefficient
 	 * @param diagonal
@@ -175,7 +184,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get a Node containing requested point
 	 * @param p
 	 * @param coefficient
 	 * @return
@@ -192,7 +201,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to obtain the space occupied by node (in form of rectangle)
 	 * @param node
 	 * @param coefficient
 	 * @return
@@ -203,12 +212,10 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing vertical wall and add it to grid
 	 * @param wall
 	 * @return
 	 */
-	//horizontal->(X,Zbegin,Zend),middle
-	//vertical->(Z,Xbegin,Xend),middle
 
 	public Rectangle2D.Double verticalWallRect (VerticalWall wall){ //Float p1z, Float p1x, Float p2x
 		float side=0;
@@ -223,7 +230,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing horizontal wall and add it to grid
 	 * @param wall
 	 * @return
 	 */
@@ -241,7 +248,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing vertical boundary and add it to grid
 	 * @param wall
 	 * @return
 	 */
@@ -259,7 +266,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get rectangle representing horizontal boundary and add it to grid
 	 * @param wall
 	 * @return
 	 */
@@ -276,7 +283,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method to get center of the node
 	 * @param node
 	 * @param coefficient
 	 * @return
@@ -287,7 +294,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	/**
-	 * 
+	 * Method for generating grid
 	 * @param scale
 	 * @param coefficient
 	 * @return
@@ -338,7 +345,7 @@ public class Environment implements IEnvironment {
 			v.setNeighbors(neigh);
 			
 			}
-		walling(map,coefficient);
+		
 		addAreasToMap();
 		
 		for (Rectangle2D.Double inn:innerSpace){
@@ -348,6 +355,16 @@ public class Environment implements IEnvironment {
 				}
 			}
 		}
+		
+		if (!noRoom.isEmpty()){
+		for (Rectangle2D.Double nRoom:noRoom){
+			for (Node x:map){
+				if (nodeRect(x,coefficient).intersects(nRoom)){
+					x.setRoom(false);
+				}
+			}
+		}}
+		walling(map,coefficient);
 		return map;
 	}
 	
@@ -357,7 +374,7 @@ public class Environment implements IEnvironment {
 	//vertical->(Z,Xbegin,Xend)
 	
 	/**
-	 * 
+	 * Method to place walls onto the grid
 	 * @param toWall
 	 * @param bounds
 	 * @param walls
@@ -397,6 +414,16 @@ public class Environment implements IEnvironment {
 		}
 		
 		return toWall;		
+	}
+
+	public Environment (Double coefficient,EnvironmentDescription environmentDescription){ 
+		this.coefficient=coefficient;
+		this.environmentDescription=environmentDescription;
+		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
+		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
+		this.innerSpace = new ArrayList <Rectangle2D.Double>();
+		this.noRoom = new ArrayList <Rectangle2D.Double>();
+		this.map=new ArrayList <Node>();
 	}
 
 	

@@ -24,7 +24,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private	Point[] path;
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
-
+    private A_Star astar;
+    
     public RobotHandler(Point position, String name, int i) {
         super(position, name);
         startingPoint = position;
@@ -35,6 +36,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
     }
 
+    
     @Override
     public void run() {
         available = true;
