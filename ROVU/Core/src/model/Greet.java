@@ -1,6 +1,6 @@
 package model;
 
-public class PrintHello extends RobotAction {
+public class Greet extends RobotAction {
     @Override
     public void performAction() {
         System.out.println("Hello");
