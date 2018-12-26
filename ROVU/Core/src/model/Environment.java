@@ -35,11 +35,12 @@ public class Environment implements IEnvironment {
 	private  List <Node> map;
 
 	public Environment (Double coefficient, EnvironmentDescription environmentDescription){
-		this.coefficient=coefficient;
+		this.coefficient = coefficient;
 		this.environmentDescription = environmentDescription;
 		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.innerSpace = new ArrayList <Rectangle2D.Double>();
+		this.noRoom = new ArrayList<Rectangle2D.Double>();
 		this.map=new ArrayList <Node>();
 	}
 
@@ -415,17 +416,6 @@ public class Environment implements IEnvironment {
 		
 		return toWall;		
 	}
-
-	public Environment (Double coefficient,EnvironmentDescription environmentDescription){ 
-		this.coefficient=coefficient;
-		this.environmentDescription=environmentDescription;
-		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.innerSpace = new ArrayList <Rectangle2D.Double>();
-		this.noRoom = new ArrayList <Rectangle2D.Double>();
-		this.map=new ArrayList <Node>();
-	}
-
 	
 	public List<Node> getMap(){
 		return this.map;
