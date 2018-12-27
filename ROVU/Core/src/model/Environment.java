@@ -41,6 +41,8 @@ public class Environment implements IEnvironment {
 		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
 		this.innerSpace = new ArrayList <Rectangle2D.Double>();
 		this.noRoom = new ArrayList<Rectangle2D.Double>();
+		this.bounds = new ArrayList <Boundary>();
+		this.walls = new ArrayList <Wall>();
 		this.map=new ArrayList <Node>();
 	}
 
