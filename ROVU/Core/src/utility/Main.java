@@ -1,74 +1,109 @@
 package utility;
 import java.awt.Color;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import controller.RobotController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
+import robot.A_Star;
 import robot.RobotHandler;
-import simbad.sim.AbstractWall;
-import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
-import simbad.sim.HorizontalBoundary;
-import simbad.sim.HorizontalWall;
-import simbad.sim.VerticalBoundary;
-import simbad.sim.VerticalWall;
 import view.MissionEditorView;
 
 @SuppressWarnings("unused")
 public class Main extends Application{
-
 	
 	public static void main(String[] args)  throws InterruptedException {
+        EnvironmentDescription e = new EnvironmentDescription();
+        Color color = Color.BLUE;
 
-		    EnvironmentDescription e = new EnvironmentDescription();
-			
-			Color color = Color.BLUE;
+        Hospital hospital = new Hospital(0.5,e);
+        hospital.generateEmptyGrid(40, 0.5);
+        Set<RobotHandler> simRobots = new HashSet<>();
+        Point[] startingPoints = {new Point(-6,-2.5), new Point(-1.5,-2.5), new Point(1.5,-2.5), new Point(6,-2.5)};
+        Point[] middlePoints = {new Point(-6.8,2.5), new Point(-2.3,2.5), new Point(2.3,2.5), new Point(6.8,2.5)};
+        Point[] endPoints = {new Point(-7.5,-4), new Point(-3,-4), new Point(3,-4), new Point(7.5,-4)};
 
-			Boundary H1 = new HorizontalBoundary(-9.0f, 5.0f, -5.0f, e, color);
-			Boundary H2 = new HorizontalBoundary(9.0f, 5.0f, -5.0f, e, color);
-			Boundary V3 = new VerticalBoundary(5.0f, 9.0f, -9.0f, e, color);
-			Boundary V4 = new VerticalBoundary(-5.0f, -9.0f, 9.0f, e, color);
-			
-			AbstractWall roomWallH1 = new HorizontalWall(4.5f, 0.0f, -5.0f, e, color);
-			AbstractWall roomWallH2 = new HorizontalWall(0f, 0.0f, -5.0f, e, color);
-			AbstractWall roomWallH3 = new HorizontalWall(-4.5f, 0.0f, -5.0f, e, color);
-			
-			AbstractWall roomWallV1 = new VerticalWall(0f, -9.0f, -8.0f, e, color);
-			AbstractWall roomWallV2 = new VerticalWall(0f, -5.5f, -3.5f, e, color);
-			AbstractWall roomWallV3 = new VerticalWall(0f, -1.0f, 1.0f, e, color);
-			AbstractWall roomWallV4 = new VerticalWall(0f, 5.5f, 3.5f, e, color);
-			AbstractWall roomWallV5 = new VerticalWall(0f, 8.0f, 9.0f, e, color);
-			
-			Set<RobotHandler> robots = new HashSet<>();
-			Point[] startingPoints = {new Point(-6.8,-2.5), new Point(-2.3,-2.5), new Point(2.3,-2.5), new Point(6.8,-2.5)};
-			RobotController rc = new RobotController(4 ,startingPoints);
+        // Hard-coded missions for different robots
+        List<MissionPoint> mission = new ArrayList<>();
+        mission.add(new MissionPoint(-6, -2.5, Constraint.ROBOT1));
+        mission.add(new MissionPoint(-6.8, 2.5, Constraint.ROBOT1));
+        mission.add(new MissionPoint(-7.5, -4, Constraint.ROBOT1));
+        mission.add(new MissionPoint(-1.5, -2.5, Constraint.ROBOT2));
+        mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT2));
+        mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2));
+        mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3));
+        mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT3));
+        mission.add(new MissionPoint(3, -4, Constraint.ROBOT3));
+        mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4));
+        mission.add(new MissionPoint(6.8, 2.5, Constraint.ROBOT4));
+        mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4));
 
-			for(RobotHandler r: rc.robots){
-				robots.add(r);
-			}
-					
-			AbstractSimulatorMonitor controller = new SimulatorMonitor(robots, e);
+        RobotController rc = RobotController.getController();
+        rc.addRobots(4, startingPoints);
+        rc.setEnvironment(hospital);
+        rc.setMission(new Mission(mission));
+        // TODO: Use the two following methods to execute the hard-coded missions
+        // TODO: or the ones given from MissionEditor
+//        rc.initSimulator(); // We shouldn't expose our robots outside the robotController
+//        rc.executeMission();
+
+        // TODO: Remove the following section of directly manipulating the robots
+        // TODO: Niclas to implement the run method of the RobotHandler to utilise
+        // TODO: Anthony's pathfinding algorithm
+        int u=0;
+        for(RobotHandler r: rc.getRobots()){
+            for (int h=0;h<startingPoints.length;h++){
+                if (startingPoints[h].getX()==r.getStartingPoint().getX() &&
+                    startingPoints[h].getZ()==r.getStartingPoint().getZ()){
+                    u=h;
+                }
+            }
+            // concatenate the first path and second path
+            Point [] firstPath = task(hospital,startingPoints[u], middlePoints[u]);
+            Point [] secondPath = task(hospital,middlePoints[u],endPoints[u]);
+            List <Point> concat = new ArrayList<Point>(Arrays.asList(firstPath));
+            // Exclude first point of secondPath to avoid duplicate points
+            concat.addAll(Arrays.asList(secondPath).subList(1,secondPath.length));
+
+            // Return it as an array
+            Point [] way = new Point [concat.size()];
+            concat.toArray(way);
+
+            for (Point f : way){
+                System.out.println("For robot "+r.getName()+" X:"+f.getX()+ " Z:"+f.getZ());
+            }
+            r.setPath(way);
+            simRobots.add(r);
+        }
+
+        AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(simRobots, e);
 
         // Launch the monitoring
-        launch(args);
-		
-		
+        // launch(args);
 	}
 
-	 @Override
-	    public void start(Stage primaryStage) throws Exception {
-	        Application missionEditor = new MissionEditorView();
-	        missionEditor.start(primaryStage);
-	    }
+	@Override
+    public void start(Stage primaryStage) throws Exception {
+        Application missionEditor = new MissionEditorView();
+        missionEditor.start(primaryStage);
+    }
+
+    // TODO: Move this to the RobotHandler so it can find its own path given
+    // TODO: its personal mission
+    private static Point [] task (Hospital hospital, Point start, Point finish){
+        A_Star test = new A_Star();
+        test.init(hospital.pointNode(start, 0.5), hospital.pointNode(finish, 0.5)); //-6.8,-2.5
+        List <Node> rpath = test.getRouteList(test.findRoute());
+        Point [] commands = new Point [rpath.size()+1];
+        for (int m=0;m<rpath.size();m++){
+            commands[m]=hospital.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
+        }
+		commands[commands.length-1]=finish;
+        return commands;
+    }
 
 }
