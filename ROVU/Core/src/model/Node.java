@@ -61,6 +61,10 @@ public class Node {
         return eating;
     }
 
+    public boolean isRoom() {
+        return this.room;
+    }
+
     public void setRoom(boolean room) {
         this.room = room;
     }
