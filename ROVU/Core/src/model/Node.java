@@ -1,10 +1,8 @@
 package model;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.util.Pair;
 import project.Point;
 
 /**
@@ -55,20 +53,12 @@ public class Node {
         return wifi;
     }
 
-    public void setWifi(boolean wifi) {
-        this.wifi = wifi;
+    public boolean isPhysical() {
+        return this.physical;
     }
 
     public boolean isEating() {
         return eating;
-    }
-
-    public void setEating(boolean eating) {
-        this.eating = eating;
-    }
-
-    public boolean isRoom() {
-        return room;
     }
 
     public void setRoom(boolean room) {
@@ -133,7 +123,6 @@ public class Node {
 			this.eating=true;
 			this.logicalArea=value;
 		}
-		
 	}
 
 	public void setPhysical(String value) {
