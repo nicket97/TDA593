@@ -5,6 +5,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Color3f;
+
 import simbad.sim.AbstractWall;
 import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
@@ -69,6 +71,14 @@ public class Hospital extends Environment {
 
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 0, 18, 5), "Emergency division");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 0, 18, 5), "Consulting room");
+		
+		//Temporary
+		e.light1SetPosition(-5, 0, -5);
+		e.light2SetPosition(2, 0, 3);
+		Color3f light = new Color3f();
+		light.set(Color.RED);
+		e.light1Color=light;
+		e.light2Color=light;
 	}
 
 }
