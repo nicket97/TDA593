@@ -24,6 +24,8 @@ import robot.RobotHandler;
 import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.HorizontalBoundary;
+import simbad.sim.HorizontalWall;
+import simbad.sim.VerticalBoundary;
 import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
 
@@ -100,10 +102,58 @@ public class TestSuite {
 			}
 		    Assert.assertTrue(testSubject.isAtPosition(new Point (-2.0,-2.0)));*/
 		}
-	
+		
+		@Test 
+		/**
+		 * Test #4: Empty environment grid generation
+		 */
+		public void gridGenerationTest(){
+			EnvironmentDescription etest = new EnvironmentDescription();
+			Environment testEnv =  new Environment(0.5, etest);
+			testEnv.generateEmptyGrid(40, 0.5);
+			Assert.assertTrue(testEnv.getMap().size()==1600);
+		}
+		
 		@Test
 		/**
-		 * Test #4: Route planning without obstacles in path
+		 * Test #5 Environment grid generation with walls and boundaries
+		 */
+		public void wallBoundaryTest(){
+			EnvironmentDescription etest = new EnvironmentDescription();
+			Environment testEnv =  new Environment(0.5, etest);
+			
+			List <Boundary> testBounds = new ArrayList <Boundary>();
+			Boundary test1 = new HorizontalBoundary(-5.0f, -3.0f, 3.0f, etest, Color.BLUE);
+			Boundary test2 = new VerticalBoundary(-8.0f, -5.7f, 0.1f, etest, Color.GREEN);
+			testBounds.add(test1);
+			testBounds.add(test2);
+			
+			List <Wall> testWalls = new ArrayList <Wall>();
+			Wall test3 = new HorizontalWall(-3.5f,-7.0f,-6.1f,etest,Color.GRAY);
+			Wall test4 = new VerticalWall(8.3f,-9.2f,-4.0f,etest,Color.MAGENTA);
+			testWalls.add(test3);
+			testWalls.add(test4);
+				
+			testEnv.setWalls(testBounds, testWalls);
+			testEnv.generateEmptyGrid(40, 0.5);
+			
+			for (double i=-3;i<3;i+=0.5){
+				Assert.assertTrue(testEnv.pointNode(new Point (-5.0,i), 0.5).isWall());
+			}
+			for (double i=-6;i<0.5;i+=0.5){
+				Assert.assertTrue(testEnv.pointNode(new Point (i,-8.0), 0.5).isWall());
+			}
+			for (double i=-7;i<-6;i+=0.5){
+				Assert.assertTrue(testEnv.pointNode(new Point (-3.5,i), 0.5).isWall());
+			}
+			for (double i=-9.5;i<-4;i+=0.5){
+				Assert.assertTrue(testEnv.pointNode(new Point (i,8.0), 0.5).isWall());
+			}
+		}
+		
+		@Test
+		/**
+		 * Test #: Route planning without obstacles in path
 		 */
 		public void A_Star_Test_1(){
 			A_Star atest= new A_Star();
@@ -118,13 +168,12 @@ public class TestSuite {
 		
 		@Test
 		/**
-		 * Test #5: Route planning with obstacles in path
+		 * Test #: Route planning with obstacles in path
 		 */
 		public void A_Star_Test_2(){
 			A_Star atest= new A_Star();
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);			
-			testEnv.generateEmptyGrid(40, 0.5);
 			
 			List <Boundary> testBounds = new ArrayList <Boundary>();
 			Boundary test1 = new HorizontalBoundary(-6.0f, 2.0f, -2.0f, etest, Color.BLACK);
@@ -133,10 +182,13 @@ public class TestSuite {
 			List <Wall> testWalls = new ArrayList <Wall>();
 			Wall test2 = new VerticalWall(-1.8f,-6.0f,-2.5f,etest,Color.ORANGE);
 			testWalls.add(test2);
-			
+				
 			testEnv.setWalls(testBounds, testWalls);
+			testEnv.generateEmptyGrid(40, 0.5);
 			atest.init(testEnv.pointNode(new Point (-7.2,1.0), 0.5), testEnv.pointNode(new Point (-5.0,0.2), 0.5));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-5 && sample.getPoint().getZ()==0.0);
 		}
+		
+		
 }
