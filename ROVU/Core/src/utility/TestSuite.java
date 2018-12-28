@@ -12,9 +12,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 import controller.RobotController;
 import model.Environment;
@@ -46,21 +48,18 @@ public class TestSuite {
 	
 	AbstractSimulatorMonitor <RobotHandler>testController;
 	
-	  @Before
-      public void setUp() {	  
-		 testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0);
-		 testSet.add(testSubject);
-		 testController = new SimulatorMonitor(testSet, testEnv);
-		 Point[] startingPoints = {new Point(2.0,2.0)};
-		 RobotController rc = RobotController.getController();
-		 rc.addRobots(1 ,startingPoints);
-	  }
 
 		@Test
 		/**
 		 * Test #1: Robot's initial positioning
 		 */
 		public void robotPositioningTest() {
+			testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0);
+			testSet.add(testSubject);
+			testController = new SimulatorMonitor(testSet, testEnv);
+			Point[] startingPoints = {new Point(2.0,2.0)};
+			RobotController rc = RobotController.getController();
+			rc.addRobots(1 ,startingPoints);
 		    Point initialPosition;
 		    Point testPoint = new Point (2.0,2.0);
 		    initialPosition = testSubject.getStartingPoint();
@@ -105,7 +104,7 @@ public class TestSuite {
 		
 		@Test 
 		/**
-		 * Test #4: Empty environment grid generation
+		 * Test #4: Environment grid generation without any objects
 		 */
 		public void gridGenerationTest(){
 			EnvironmentDescription etest = new EnvironmentDescription();
@@ -116,7 +115,7 @@ public class TestSuite {
 		
 		@Test
 		/**
-		 * Test #5 Environment grid generation with walls and boundaries
+		 * Test #5: Environment grid generation with walls and boundaries
 		 */
 		public void wallBoundaryTest(){
 			EnvironmentDescription etest = new EnvironmentDescription();
@@ -153,7 +152,62 @@ public class TestSuite {
 		
 		@Test
 		/**
-		 * Test #: Route planning without obstacles in path
+		 * Test #6: Environment grid generation with physical and logical areas
+		 */
+		public void physicalLogicalAreasTest(){
+			EnvironmentDescription etest = new EnvironmentDescription();
+			Environment testEnv =  new Environment(0.5, etest);
+			
+			testEnv.addLogicalArea(new Rectangle2D.Double(-2, -1, 3, 2), "Wifi");
+			testEnv.addPhysicalArea(new Rectangle2D.Double(-9, -3, 4, 3), "Office");
+			testEnv.generateEmptyGrid(40, 0.5);
+			
+			for (double i=-9;i<-5;i+=0.5){
+				for (double z=-3;z<0;z+=0.5){
+					Assert.assertTrue(testEnv.pointNode(new Point (i,z), 0.5).isPhysical() && testEnv.pointNode(new Point (i,z), 0.5).getPhysical().get(0).equalsIgnoreCase("Office"));
+				}
+			}
+			
+			for (double i=-2;i<1;i+=0.5){
+				for (double z=-1;z<1;z+=0.5){
+					Assert.assertTrue(testEnv.pointNode(new Point (i,z), 0.5).isWifi() && testEnv.pointNode(new Point (i,z), 0.5).getLogical().get(0).equalsIgnoreCase("Wifi"));
+				}
+			}
+		}
+		
+		@Test
+		/**
+		 * Test #7: Status of node's neighbors
+		 */
+		public void nodeNeighborTest(){
+			EnvironmentDescription etest = new EnvironmentDescription();
+			Environment testEnv =  new Environment(0.5, etest);
+			testEnv.generateEmptyGrid(40, 0.5);
+			
+			Node testNode = testEnv.getMap().get(47);
+			double tX=testNode.getPoint().getX();
+			double tZ=testNode.getPoint().getZ();
+			int test=0;
+			for (Node neigh:testNode.getNeighbors()){
+				if (neigh.getPoint().getX()==(tX+0.5) && neigh.getPoint().getZ()==tZ){
+					test++;
+				}
+				if (neigh.getPoint().getX()==(tX-0.5) && neigh.getPoint().getZ()==tZ){
+					test++;
+				}
+				if (neigh.getPoint().getX()==tX && neigh.getPoint().getZ()==(tZ+0.5)){
+					test++;
+				}
+				if (neigh.getPoint().getX()==tX && neigh.getPoint().getZ()==(tZ-0.5)){
+					test++;
+				}
+			}
+			Assert.assertTrue(test==4);
+		}
+		
+		@Test
+		/**
+		 * Test #8: Route planning without obstacles in path
 		 */
 		public void A_Star_Test_1(){
 			A_Star atest= new A_Star();
@@ -168,7 +222,7 @@ public class TestSuite {
 		
 		@Test
 		/**
-		 * Test #: Route planning with obstacles in path
+		 * Test #9: Route planning with obstacles in path
 		 */
 		public void A_Star_Test_2(){
 			A_Star atest= new A_Star();
