@@ -11,9 +11,6 @@ import project.AbstractRobotSimulator;
 import project.Point;
 
 import java.util.PriorityQueue;
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Class for controlling one robot
  * @author Anthony
@@ -74,10 +71,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
 	}
 
-    public void start() {
-
-    }
-
 	public void addMissionPoint(MissionPoint p) {
 	}
 
@@ -92,17 +85,12 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	}
 
 	private void stop2Sec() {
-        stop();
 
-        int delay = 2000;
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                start();
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(timerTask, delay);
+        try {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException ie ) {
+            ie.printStackTrace();
+        }
     }
 }
