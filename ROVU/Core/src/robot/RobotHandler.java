@@ -33,13 +33,27 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
 
     public void executeMission(Mission mission){
+		missionPoints.addAll(mission.getMission());
+		for (MissionPoint n: missionPoints) {
+			astar = new A_Star();
+			astar.init(null, n.);
+		}
 
     }
 
     
     @Override
     public void run() {
-        available = true;
+		while (true) {
+			if (missionPoints.size() == 0) {
+				available = true;
+			}
+			else{
+				available = false;
+			}
+
+
+		}
     }
 /*
  * MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
