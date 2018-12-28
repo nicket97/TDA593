@@ -189,6 +189,8 @@ public class TestSuite {
 			double tX=testNode.getPoint().getX();
 			double tZ=testNode.getPoint().getZ();
 			int test=0;
+			
+			//Checking if node has four neighbors around it
 			for (Node neigh:testNode.getNeighbors()){
 				if (neigh.getPoint().getX()==(tX+0.5) && neigh.getPoint().getZ()==tZ){
 					test++;
