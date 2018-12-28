@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ROVUViewController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ROVUViewController" prefHeight="100.0" prefWidth="200.0">
 	<children>
 		<Label fx:id="score" text="Score: 0"/>
 	</children>
