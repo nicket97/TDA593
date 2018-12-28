@@ -15,6 +15,8 @@ public class ROVUView extends Application {
 		Scene scene = new Scene(view);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
+		primaryStage.setOnCloseRequest(event -> System.exit(0));
 	}
 
 	public static void main(String[] args) {
