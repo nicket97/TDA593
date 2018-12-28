@@ -136,6 +136,7 @@ public class TestSuite {
 			testEnv.setWalls(testBounds, testWalls);
 			testEnv.generateEmptyGrid(40, 0.5);
 			
+			//Check if nodes occupied by physical walls have Wall type
 			for (double i=-3;i<3;i+=0.5){
 				Assert.assertTrue(testEnv.pointNode(new Point (-5.0,i), 0.5).isWall());
 			}
