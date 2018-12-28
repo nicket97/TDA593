@@ -99,6 +99,10 @@ public class Node {
     	return this.physicalArea;
     }
     
+    public List<String> getLogical(){
+    	return this.logicalArea;
+    }
+    
     public Node() {
 		//for pathfinder algorithm
     }
