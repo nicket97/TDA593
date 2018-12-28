@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 public class RewardCalculator {
-    private ROVUViewController rvcontroller = new ROVUViewController();
     private RobotController rc = RobotController.getController();
     private boolean isProcedureA = true;
 
@@ -27,18 +26,7 @@ public class RewardCalculator {
         return nodes;
     }
 
-    public void calculateReward() {
-        rvcontroller.updateReward(calculate());
-        System.out.print("Current procedure: ");
-        if (isProcedureA) {
-            System.out.println("A");
-        } else {
-            System.out.println("B");
-        }
-        System.out.println(calculate());
-    }
-
-    private int calculate() {
+    public int calculateReward() {
         int rewardPoints = -99; // If it returns -99, then something's gone wrong
 
         List<Node> nodes = rc.getNodes();

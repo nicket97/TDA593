@@ -1,31 +1,28 @@
 package model;
 
+/**
+ * A timer which ticks every 20 second
+ */
 public class Timer implements Runnable {
-    private RewardCalculator rewardCalculator = new RewardCalculator();
     private boolean running = true;
+    private final long SLEEP_TIME = 20000;
     @Override
     public void run() {
-
-        while (true) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (running){
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            rewardCalculator.calculateReward();
+        try {
+            Thread.sleep(SLEEP_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
+
     public void stopTimer(){
         running = false;
     }
     public void startTimer(){
         running = true;
+    }
+
+    public boolean isRunning() {
+        return this.running;
     }
 }
