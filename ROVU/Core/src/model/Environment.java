@@ -262,7 +262,7 @@ public class Environment implements IEnvironment {
 		}else{
 			side=wall.getP1x();
 		}
-		    System.out.println("InsideRect:"+Math.abs(wall.getP1x())+"  "+Math.abs(wall.getP2x()));
+		  //  System.out.println("InsideRect:"+Math.abs(wall.getP1x())+"  "+Math.abs(wall.getP2x()));
 			Rectangle2D.Double temp = new Rectangle2D.Double(side,wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
 			return temp;
 	
@@ -312,8 +312,6 @@ public class Environment implements IEnvironment {
 				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
 						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
 				exmap.add(temp);
-				System.out.println("Null "+map==null);
-				System.out.println("Null2== "+temp==null);
 				map.add(temp);
 				z++;
 			}
@@ -403,7 +401,7 @@ public class Environment implements IEnvironment {
 		    	obstacles.add(temp);
 		    }else{
 		    	temp=horizontalWallRect((HorizontalWall)w);
-		    	System.out.println("RectangleX, Y, W, H: "+temp.getX()+" "+temp.getY()+" "+temp.getWidth()+" "+temp.getHeight()+" ");
+		    	//System.out.println("RectangleX, Y, W, H: "+temp.getX()+" "+temp.getY()+" "+temp.getWidth()+" "+temp.getHeight()+" ");
 		    	obstacles.add(temp);
 		    }
 		}
