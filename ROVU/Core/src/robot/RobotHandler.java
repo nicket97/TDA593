@@ -10,6 +10,8 @@ import model.MissionPoint;
 import project.AbstractRobotSimulator;
 import project.Point;
 
+import java.awt.*;
+import java.util.List;
 import java.util.PriorityQueue;
 /**
  * Class for controlling one robot
@@ -24,6 +26,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
     private A_Star astar;
+    private SensorProcessor sensorProcessor = new SensorProcessor();
     
     public RobotHandler(Point position, String name, int i) {
         super(position, name);
@@ -46,6 +49,10 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		MoveRobot(Main.robot3, new Point[] {new Point (2.5, 2.5),new Point (-6, 2.5)},new Point(6, 2.5)); //,new Point (-2.5, 2.5)
 		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
  */
+
+    private void evaluateError(){
+        List errors = sensorProcessor.getErrorData();
+    }
 
     public void setFin (int fin){
 	this.fin=fin;
