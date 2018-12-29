@@ -101,4 +101,8 @@ public class MissionPoint {
     public void robotDoAction(){
         action.performAction();
     }
+
+    public Point getPoint() {
+        return point;
+    }
 }

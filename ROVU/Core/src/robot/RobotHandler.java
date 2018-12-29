@@ -3,13 +3,16 @@ package robot;
 
 
 import controller.DataObject;
-import model.Mission;
+import controller.RobotController;
+import model.*;
 
 
-import model.MissionPoint;
 import project.AbstractRobotSimulator;
 import project.Point;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -32,19 +35,29 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         robotIndex = i;
         }
 
-    public void executeMission(Mission mission){
-		missionPoints.addAll(mission.getMission());
+    public void executeMission(){
+		List<Point> concat = new ArrayList<>();
 		for (MissionPoint n: missionPoints) {
-			astar = new A_Star();
-			//astar.init(null, );
+			concat.addAll(Arrays.asList(task(RobotController.getController().getEnviroment(),this.getPosition(),n.getPoint())));
+
 		}
+		path = new Point[concat.size()];
+		concat.toArray(path);
+		System.out.println(concat);
 
     }
 
     
     @Override
     public void run() {
+		executeMission();
 		while (true) {
+
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			if (missionPoints.size() == 0) {
 				available = true;
 			}
@@ -55,6 +68,17 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
 		}
     }
+	private static Point [] task (Environment environment, Point start, Point finish){
+		A_Star test = new A_Star();
+		test.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
+		List<Node> rpath = test.getRouteList(test.findRoute());
+		Point [] commands = new Point [rpath.size()+1];
+		for (int m=0;m<rpath.size();m++){
+			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
+		}
+		commands[commands.length-1]=finish;
+		return commands;
+	}
 /*
  * MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
 		MoveRobot(Main.robot2, new Point[] {new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)},new Point(6, -2.5));
@@ -87,6 +111,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	}
 
 	public void addMissionPoint(MissionPoint p) {
+		missionPoints.add(p);
 	}
 
 	public Point getStartingPoint() { return this.startingPoint; }

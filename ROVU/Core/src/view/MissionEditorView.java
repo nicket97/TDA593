@@ -1,5 +1,6 @@
 package view;
 
+import controller.RobotController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,8 @@ public class MissionEditorView extends Application {
     }
 
     public static void main (String[] args) {
+        RobotController.getController().init();
         launch(args);
+
     }
 }
