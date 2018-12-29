@@ -36,7 +36,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		missionPoints.addAll(mission.getMission());
 		for (MissionPoint n: missionPoints) {
 			astar = new A_Star();
-			astar.init(null, n.);
+			//astar.init(null, );
 		}
 
     }

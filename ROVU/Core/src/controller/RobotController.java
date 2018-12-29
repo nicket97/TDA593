@@ -9,6 +9,7 @@ import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.RobotHandler;
 import utility.SimulatorMonitor;
+import view.MissionEditorView;
 
 /**
  * Class for controlling all robots
@@ -23,6 +24,7 @@ public class RobotController implements MissionExecutable{
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
+	private MissionEditorView missionView;
 
 	private RobotController() {}
 
@@ -124,6 +126,7 @@ public class RobotController implements MissionExecutable{
 	public static void main(String [] args){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
 		controller.addRobots(4 , startingPoints);
+
 	}
 
 	public List<Node> getNodes() {

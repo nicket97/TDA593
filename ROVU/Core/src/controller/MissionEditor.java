@@ -22,10 +22,11 @@ public class MissionEditor implements MissionEditable, Initializable {
 	@FXML ChoiceBox<Mission> missionChoices;
     @FXML ChoiceBox<Constraint> constraintChoices;
 	@FXML TextField xTextfield, zTextfield, prioTextfield;
-	@FXML Button addPointBtn, createMissionBtn;
+	@FXML Button addPointBtn, createMissionBtn,runButton;
 	@FXML ListView<MissionPoint>  pointListView;
-	private List<Mission> premadeMissions = new ArrayList<>();
+	private List<Mission> missions = new ArrayList<>();
 	private Mission mission;
+
 
 	public MissionEditor() {
 	    // Hard-coded missions
@@ -34,8 +35,8 @@ public class MissionEditor implements MissionEditable, Initializable {
 
         List<MissionPoint> points2 = Arrays.asList(new MissionPoint(5,4), new MissionPoint(1,4));
         Mission mission2 = new Mission(points2);
-        premadeMissions.add(mission1);
-        premadeMissions.add(mission2);
+        missions.add(mission1);
+        missions.add(mission2);
     }
 
 	public Mission createMission(List <MissionPoint>missionPoints){
@@ -83,15 +84,26 @@ public class MissionEditor implements MissionEditable, Initializable {
 
         createMissionBtn.setOnAction(event -> {
             if (pointListView.getItems() == null) return;
-            List<MissionPoint> points = pointListView.getItems();
+            mission = null;
+            List<MissionPoint> points = new ArrayList<MissionPoint>();
+            points.addAll(pointListView.getItems());
             mission = createMission(points);
-            System.out.println(mission);
+            missions.add(mission);
+            addMissionChoices();
+            pointListView.getItems().clear();
+            System.out.println(missions);
+        });
+        runButton.setOnAction(event -> {
+            Mission runMission = missionChoices.getValue();
+            RobotController.getController().setMission(runMission);
+            RobotController.getController().executeMission();
         });
 
 	}
 
 	private void addMissionChoices() {
-        premadeMissions.forEach(premadeMission -> missionChoices.getItems().add(premadeMission));
+        missionChoices.getItems().clear();
+        missions.forEach(premadeMission -> missionChoices.getItems().add(premadeMission));
         missionChoices.getSelectionModel().selectFirst();
     }
 
