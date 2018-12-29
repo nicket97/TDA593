@@ -138,10 +138,6 @@ public class Node {
 			this.physicalArea.add(value);		
 	}
 	
-	public boolean isPhysical(){
-		return this.physical;
-	}
-	
 	@Override
     public String toString() {
         return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + " id:" + roomID + "\n";
