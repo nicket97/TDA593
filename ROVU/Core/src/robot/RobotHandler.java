@@ -79,6 +79,11 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	public int getRobotIndex() { return this.robotIndex; }
 
 	public int getFin() { return this.fin; }
+	
+
+	public boolean checkCollision () {
+		return this.getAgent().collisionDetected();
+	}
 
 	public DataObject getData() {
 		return null;
