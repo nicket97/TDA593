@@ -39,6 +39,7 @@ public class RobotController extends Application implements MissionExecutable{
 		controller.addRobots(4 , startingPoints);
 		EnvironmentDescription e = new EnvironmentDescription();
 		Hospital hospital = new Hospital(0.5,e);
+		hospital.generateEmptyGrid(40, 0.5);
 		setEnvironment(hospital);
 		//TODO Should be done here but dont work with current implementation because the simulator tries to move the robots when they have no path assigned
 		initSimulator();
