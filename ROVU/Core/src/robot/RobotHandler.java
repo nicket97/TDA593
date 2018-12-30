@@ -159,7 +159,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         this.setDestination(path[pointer]);
     }
     private boolean isEqual(Point p1, Point p2){
-        if ((p1.getX() < p2.getX()+0.2 && p1.getX() > p2.getX()-0.2) && (p1.getZ() < p2.getZ()+0.2 && p1.getZ() > p2.getZ()-0.2))
+        if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
             return true;
 
         return false;
