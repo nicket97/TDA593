@@ -38,8 +38,18 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     public void executeMission(){
         System.out.println(this.getPosition());
 		List<Point> concat = new ArrayList<>();
-		for (MissionPoint n: missionPoints) {
-			concat.addAll(Arrays.asList(task(currentEnv,this.getPosition(),n.getPoint())));
+        MissionPoint prev = null;
+        MissionPoint thisP = null;
+        for (int i = 0; i < missionPoints.size(); i++){
+		    if(i == 0){
+                prev = missionPoints.poll();
+                concat.addAll(Arrays.asList(task(currentEnv,this.getStartingPoint(),prev.getPoint())));
+            }
+            else{
+                thisP = missionPoints.poll();
+                concat.addAll(Arrays.asList(task(currentEnv,prev.getPoint(),thisP.getPoint())));
+                prev = thisP;            }
+
 
 		}
 		path = new Point[concat.size()];

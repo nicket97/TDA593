@@ -43,7 +43,7 @@ public class Main {
         RobotController rc = RobotController.getController();
         rc.init();
         rc.setEnvironment(hospital);
-        launch();
+
         // TODO: Use the two following methods to execute the hard-coded missions
         // TODO: or the ones given from MissionEditor
 //        rc.initSimulator(); // We shouldn't expose our robots outside the robotController

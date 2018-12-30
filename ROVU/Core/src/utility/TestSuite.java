@@ -54,7 +54,7 @@ public class TestSuite {
 		 * Test #1: Robot's initial positioning
 		 */
 		public void robotPositioningTest() {
-			testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0);
+			//testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0);
 			testSet.add(testSubject);
 			testController = new SimulatorMonitor(testSet, testEnv);
 			Point[] startingPoints = {new Point(2.0,2.0)};
