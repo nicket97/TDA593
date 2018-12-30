@@ -42,7 +42,7 @@ public class RobotController extends Application implements MissionExecutable{
 		hospital.generateEmptyGrid(40, 0.5);
 		setEnvironment(hospital);
 		//TODO Should be done here but dont work with current implementation because the simulator tries to move the robots when they have no path assigned
-		initSimulator();
+		//initSimulator();
 
 	}
 
@@ -122,14 +122,14 @@ public class RobotController extends Application implements MissionExecutable{
                 });
 
 
-        for (RobotHandler r: robots){
-            r.executeMission();
+        for (Thread r: robotThreads){
+			r.start();
         }
 
 		//TODO Should not be done here
-		//initSimulator();
-
-		while (notDone){
+		initSimulator();
+		//needs to be handled
+		/*while (notDone){
 			currentMission.updateMissionList();
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
@@ -139,7 +139,7 @@ public class RobotController extends Application implements MissionExecutable{
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void cancelExecution(){

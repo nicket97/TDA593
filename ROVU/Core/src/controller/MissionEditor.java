@@ -17,6 +17,7 @@ import javafx.scene.control.ChoiceBox;
 import model.Constraint;
 import model.Mission;
 import model.MissionPoint;
+import view.MissionEditorView;
 
 public class MissionEditor implements MissionEditable, Initializable {
 	@FXML ChoiceBox<Mission> missionChoices;
@@ -95,8 +96,11 @@ public class MissionEditor implements MissionEditable, Initializable {
         });
         runButton.setOnAction(event -> {
             Mission runMission = missionChoices.getValue();
+            //temp
+            //MissionEditorView.stage.close();
             RobotController.getController().setMission(runMission);
             RobotController.getController().executeMission();
+            System.out.println("done");
         });
 
 	}

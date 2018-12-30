@@ -44,14 +44,15 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		}
 		path = new Point[concat.size()];
 		concat.toArray(path);
-		System.out.println(concat);
+		System.out.println(path);
 
     }
 
     
     @Override
     public void run() {
-		while (true) {
+		executeMission();
+		/*while (true) {
 
 
 			System.out.println(missionPoints.size());
@@ -69,7 +70,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             }
 
 
-		}
+		}*/
     }
 	private static Point [] task (Environment environment, Point start, Point finish){
 		A_Star test = new A_Star();
