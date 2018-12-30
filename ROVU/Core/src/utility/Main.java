@@ -22,18 +22,18 @@ public class Main {
 
                 // Hard-coded missions for different robots
                 List<MissionPoint> mission = new ArrayList<>();
-                mission.add(new MissionPoint(-6, -2.5, Constraint.ROBOT1));
-                mission.add(new MissionPoint(-6.8, 2.5, Constraint.ROBOT1));
-                mission.add(new MissionPoint(-7.5, -4, Constraint.ROBOT1));
-                mission.add(new MissionPoint(-1.5, -2.5, Constraint.ROBOT2));
-                mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT2));
-                mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2));
-                mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3));
-                mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT3));
-                mission.add(new MissionPoint(3, -4, Constraint.ROBOT3));
-                mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4));
-                mission.add(new MissionPoint(6.8, 2.5, Constraint.ROBOT4));
-                mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4));
+                mission.add(new MissionPoint(-6, -2.5, Constraint.ROBOT1, 3));
+                mission.add(new MissionPoint(-6.8, 2.5, Constraint.ROBOT1, 2));
+                mission.add(new MissionPoint(-7.5, -4, Constraint.ROBOT1, 1));
+                mission.add(new MissionPoint(-1.5, -2.5, Constraint.ROBOT2, 3));
+                mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT2, 2));
+                mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2, 1));
+                mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3, 3));
+                mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT3, 2));
+                mission.add(new MissionPoint(3, -4, Constraint.ROBOT3, 1));
+                mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4, 3));
+                mission.add(new MissionPoint(6.8, 2.5, Constraint.ROBOT4, 2));
+                mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4, 1));
 
                 RobotController rc = RobotController.getController();
                 rc.addRobot(new RobotHandler(new Point(-6, -2.5), "ROBOT 1", 0));
