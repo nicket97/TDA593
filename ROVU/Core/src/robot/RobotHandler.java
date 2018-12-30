@@ -36,6 +36,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
 
     public void executeMission(){
+        System.out.println(this.getPosition());
 		List<Point> concat = new ArrayList<>();
 		for (MissionPoint n: missionPoints) {
 			concat.addAll(Arrays.asList(task(RobotController.getController().getEnviroment(),this.getPosition(),n.getPoint())));
@@ -50,20 +51,22 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     
     @Override
     public void run() {
-		executeMission();
 		while (true) {
 
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+
+			System.out.println(missionPoints.size());
 			if (missionPoints.size() == 0) {
 				available = true;
+                System.out.println(this.robotIndex + " is available");
 			}
 			else{
 				available = false;
 			}
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
 
 		}
@@ -111,7 +114,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	}
 
 	public void addMissionPoint(MissionPoint p) {
-		missionPoints.add(p);
+		missionPoints.offer(p);
 	}
 
 	public Point getStartingPoint() { return this.startingPoint; }

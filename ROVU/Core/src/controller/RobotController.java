@@ -41,13 +41,13 @@ public class RobotController extends Application implements MissionExecutable{
 		Hospital hospital = new Hospital(0.5,e);
 		setEnvironment(hospital);
 		//TODO Should be done here but dont work with current implementation because the simulator tries to move the robots when they have no path assigned
-		//initSimulator();
+		initSimulator();
 
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		RobotController.getController().init();
+		//RobotController.getController().init();
 		Application missionEditor = new MissionEditorView();
 		missionEditor.start(primaryStage);
 
@@ -83,36 +83,50 @@ public class RobotController extends Application implements MissionExecutable{
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
 		boolean notDone = true;
-        currentMission.getMission().forEach(missionPoint -> {
-            int robotIndex = missionPoint.getRobot();
-            switch (robotIndex) {
-                case 1:
-                    robots.get(0).addMissionPoint(missionPoint);
-                    break;
-                case 2:
-                    robots.get(1).addMissionPoint(missionPoint);
-                    break;
-                case 3:
-                    robots.get(2).addMissionPoint(missionPoint);
-                    break;
-                case 4:
-                    robots.get(3).addMissionPoint(missionPoint);
-                    break;
-                default:
-                    for(RobotHandler r : robots){
-						if (r.isAvailable()){
-							r.addMissionPoint(missionPoint);
-						}
-					}
-                    break;
-            }
-        });
+        for (Thread t: robotThreads){
+            //t.start();
+        }
+
+                System.out.println(currentMission.getMission().size());
+                currentMission.getMission().forEach(missionPoint -> {
+                    int robotIndex = missionPoint.getRobot();
+                    switch (robotIndex) {
+                        case 1:
+                            robots.get(0).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                        case 2:
+                            robots.get(1).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                        case 3:
+                            robots.get(2).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                        case 4:
+                            robots.get(3).addMissionPoint(missionPoint);
+
+                            break;
+                        default:
+                            /*for (RobotHandler r : robots) {
+                                if (r.isAvailable()) {
+                                    r.addMissionPoint(missionPoint);
+                                    currentMission.getMission().remove(missionPoint);
+                                }
+                            }*/
+                            robots.get(1).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                    }
+                });
+
+
         for (RobotHandler r: robots){
             r.executeMission();
         }
-        //robotThreads.forEach(Thread::start);
+
 		//TODO Should not be done here
-		initSimulator();
+		//initSimulator();
 
 		while (notDone){
 			currentMission.updateMissionList();

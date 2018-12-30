@@ -6,7 +6,7 @@ import project.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MissionPoint {
+public class MissionPoint implements Comparable {
     private Point point;
     private List<Constraint> constraints = new ArrayList<Constraint>();
     private int priority;
@@ -104,5 +104,10 @@ public class MissionPoint {
 
     public Point getPoint() {
         return point;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return priority;
     }
 }
