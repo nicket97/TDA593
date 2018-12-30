@@ -39,6 +39,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		while (missionPoints.size() > 1) {
 			Point currentPoint = missionPoints.poll().getPoint();
 			Point nextPoint = missionPoints.peek().getPoint();
+			commands.remove(currentPoint);
 			commands.addAll(Arrays.asList(getCommands(currentPoint, nextPoint)));
 		}
 		missionPoints.clear();
