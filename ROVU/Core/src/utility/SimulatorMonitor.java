@@ -43,7 +43,8 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
             Point [] dest = robot.getPath();
 			if(robot.getPath().length > 0) {
 				if (!robot.isAtPosition(dest[dest.length - 1])) {
-					MoveRobot(robot, robot.getPath(), robot.getPosition());
+					robot.move();
+					//MoveRobot(robot, robot.getPath(), robot.getPosition());
 				}
 
 
@@ -52,8 +53,8 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 					robot.setFin(3);
 
 					if (robotList.get(i).getRobotIndex() != robotList.size() - 1) {
-						System.out.println("Next=========================:" + robotList.get(robotList.indexOf(robot) + 1).getRobotIndex());
-						robotList.get(robotList.indexOf(robot) + 1).setFin(1);
+						//System.out.println("Next=========================:" + robotList.get(robotList.indexOf(robot) + 1).getRobotIndex());
+						//robotList.get(robotList.indexOf(robot) + 1).setFin(1);
 					}
 				}
 			}

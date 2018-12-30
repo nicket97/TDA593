@@ -27,6 +27,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
     private Environment currentEnv;
+    private int pointer = 0;
     
     public RobotHandler(Point position, String name, int i, Environment env) {
         super(position, name);
@@ -40,6 +41,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		List<Point> concat = new ArrayList<>();
         MissionPoint prev = null;
         MissionPoint thisP = null;
+        pointer = 0;
+        concat.add(this.startingPoint);
         for (int i = 0; i < missionPoints.size(); i++){
 		    if(i == 0){
                 prev = missionPoints.poll();
@@ -146,5 +149,19 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         catch (InterruptedException ie ) {
             ie.printStackTrace();
         }
+    }
+    public void move(){
+        System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
+        if (isEqual(this.getPosition(), path[pointer]) ){
+            pointer ++;
+
+        }
+        this.setDestination(path[pointer]);
+    }
+    private boolean isEqual(Point p1, Point p2){
+        if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
+            return true;
+
+        return false;
     }
 }
