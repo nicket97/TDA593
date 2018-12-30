@@ -23,7 +23,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private Point startingPoint;
     private int robotIndex;
     private int fin;
-    private	Point[] path;
+    private	Point[] path = new Point[1];
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
     private Environment currentEnv;
@@ -43,7 +43,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         MissionPoint thisP = null;
         pointer = 0;
         concat.add(this.startingPoint);
-        for (int i = 0; i < missionPoints.size(); i++){
+        for (int i = 0; i <= missionPoints.size(); i++){
 		    if(i == 0){
                 prev = missionPoints.poll();
                 concat.addAll(Arrays.asList(task(currentEnv,this.getStartingPoint(),prev.getPoint())));

@@ -41,7 +41,7 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 		for(int i=0; i < robotList.size(); i++){
 			RobotHandler robot=robotList.get(i);
             Point [] dest = robot.getPath();
-			if(robot.getPath().length > 0) {
+			if(robot.getPath().length > 0 && robot.getPath()[0] != null) {
 				if (!robot.isAtPosition(dest[dest.length - 1])) {
 					robot.move();
 					//MoveRobot(robot, robot.getPath(), robot.getPosition());
