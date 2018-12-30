@@ -140,7 +140,7 @@ public class A_Star extends PathFinder{
 		}	
 
 		for (Node node:path){
-			System.out.println("Returning==PointX======"+node.getPoint().getX()+" PointZ======"+node.getPoint().getZ());
+//			System.out.println("Returning==PointX======"+node.getPoint().getX()+" PointZ======"+node.getPoint().getZ());
 		}
 		return path;
 	}
