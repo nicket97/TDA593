@@ -41,9 +41,9 @@ public class Main {
         mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4));
 
         RobotController rc = RobotController.getController();
-        rc.addRobots(4, startingPoints);
+        rc.init();
         rc.setEnvironment(hospital);
-        rc.setMission(new Mission(mission));
+        launch();
         // TODO: Use the two following methods to execute the hard-coded missions
         // TODO: or the ones given from MissionEditor
 //        rc.initSimulator(); // We shouldn't expose our robots outside the robotController
@@ -96,7 +96,7 @@ public class Main {
         for (int m=0;m<rpath.size();m++){
             commands[m]=hospital.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
         }
-		commands[commands.length-1]=finish;
+        commands[commands.length-1]=finish;
         return commands;
     }
 

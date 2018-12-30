@@ -1,14 +1,19 @@
 package controller;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.RobotHandler;
+import simbad.sim.EnvironmentDescription;
 import utility.SimulatorMonitor;
+import view.MissionEditorView;
 
 /**
  * Class for controlling all robots
@@ -16,15 +21,38 @@ import utility.SimulatorMonitor;
  * @author Niclas
  * @author Madeleine
  */
-public class RobotController implements MissionExecutable{
-	
-	private static final RobotController controller = new RobotController();
+public class RobotController extends Application implements MissionExecutable{
+	//can not be final because it was called both by initialation and by JAVAFX
+	private static RobotController controller;
 	private List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
+	private MissionEditorView missionView;
 
-	private RobotController() {}
+	public RobotController() {
+		System.out.print("hej");
+		controller = this;
+	}
+	public void init(){
+		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
+		controller.addRobots(4 , startingPoints);
+		EnvironmentDescription e = new EnvironmentDescription();
+		Hospital hospital = new Hospital(0.5,e);
+		hospital.generateEmptyGrid(40, 0.5);
+		setEnvironment(hospital);
+		//TODO Should be done here but dont work with current implementation because the simulator tries to move the robots when they have no path assigned
+		//initSimulator();
+
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		//RobotController.getController().init();
+		Application missionEditor = new MissionEditorView();
+		missionEditor.start(primaryStage);
+
+	}
 
 	public static RobotController getController() {
 		return controller;
@@ -56,30 +84,52 @@ public class RobotController implements MissionExecutable{
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
 		boolean notDone = true;
-        currentMission.getMission().forEach(missionPoint -> {
-            int robotIndex = missionPoint.getRobot();
-            switch (robotIndex) {
-                case 1:
-                    robots.get(0).addMissionPoint(missionPoint);
-                    break;
-                case 2:
-                    robots.get(1).addMissionPoint(missionPoint);
-                    break;
-                case 3:
-                    robots.get(2).addMissionPoint(missionPoint);
-                    break;
-                case 4:
-                    robots.get(3).addMissionPoint(missionPoint);
-                    break;
-                default:
-                    //TODO add general mission
-                    break;
-            }
-        });
+        for (Thread t: robotThreads){
+            //t.start();
+        }
 
-        robotThreads.forEach(Thread::start);
+                System.out.println(currentMission.getMission().size());
+                currentMission.getMission().forEach(missionPoint -> {
+                    int robotIndex = missionPoint.getRobot();
+                    switch (robotIndex) {
+                        case 1:
+                            robots.get(0).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                        case 2:
+                            robots.get(1).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                        case 3:
+                            robots.get(2).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                        case 4:
+                            robots.get(3).addMissionPoint(missionPoint);
 
-		while (notDone){
+                            break;
+                        default:
+                            /*for (RobotHandler r : robots) {
+                                if (r.isAvailable()) {
+                                    r.addMissionPoint(missionPoint);
+                                    currentMission.getMission().remove(missionPoint);
+                                }
+                            }*/
+                            robots.get(1).addMissionPoint(missionPoint);
+                            //currentMission.getMission().remove(missionPoint);
+                            break;
+                    }
+                });
+
+
+        for (Thread r: robotThreads){
+			r.start();
+        }
+
+		//TODO Should not be done here
+		initSimulator();
+		//needs to be handled
+		/*while (notDone){
 			currentMission.updateMissionList();
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
@@ -89,7 +139,7 @@ public class RobotController implements MissionExecutable{
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void cancelExecution(){
@@ -121,10 +171,7 @@ public class RobotController implements MissionExecutable{
 	    return this.robots;
     }
 
-	public static void main(String [] args){
-		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
-		controller.addRobots(4 , startingPoints);
-	}
+
 
 	public List<Node> getNodes() {
 	    if (currentEnvironment == null) {
@@ -136,4 +183,11 @@ public class RobotController implements MissionExecutable{
         });
 	    return nodes;
     }
+	public static void main(String[] args){
+		launch();
+	}
+
+	public Environment getEnviroment() {
+		return currentEnvironment;
+	}
 }
