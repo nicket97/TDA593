@@ -145,7 +145,6 @@ public class RobotController implements MissionExecutable{
     }
 
 
-
 	public List<Node> getNodes() {
 	    if (currentEnvironment == null) {
 	        throw new Error ("There's no environment set!");
@@ -157,10 +156,10 @@ public class RobotController implements MissionExecutable{
 	    return nodes;
     }
 	public static void main(String[] args){
-		launch();
+//		launch();
 	}
 
-	public Environment getEnviroment() {
+	public Environment getEnvironment() {
 		return currentEnvironment;
 	}
 }
