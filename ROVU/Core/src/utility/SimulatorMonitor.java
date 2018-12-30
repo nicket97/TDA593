@@ -1,28 +1,15 @@
 package utility;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import model.Environment;
-import model.Hospital;
-import model.Mission;
-import model.MissionPoint;
-import project.AbstractRobotSimulator;
 import project.AbstractSimulatorMonitor;
 import project.Point;
-import robot.A_Star;
-import model.Node;
 import robot.RobotHandler;
-import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
-import simbad.sim.Wall;
 
 public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
-	Point [] commands ;
 	private List<RobotHandler> robotList;
 	private Set<RobotHandler> r;
 
@@ -32,7 +19,6 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 		robotList = new ArrayList<>();
 	}
 
-
 	public void update(RobotHandler arg0) {
 		robotList.addAll(r);
 		robotList.get(0).setFin(1);
@@ -40,11 +26,12 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 		for(int i=0; i < robotList.size(); i++){
 			RobotHandler robot=robotList.get(i);
             Point [] dest = robot.getPath();
-			if(robot.getPath().length > 0) {
+            if (dest == null || !(dest.length > 0)) {
+                return;
+            } else {
 				if (!robot.isAtPosition(dest[dest.length - 1]) && (robot.getFin() == 1)) {
 					MoveRobot(robot, robot.getPath(), robot.getStartingPoint());
 				}
-
 
 				if ((robot.getFin() != 3) && robot.isAtPosition(dest[dest.length - 1]) && !robot.isAvailable()) {
 					robot.setAvailable(true);
