@@ -21,19 +21,16 @@ import view.MissionEditorView;
  * @author Niclas
  * @author Madeleine
  */
-public class RobotController extends Application implements MissionExecutable{
-	//can not be final because it was called both by initialation and by JAVAFX
-	private static RobotController controller;
+public class RobotController implements MissionExecutable{
+	private final static RobotController controller = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
-	private MissionEditorView missionView;
 
-	public RobotController() {
-		System.out.print("hej");
-		controller = this;
+	private RobotController() {
 	}
+
 	public void init(){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
 		controller.addRobots(4 , startingPoints);
@@ -42,14 +39,6 @@ public class RobotController extends Application implements MissionExecutable{
 		setEnvironment(hospital);
 		//TODO Should be done here but dont work with current implementation because the simulator tries to move the robots when they have no path assigned
 		initSimulator();
-
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		//RobotController.getController().init();
-		Application missionEditor = new MissionEditorView();
-		missionEditor.start(primaryStage);
 
 	}
 
