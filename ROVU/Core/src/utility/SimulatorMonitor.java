@@ -17,47 +17,28 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 		super(robots, e);
 		r = robots;
 		robotList = new ArrayList<>();
+		robotList.addAll(r);
+		// Start with first robot moving
+        robotList.get(0).setFin(1);
 	}
 
 	public void update(RobotHandler arg0) {
-		robotList.addAll(r);
-		robotList.get(0).setFin(1);
-
 		for(int i=0; i < robotList.size(); i++){
-			RobotHandler robot=robotList.get(i);
+			RobotHandler robot = robotList.get(i);
             Point [] dest = robot.getPath();
             if (dest == null || !(dest.length > 0)) {
                 return;
             } else {
-				if (!robot.isAtPosition(dest[dest.length - 1]) && (robot.getFin() == 1)) {
-					MoveRobot(robot, robot.getPath(), robot.getStartingPoint());
-				}
-
-				if ((robot.getFin() != 3) && robot.isAtPosition(dest[dest.length - 1]) && !robot.isAvailable()) {
-					robot.setAvailable(true);
-					robot.setFin(3);
-
-					if (robotList.get(i).getRobotIndex() != robotList.size() - 1) {
-						System.out.println("Next=========================:" + robotList.get(robotList.indexOf(robot) + 1).getRobotIndex());
-						robotList.get(robotList.indexOf(robot) + 1).setFin(1);
-					}
+				if (!robot.isAtPosition(dest[dest.length - 1]) && robot.getFin() == 1) {
+					robot.move();
+				} else if (robot.getFin() == 3 && (robotList.indexOf(robot) + 1) < robotList.size()) {
+                    if (robotList.get(robotList.indexOf(robot) + 1).getFin() == 3) {
+                        continue;
+                    } else {
+                        robotList.get(robotList.indexOf(robot) + 1).setFin(1);
+                    }
 				}
 			}
-		}
-	}
-	
-	private void MoveRobot (RobotHandler robot, Point[] commands, Point position){
-		if(robot.isAtPosition(position)){
-			robot.setDestination(commands[0]);	
-		}
-		
-		for (int i=1;i<commands.length;i++){
-			Point start = commands[i-1];
-			Point end = commands[i];
-			
-			if (robot.isAtPosition(start)){
-	    		robot.setDestination(end);
-			}	
 		}
 	}
 }

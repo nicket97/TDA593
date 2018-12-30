@@ -23,10 +23,11 @@ import java.util.PriorityQueue;
 public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private Point startingPoint;
     private int robotIndex;
-    private int fin;
+    private volatile int fin; // STATUS OF ROBOT moving around, 1 = Moving, 3 = Completed
     private	Point[] path;
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
+    private int pointer = 0;
 
     public RobotHandler(Point position, String name, int i) {
         super(position, name);
@@ -34,37 +35,35 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         robotIndex = i;
 	}
 
-    public void executeMission(){
-    	List<Point> commands = new ArrayList<>();
-		while (missionPoints.size() > 1) {
-			Point currentPoint = missionPoints.poll().getPoint();
-			Point nextPoint = missionPoints.peek().getPoint();
-			commands.remove(currentPoint);
-			commands.addAll(Arrays.asList(getCommands(currentPoint, nextPoint)));
-		}
-		missionPoints.clear();
-		Point [] path = new Point[commands.size()];
-		setPath(commands.toArray(path));
+    private void executeMission(Point currentPoint, Point nextPoint){
+        setPath(getCommands(currentPoint, nextPoint));
     }
     
     @Override
     public void run() {
-    	executeMission();
-//		while (true) {
-////			System.out.println(missionPoints.size());
-//			if (missionPoints.size() == 0) {
-//				available = true;
-//                System.out.println(this.robotIndex + " is available");
-//			}
-//			else {
-//				available = false;
-//			}
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//		}
+		while (true) {
+            while (missionPoints.size() > 1 && this.isAtPosition(missionPoints.peek().getPoint())) {
+                MissionPoint currentPoint = missionPoints.poll();
+                Point nextPoint = missionPoints.peek().getPoint();
+                executeMission(currentPoint.getPoint(), nextPoint);
+                currentPoint.done();
+            }
+
+            if (missionPoints.size() == 1 && this.isAtPosition(missionPoints.peek().getPoint())) {
+                setFin(3);
+                missionPoints.poll().done();
+				setAvailable(true);
+                System.out.println(this.robotIndex + " is available");
+			} else {
+				setAvailable(false);
+			}
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+		}
     }
 
 	private Point [] getCommands (Point start, Point finish){
@@ -80,20 +79,25 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		commands[commands.length-1]=finish;
 		return commands;
 	}
-/*
- * MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
-		MoveRobot(Main.robot2, new Point[] {new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)},new Point(6, -2.5));
-		MoveRobot(Main.robot3, new Point[] {new Point (2.5, 2.5),new Point (-6, 2.5)},new Point(6, 2.5)); //,new Point (-2.5, 2.5)
-		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
- */
 
-    public void setFin (int fin){
-	this.fin=fin;
-}
+	public void move() {
+        if (isEqual(this.getPosition(), getPath()[pointer])) {
+            pointer++;
+        }
+        this.setDestination(getPath()[pointer]);
+    }
+
+    private boolean isEqual(Point p1, Point p2){
+        return ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1));
+    }
+
+    public synchronized void setFin (int fin){
+	    this.fin=fin;
+    }
 
 	public Point[] getPath() {
-	return this.path;
-}
+	    return this.path;
+    }
 
 	public void setPath(Point [] newpath){
 		this.path = newpath;
@@ -119,7 +123,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
 	public int getRobotIndex() { return this.robotIndex; }
 
-	public int getFin() { return this.fin; }
+	public synchronized int getFin() { return this.fin; }
 
 	public DataObject getData() {
 		return null;
