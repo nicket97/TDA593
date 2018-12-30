@@ -68,6 +68,11 @@ public class RobotController extends Application implements MissionExecutable{
 		}
 	}
 
+	public void addRobot(RobotHandler robot) {
+	    robots.add(robot);
+	    robotThreads.add(new Thread(robot));
+    }
+
 	public void setEnvironment(Environment e) {
 	    currentEnvironment = e;
     }
