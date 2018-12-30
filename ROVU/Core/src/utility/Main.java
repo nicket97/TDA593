@@ -3,18 +3,16 @@ import java.awt.Color;
 import java.util.*;
 
 import controller.RobotController;
-import javafx.application.Application;
-import javafx.stage.Stage;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.A_Star;
 import robot.RobotHandler;
 import simbad.sim.EnvironmentDescription;
-import view.MissionEditorView;
+import view.ROVUView;
 
 @SuppressWarnings("unused")
-public class Main extends Application{
+public class Main {
 	
 	public static void main(String[] args)  throws InterruptedException {
         EnvironmentDescription e = new EnvironmentDescription();
@@ -83,14 +81,10 @@ public class Main extends Application{
         AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(simRobots, e);
 
         // Launch the monitoring
-        // launch(args);
+        new Thread(() -> {
+            javafx.application.Application.launch(ROVUView.class);
+        }).start();
 	}
-
-	@Override
-    public void start(Stage primaryStage) throws Exception {
-        Application missionEditor = new MissionEditorView();
-        missionEditor.start(primaryStage);
-    }
 
     // TODO: Move this to the RobotHandler so it can find its own path given
     // TODO: its personal mission

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
-
 /**
  * Class for controlling one robot
  * @author Anthony
@@ -126,4 +125,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	public DataObject getData() {
 		return null;
 	}
+
+	private void stop2Sec() {
+
+        try {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException ie ) {
+            ie.printStackTrace();
+        }
+    }
 }

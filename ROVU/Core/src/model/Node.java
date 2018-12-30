@@ -13,7 +13,7 @@ import project.Point;
 public class Node {
     private int weight;
     private List <String> physicalArea;
-    private String logicalArea;
+    private List <String> logicalArea;
     private boolean physical, wall, wifi, eating, room;
     private int nodeID, roomID;
     private Point point;
@@ -93,6 +93,10 @@ public class Node {
     	return this.physicalArea;
     }
     
+    public List<String> getLogical(){
+    	return this.logicalArea;
+    }
+    
     public Node() {
 		//for pathfinder algorithm
     }
@@ -108,8 +112,8 @@ public class Node {
         this.eating = eat;
         this.nodeID = id;
         this.point = p;
-        this.physicalArea= new ArrayList <String>();
-        this.logicalArea="default";
+        this.physicalArea = new ArrayList <String>();
+        this.logicalArea = new ArrayList <String>();;
         if (wall){
             weight = 999999;
         }
@@ -122,10 +126,10 @@ public class Node {
 	public void setLogical(String value) {
 		if (value.equalsIgnoreCase("wifi")){
 			this.wifi=true;
-			this.logicalArea=value;
+			this.logicalArea.add(value);
 		}else if (value.equalsIgnoreCase("eating")){
 			this.eating=true;
-			this.logicalArea=value;
+			this.logicalArea.add(value);
 		}
 	}
 

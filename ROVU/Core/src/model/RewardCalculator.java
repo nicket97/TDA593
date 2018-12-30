@@ -1,14 +1,12 @@
 package model;
 
-import controller.DataHandler;
-import controller.DataObject;
+import controller.ROVUViewController;
 import controller.RobotController;
 import project.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class RewardCalculator {
     private RobotController rc = RobotController.getController();
@@ -28,17 +26,7 @@ public class RewardCalculator {
         return nodes;
     }
 
-    public void calculateReward() {
-        System.out.print("Current procedure: ");
-        if (isProcedureA) {
-            System.out.println("A");
-        } else {
-            System.out.println("B");
-        }
-        System.out.println(calculate());
-    }
-
-    private int calculate() {
+    public int calculateReward() {
         int rewardPoints = -99; // If it returns -99, then something's gone wrong
 
         List<Node> nodes = rc.getNodes();
