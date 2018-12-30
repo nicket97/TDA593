@@ -26,57 +26,53 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private	Point[] path;
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
-    private A_Star astar;
-    
+
     public RobotHandler(Point position, String name, int i) {
         super(position, name);
         startingPoint = position;
         robotIndex = i;
-        }
+	}
 
     public void executeMission(){
-        System.out.println(this.getPosition());
-		List<Point> concat = new ArrayList<>();
-		for (MissionPoint n: missionPoints) {
-			concat.addAll(Arrays.asList(task(RobotController.getController().getEnviroment(),this.getPosition(),n.getPoint())));
-
+    	List<Point> commands = new ArrayList<>();
+		System.out.println(missionPoints.size());
+		while (missionPoints.size() > 1) {
+			Point currentPoint = missionPoints.poll().getPoint();
+			Point nextPoint = missionPoints.poll().getPoint();
+			commands.addAll(Arrays.asList(getCommands(currentPoint, nextPoint)));
 		}
-		path = new Point[concat.size()];
-		concat.toArray(path);
-		System.out.println(concat);
-
+		Point [] path = new Point[commands.size()];
+		setPath(commands.toArray(path));
     }
-
     
     @Override
     public void run() {
-		while (true) {
-
-
-			System.out.println(missionPoints.size());
-			if (missionPoints.size() == 0) {
-				available = true;
-                System.out.println(this.robotIndex + " is available");
-			}
-			else{
-				available = false;
-			}
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
-		}
+    	executeMission();
+//		while (true) {
+////			System.out.println(missionPoints.size());
+//			if (missionPoints.size() == 0) {
+//				available = true;
+//                System.out.println(this.robotIndex + " is available");
+//			}
+//			else {
+//				available = false;
+//			}
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//		}
     }
-	private static Point [] task (Environment environment, Point start, Point finish){
-		A_Star test = new A_Star();
-		test.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
-		List<Node> rpath = test.getRouteList(test.findRoute());
-		Point [] commands = new Point [rpath.size()+1];
-		for (int m=0;m<rpath.size();m++){
-			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
+
+	private static Point [] getCommands (Point start, Point finish){
+		A_Star aStar = new A_Star();
+		Environment environment = RobotController.getController().getEnvironment();
+		aStar.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
+		List<Node> robotPath = aStar.getRouteList(aStar.findRoute());
+		Point [] commands = new Point [robotPath.size()+1];
+		for (int m=0; m < robotPath.size(); m++){
+			commands[m] = environment.getNodeCenter(robotPath.get(m), 0.5);//test.getNodeCenter(path.get(m), 1);
 		}
 		commands[commands.length-1]=finish;
 		return commands;
@@ -127,7 +123,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	}
 
 	private void stop2Sec() {
-
         try {
             Thread.sleep(2000);
         }
