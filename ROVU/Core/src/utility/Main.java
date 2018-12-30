@@ -29,7 +29,7 @@ public class Main {
                 mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT2, 2));
                 mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2, 1));
                 mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3, 3));
-                mission.add(new MissionPoint(-2.3, 2.5, Constraint.ROBOT3, 2));
+                mission.add(new MissionPoint(2.3, 2.5, Constraint.ROBOT3, 2));
                 mission.add(new MissionPoint(3, -4, Constraint.ROBOT3, 1));
                 mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4, 3));
                 mission.add(new MissionPoint(6.8, 2.5, Constraint.ROBOT4, 2));
