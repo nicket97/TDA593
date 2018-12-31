@@ -65,9 +65,9 @@ public class Hospital extends Environment {
 		super.addLogicalArea(new Rectangle2D.Double(-5, -5, 7, 8), "Wifi");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 18, 4.85), "Surgery division");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 4.5, 4.85), "Surgery room 1");
-		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 4.5, 4.85), "Surgery room 2");
-		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 4.5, 4.85), "Surgery room 3");
-		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 4.5, 4.85), "Surgery room 3");
+		super.addPhysicalArea(new Rectangle2D.Double(-4.5, -5, 4.5, 4.85), "Surgery room 2");
+		super.addPhysicalArea(new Rectangle2D.Double(0, -5, 4.5, 4.85), "Surgery room 3");
+		super.addPhysicalArea(new Rectangle2D.Double(4.5, -5, 4.5, 4.85), "Surgery room 3");
 
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 0, 18, 5), "Emergency division");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 0, 18, 5), "Consulting room");
