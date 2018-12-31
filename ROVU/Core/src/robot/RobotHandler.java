@@ -191,7 +191,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         	
         }
         System.out.println(currentEnv.getEnvironment(path[pointer]).getPhysical());
-        if(currentEnv.getEnvironment(path[pointer]).getPhysical().size() < (currentEnv.getEnvironment(path[pointer-1]).getPhysical().size() ) && !timerActive){
+        if(!currentEnv.getEnvironment(path[pointer]).getPhysical().equals((currentEnv.getEnvironment(path[pointer-1]).getPhysical())) && !timerActive){
             setTimer();
             this.setDestination(path[pointer]);
         }
