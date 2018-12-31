@@ -34,6 +34,9 @@ public class MissionEditor implements MissionEditable, Initializable {
         List<MissionPoint> points1 = Arrays.asList(new MissionPoint(-2,2), new MissionPoint(3,1));
         Mission mission1 = new Mission(points1);
 
+        List<MissionPoint> points3 = Arrays.asList(new MissionPoint(-2.5,2.5), new MissionPoint(2.5,-2.5));
+        Mission mission4 = new Mission(points3);
+
         List<MissionPoint> points2 = Arrays.asList(new MissionPoint(5,4), new MissionPoint(1,4));
         Mission mission2 = new Mission(points2);
         List<MissionPoint> mission = new ArrayList<>();
@@ -54,6 +57,7 @@ public class MissionEditor implements MissionEditable, Initializable {
         missions.add(mission1);
         missions.add(mission2);
         missions.add(mission3);
+        missions.add(mission4);
     }
 
 	public Mission createMission(List <MissionPoint>missionPoints){

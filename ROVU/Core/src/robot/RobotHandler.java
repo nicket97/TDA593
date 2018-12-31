@@ -30,6 +30,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private int pointer = 0;
     private List<List<Point>> concatList = new ArrayList<List<Point>>();
     private boolean noMission=true;
+    private long stop = 0;
+    private boolean timerActive = false;
     
     public RobotHandler(Point position, String name, int i, Environment env) {
         super(position, name);
@@ -175,7 +177,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
     }
     public void move(){
-    	if (!noMission){
+    	if (!noMission || path != null){
         //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
         if (pointer==path.length-1 && !concatList.isEmpty()){
         	System.out.println("Robot cycle: " + this.robotIndex);
@@ -188,15 +190,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             pointer ++;
         	
         }
-        if(currentEnv.getEnvironment(path[pointer]).isRoom() && !currentEnv.getEnvironment(path[pointer-1]).isRoom()) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        System.out.println(currentEnv.getEnvironment(path[pointer]).getPhysical());
+        if(currentEnv.getEnvironment(path[pointer]).getPhysical().size() < (currentEnv.getEnvironment(path[pointer-1]).getPhysical().size() ) && !timerActive){
+            setTimer();
+            this.setDestination(path[pointer]);
         }
-
-        this.setDestination(path[pointer]);
+        if (canMove()) {
+            this.setDestination(path[pointer]);
+        }
     }
     }
     private boolean isEqual(Point p1, Point p2){
@@ -204,5 +205,18 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             return true;
 
         return false;
+    }
+    public void setTimer(){
+
+        stop = System.currentTimeMillis() + 2000;
+        timerActive = true;
+    }
+    public boolean canMove(){
+        if (System.currentTimeMillis() > stop){
+            timerActive = false;
+            return true;}
+        else{
+            return false;
+        }
     }
 }
