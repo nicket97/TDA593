@@ -59,7 +59,9 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 				}
 			}
 		}*/
+		System.out.println(" hejas");
 		arg0.move();
+
 	}
 	
 	private void MoveRobot (RobotHandler robot, Point[] commands, Point position){

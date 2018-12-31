@@ -42,12 +42,12 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
     public void executeMission(){
         System.out.println("misize "+missionPoints.size());
-		
+        pointer = 0;
         if (!noMission){
 		concatList = new ArrayList<>();
         MissionPoint prev = null;
         MissionPoint thisP = null;
-        pointer = 0;
+
         
         for (int i = 0; i < missionPoints.size()+2; i++){
 		    if(i == 0){
@@ -90,6 +90,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     @Override
     public void run() {
 		executeMission();
+
 		/*while (true) {
 
 
@@ -177,8 +178,9 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
     }
     public void move(){
+
     	if (!noMission || path != null){
-        //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
+        System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
         if (pointer==path.length-1 && !concatList.isEmpty()){
         	System.out.println("Robot cycle: " + this.robotIndex);
         	path=new Point[concatList.get(0).size()];
@@ -191,7 +193,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         	
         }
         System.out.println(currentEnv.getEnvironment(path[pointer]).getPhysical());
-        if(currentEnv.getEnvironment(path[pointer]).getPhysical().size() < (currentEnv.getEnvironment(path[pointer-1]).getPhysical().size() ) && !timerActive){
+        if(currentEnv.getEnvironment(path[pointer+1]).getPhysical().size() < (currentEnv.getEnvironment(path[pointer]).getPhysical().size() ) && !timerActive){
             setTimer();
             this.setDestination(path[pointer]);
         }
@@ -218,5 +220,11 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         else{
             return false;
         }
+    }
+    public void cancelExecution(){
+        setPath(null);
+        this.missionPoints.clear();
+        noMission = true;
+        startingPoint = this.getPosition();
     }
 }

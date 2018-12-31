@@ -23,7 +23,7 @@ public class MissionEditor implements MissionEditable, Initializable {
 	@FXML ChoiceBox<Mission> missionChoices;
     @FXML ChoiceBox<Constraint> constraintChoices;
 	@FXML TextField xTextfield, zTextfield, prioTextfield;
-	@FXML Button addPointBtn, createMissionBtn,runButton;
+	@FXML Button addPointBtn, createMissionBtn,runButton, stopButton;
 	@FXML ListView<MissionPoint>  pointListView;
 	private List<Mission> missions = new ArrayList<>();
 	private Mission mission;
@@ -121,6 +121,9 @@ public class MissionEditor implements MissionEditable, Initializable {
             RobotController.getController().setMission(runMission);
             RobotController.getController().executeMission();
             System.out.println("done");
+        });
+        stopButton.setOnAction(event ->{
+            RobotController.getController().cancelExecution();
         });
 
 	}

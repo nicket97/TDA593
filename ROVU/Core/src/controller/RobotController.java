@@ -29,6 +29,8 @@ public class RobotController extends Application implements MissionExecutable{
 	private Mission currentMission;
 	private Environment currentEnvironment;
 	private MissionEditorView missionView;
+	private boolean isRunning = false;
+	SimulatorMonitor sim;
 
 	public RobotController() {
 		System.out.print("hej");
@@ -62,9 +64,12 @@ public class RobotController extends Application implements MissionExecutable{
 	// TODO: Better initialization of robots' starting points
     // Can be confusing since we mix Point and MissionPoint
 	public void addRobots(int numberOfRobots, Point[] startingPoints) {
-		for(int i = 0; i <numberOfRobots; i++){
+		for(int i = 0; i <1; i++){
 			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
 		}
+		addThreads();
+	}
+	public void addThreads(){
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));
 		}
@@ -85,9 +90,7 @@ public class RobotController extends Application implements MissionExecutable{
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
 		boolean notDone = true;
-        for (Thread t: robotThreads){
-            //t.start();
-        }
+
 
                 System.out.println(currentMission.getMission().size());
                 currentMission.getMission().forEach(missionPoint -> {
@@ -116,7 +119,7 @@ public class RobotController extends Application implements MissionExecutable{
                                     currentMission.getMission().remove(missionPoint);
                                 }
                             }*/
-                            robots.get(1).addMissionPoint(missionPoint);
+                            robots.get(0).addMissionPoint(missionPoint);
                             //currentMission.getMission().remove(missionPoint);
                             break;
                     }
@@ -124,11 +127,17 @@ public class RobotController extends Application implements MissionExecutable{
 
 
         for (Thread r: robotThreads){
+			if (!r.isAlive())
 			r.start();
         }
 
 		//TODO Should not be done here
-		initSimulator();
+		if(!isRunning) {
+			isRunning = true;
+			initSimulator();
+
+		}
+		sim.update(robots.get(0));
 		//needs to be handled
 		/*while (notDone){
 			currentMission.updateMissionList();
@@ -144,7 +153,11 @@ public class RobotController extends Application implements MissionExecutable{
 	}
 	
 	public void cancelExecution(){
-		robots.forEach(RobotHandler::stop);
+		robots.forEach(RobotHandler::cancelExecution);
+		robotThreads.clear();
+		currentMission = null;
+		addThreads();
+
 	}
 
 	public void initSimulator() {
@@ -156,7 +169,8 @@ public class RobotController extends Application implements MissionExecutable{
 	        throw new Error("No existing robots");
         }
 
-        AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
+        //AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
+		sim = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
     }
 	
 	public List<DataObject> getData(){
