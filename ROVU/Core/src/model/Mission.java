@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Mission {
     private List<MissionPoint> mission;
-    private List<MissionPoint> finishedMission;
+    private List<MissionPoint> finishedMission = new ArrayList<>();
 
 
     public Mission(List<MissionPoint> missionPoints) {
@@ -34,7 +34,7 @@ public class Mission {
         return mission;
     }
 
-    public void updateMissionList() {
+    public synchronized void updateMissionList() {
         for (int i = 0; i < mission.size(); i++){
             if(mission.get(i).isDone()){
                 finishedMission.add(mission.get(i));

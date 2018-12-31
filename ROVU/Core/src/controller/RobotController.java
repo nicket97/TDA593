@@ -76,7 +76,6 @@ public class RobotController implements MissionExecutable{
 
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
-		boolean notDone = true;
         currentMission.getMission().forEach(missionPoint -> {
             int robotIndex = missionPoint.getRobot();
             switch (robotIndex) {
@@ -102,17 +101,17 @@ public class RobotController implements MissionExecutable{
             }
         });
         robotThreads.forEach(Thread::start);
-//		while (notDone){
-//			currentMission.updateMissionList();
-//			if(currentMission.getMission().size() > 0)
-//			for (RobotHandler r : robots){
-//				if (r.isAvailable()){
-//					if (currentMission.getMission().size() == 0){
-//						notDone = false;
-//					}
-//				}
-//			}
-//		}
+        new Thread(() -> {
+            while (true) {
+                if (currentMission == null || currentMission.getMission() == null) return;
+                currentMission.updateMissionList();
+                if (currentMission.getMission().size() == 0) {
+                    // TODO: Whatever we want when the mission is finished
+                    System.out.println("MISSION COMPLETE!!!!!");
+                    return;
+                }
+            }
+        }).start();
 	}
 	
 	public void cancelExecution(){
@@ -138,12 +137,6 @@ public class RobotController implements MissionExecutable{
 		}
 		return d;
 	}
-
-	// TODO: REMOVE THIS METHOD, should not expose robots outside of this class
-	public List<RobotHandler> getRobots() {
-	    return this.robots;
-    }
-
 
 	public List<Node> getNodes() {
 	    if (currentEnvironment == null) {
