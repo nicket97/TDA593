@@ -67,14 +67,13 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 
 	private Point [] getCommands (Point start, Point finish){
-        System.out.println(this.getName() + ": " + start + "\t   " + finish);
 		A_Star aStar = new A_Star();
 		Environment environment = RobotController.getController().getEnvironment();
-		aStar.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
+		aStar.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5));
 		List<Node> robotPath = aStar.getRouteList(aStar.findRoute());
 		Point [] commands = new Point [robotPath.size()+1];
 		for (int m=0; m < robotPath.size(); m++){
-			commands[m] = environment.getNodeCenter(robotPath.get(m), 0.5);//test.getNodeCenter(path.get(m), 1);
+			commands[m] = environment.getNodeCenter(robotPath.get(m), 0.5);
 		}
 		commands[commands.length-1]=finish;
 		return commands;
