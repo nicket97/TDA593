@@ -29,6 +29,7 @@ public class RobotController extends Application implements MissionExecutable{
 	private Mission currentMission;
 	private Environment currentEnvironment;
 	private MissionEditorView missionView;
+	private MissionEditorView missionEditor;
 
 	public RobotController() {
 		System.out.print("hej");
@@ -50,7 +51,7 @@ public class RobotController extends Application implements MissionExecutable{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//RobotController.getController().init();
-		Application missionEditor = new MissionEditorView();
+		missionEditor = new MissionEditorView();
 		missionEditor.start(primaryStage);
 
 	}
@@ -63,7 +64,7 @@ public class RobotController extends Application implements MissionExecutable{
     // Can be confusing since we mix Point and MissionPoint
 	public void addRobots(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
-			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
+			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment, this));
 		}
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));
@@ -190,5 +191,9 @@ public class RobotController extends Application implements MissionExecutable{
 
 	public Environment getEnviroment() {
 		return currentEnvironment;
+	}
+	
+	public MissionEditorView getMissionEditorView(){
+		return this.missionEditor;
 	}
 }

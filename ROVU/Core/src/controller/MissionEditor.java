@@ -6,10 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -17,6 +21,7 @@ import javafx.scene.control.ChoiceBox;
 import model.Constraint;
 import model.Mission;
 import model.MissionPoint;
+import project.Point;
 import view.MissionEditorView;
 
 public class MissionEditor implements MissionEditable, Initializable {
@@ -25,8 +30,12 @@ public class MissionEditor implements MissionEditable, Initializable {
 	@FXML TextField xTextfield, zTextfield, prioTextfield;
 	@FXML Button addPointBtn, createMissionBtn,runButton;
 	@FXML ListView<MissionPoint>  pointListView;
+	@FXML ScrollPane execPoints = new ScrollPane();
 	private List<Mission> missions = new ArrayList<>();
 	private Mission mission;
+	private ListView<String> list = new ListView<String>();
+	private ObservableList<String> toDisplay =FXCollections.observableArrayList ();
+	
 
 
 	public MissionEditor() {
@@ -73,7 +82,10 @@ public class MissionEditor implements MissionEditable, Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
         addMissionChoices();
         addConstraintChoices();
-
+   	 	execPoints.setPrefSize(200, 400);
+   	 	list.setItems(toDisplay);
+   	 	
+   	 	execPoints.setContent(list);
         // Only allows double values that can also be negative
         Arrays.asList(xTextfield, zTextfield).forEach(textField ->
         textField.textProperty().addListener((observable, oldValue, newValue)-> {
@@ -137,6 +149,17 @@ public class MissionEditor implements MissionEditable, Initializable {
         for (Constraint constraint : Constraint.values()) {
             constraintChoices.getItems().add(constraint);
         }
+    }
+    
+    public void updateExecPoints(Point executed){
+    	
+    	Platform.runLater(new Runnable() {
+            @Override public void run() {
+                toDisplay.add(executed.toString());
+                list.setItems(toDisplay);
+            	execPoints.setContent(list);
+            }
+        });  	
     }
 
 }

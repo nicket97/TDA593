@@ -32,12 +32,16 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private boolean noMission=true;
     private long stop = 0;
     private boolean timerActive = false;
+    private RobotController commander;
+    private List <Point> executedPoints;
     
-    public RobotHandler(Point position, String name, int i, Environment env) {
+    public RobotHandler(Point position, String name, int i, Environment env ,RobotController commander) {
         super(position, name);
         startingPoint = position;
         robotIndex = i;
         currentEnv=env;
+        this.commander=commander;
+        executedPoints = new ArrayList <Point>();
         }
 
     public void executeMission(){
@@ -179,6 +183,11 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     public void move(){
     	if (!noMission || path != null){
         //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
+    		
+    	if (pointer==path.length-1 && !executedPoints.contains(path[path.length-1])){
+    		commander.getMissionEditorView().getEditor().updateExecPoints(path[path.length-1]);
+    		executedPoints.add(path[path.length-1]);
+    	}
         if (pointer==path.length-1 && !concatList.isEmpty()){
         	System.out.println("Robot cycle: " + this.robotIndex);
         	path=new Point[concatList.get(0).size()];
