@@ -184,7 +184,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             pointer ++;
         	
         }
-        
+        if(currentEnv.getEnvironment(path[pointer]).isRoom() && !currentEnv.getEnvironment(path[pointer-1]).isRoom()) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         this.setDestination(path[pointer]);
     }
     private boolean isEqual(Point p1, Point p2){
