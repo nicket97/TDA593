@@ -32,28 +32,22 @@ public class RobotController extends Application implements MissionExecutable{
 	private MissionEditorView missionEditor;
 
 	public RobotController() {
-		System.out.print("hej");
 		controller = this;
 	}
 	public void init(){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(-2.5,-2.5), new Point(2.5,-2.5), new Point(6,-2.5)};
-		
 		EnvironmentDescription e = new EnvironmentDescription();
 		Hospital hospital = new Hospital(0.5,e);
 		hospital.generateEmptyGrid(40, 0.5);
 		setEnvironment(hospital);
 		controller.addRobots(4 , startingPoints);
-		//TODO Should be done here but dont work with current implementation because the simulator tries to move the robots when they have no path assigned
-		//initSimulator();
-
+		initSimulator();
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//RobotController.getController().init();
 		missionEditor = new MissionEditorView();
 		missionEditor.start(primaryStage);
-
 	}
 
 	public static RobotController getController() {
@@ -127,9 +121,6 @@ public class RobotController extends Application implements MissionExecutable{
         for (Thread r: robotThreads){
 			r.start();
         }
-
-		//TODO Should not be done here
-		initSimulator();
 		//needs to be handled
 		/*while (notDone){
 			currentMission.updateMissionList();
