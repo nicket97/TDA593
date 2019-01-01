@@ -34,6 +34,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private boolean timerActive = false;
     private RobotController commander;
     private List <Point> executedPoints;
+    private boolean notFirstMission = false;
     
     public RobotHandler(Point position, String name, int i, Environment env ,RobotController commander) {
         super(position, name);
@@ -59,7 +60,15 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		    	List<Point> concat = new ArrayList<>();
 		    	concat.add(this.startingPoint);
                 prev = missionPoints.poll();
-                concat.addAll(Arrays.asList(task(currentEnv,this.getStartingPoint(),prev.getPoint())));
+                Point initial = new Point (0, 0);
+                if (!notFirstMission){
+                	initial = this.getStartingPoint();
+                	notFirstMission=true;
+                }else{
+                	initial=this.getPosition();
+                	pointer=1;
+                }
+                concat.addAll(Arrays.asList(task(currentEnv,initial,prev.getPoint())));
                 concatList.add(concat);
             }
             else{
@@ -77,17 +86,20 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         if (concatList.size()!=0){
         	for (int h=0;h<concatList.size();h++){
         		List <Point> j=concatList.get(h);
-        		for (Point u:j){
-        			
+        		for (Point u:j){       			
         			if (this.robotIndex==0)
         			System.out.println("Route#= "+h+" pointX="+u.getX()+" pointZ="+u.getZ());
         		}
         	}
 		path = new Point[concatList.get(0).size()];
 		
-		concatList.remove(0).toArray(path);}
+		concatList.remove(0).toArray(path);
+		 for (Point p:path){
+	    		System.out.println("newpath===>"+p.getX()+"--"+p.getZ());
+	    		}
+		 }
         }
-
+       
     }
 
     

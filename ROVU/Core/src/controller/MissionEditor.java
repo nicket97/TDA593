@@ -35,6 +35,7 @@ public class MissionEditor implements MissionEditable, Initializable {
 	private Mission mission;
 	private ListView<String> list = new ListView<String>();
 	private ObservableList<String> toDisplay =FXCollections.observableArrayList ();
+	private Mission currentMission;
 	
 
 
@@ -132,6 +133,7 @@ public class MissionEditor implements MissionEditable, Initializable {
             //MissionEditorView.stage.close();
             RobotController.getController().setMission(runMission);
             RobotController.getController().executeMission();
+            this.currentMission=runMission;
             System.out.println("done");
         });
 
@@ -158,6 +160,18 @@ public class MissionEditor implements MissionEditable, Initializable {
                 toDisplay.add(executed.toString());
                 list.setItems(toDisplay);
             	execPoints.setContent(list);
+            	int i=0;
+            	for (MissionPoint mis: currentMission.getMission()){
+            		if (mis.getPoint().getX()==executed.getX() && mis.getPoint().getZ()==executed.getZ()){
+            		mis.done();
+            		}
+            		if (mis.isDone()){
+            			i++;
+            		}
+            	}
+            	if (i==currentMission.getMission().size()){
+            		System.out.println("Mission accomplished");
+            	}
             }
         });  	
     }
