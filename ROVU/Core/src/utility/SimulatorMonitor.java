@@ -60,7 +60,7 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 			}
 		}*/
 		System.out.println(" hejas");
-		arg0.move();
+c		arg0.move();
 
 	}
 	
