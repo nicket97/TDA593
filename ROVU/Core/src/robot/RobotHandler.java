@@ -167,6 +167,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
 	public void stop() {
 
+        noMission = true;
+        pointer = 0;
+        path = new Point[1];
+        path[0] = this.getPosition();
+        missionPoints.clear();
+        //startingPoint = this.getPosition();
+
+
 	}
 
 	public void addMissionPoint(MissionPoint p) {
@@ -193,36 +201,42 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             ie.printStackTrace();
         }
     }
-    public void move(){
-    	if (!noMission || path != null){
-        //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
-    		
-    	if (pointer==path.length-1 && !executedPoints.contains(path[path.length-1])){
-    		commander.getMissionEditorView().getEditor().updateExecPoints(path[path.length-1]);
-    		executedPoints.add(path[path.length-1]);
-    	}
-        if (pointer==path.length-1 && !concatList.isEmpty()){
-        	System.out.println("Robot cycle: " + this.robotIndex);
-        	path=new Point[concatList.get(0).size()];
-        	concatList.remove(0).toArray(path);
-        	pointer=0;
+    public void move() {
+        try {
+            if (!noMission || path != null) {
+                //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
+
+                if (pointer == path.length - 1 && !executedPoints.contains(path[path.length - 1])) {
+                    commander.getMissionEditorView().getEditor().updateExecPoints(path[path.length - 1]);
+                    executedPoints.add(path[path.length - 1]);
+                }
+                if (pointer == path.length - 1 && !concatList.isEmpty()) {
+                    System.out.println("Robot cycle: " + this.robotIndex);
+                    path = new Point[concatList.get(0).size()];
+                    concatList.remove(0).toArray(path);
+                    pointer = 0;
+                }
+                if (isEqual(this.getPosition(), path[pointer]) && pointer != path.length - 1) {
+
+                    pointer++;
+
+                }
+                System.out.println("path pointer-->" + pointer);
+                if (!currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) && !timerActive) {
+                    setTimer();
+                    this.setDestination(path[pointer]);
+                }
+                if (canMove()) {
+                    this.setDestination(path[pointer]);
+                }
+            }
+            if (missionPoints.size() == 0) {
+                available = true;
+            }
         }
-        if (isEqual(this.getPosition(), path[pointer])&&pointer!=path.length-1 ){
-        	
-            pointer ++;
-        	
+        catch (Exception e){
+            
         }
-        System.out.println("path pointer-->"+pointer);
-        if(!currentEnv.getEnvironment(path[pointer]).getPhysical().equals((currentEnv.getEnvironment(path[pointer-1]).getPhysical())) && !timerActive){
-            setTimer();
-            this.setDestination(path[pointer]);
-        }
-        if (canMove()) {
-            this.setDestination(path[pointer]);
-        }
-    }
-    if(missionPoints.size() == 0)
-    {available = true;
     }
     private boolean isEqual(Point p1, Point p2){
         if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
