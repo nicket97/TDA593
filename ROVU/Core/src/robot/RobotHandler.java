@@ -50,6 +50,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		
         if (!noMission){
 		concatList = new ArrayList<>();
+            available = false;
         MissionPoint prev = null;
         MissionPoint thisP = null;
         pointer = 0;
@@ -220,6 +221,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             this.setDestination(path[pointer]);
         }
     }
+    if(missionPoints.size() == 0)
+    {available = true;
     }
     private boolean isEqual(Point p1, Point p2){
         if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
