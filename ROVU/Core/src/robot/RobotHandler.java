@@ -35,6 +35,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private RobotController commander;
     private List <Point> executedPoints;
     private boolean notFirstMission = false;
+	private int missionSize = 0;
     
     public RobotHandler(Point position, String name, int i, Environment env ,RobotController commander) {
         super(position, name);
@@ -54,8 +55,9 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         MissionPoint prev = null;
         MissionPoint thisP = null;
         pointer = 0;
+	this.missionSize=missionPoints.size();
         
-        for (int i = 0; i < missionPoints.size()+2; i++){
+        for (int i = 0; i < missionSize; i++){
 		    if(i == 0){
 		    	System.out.println("111");
 		    	List<Point> concat = new ArrayList<>();
