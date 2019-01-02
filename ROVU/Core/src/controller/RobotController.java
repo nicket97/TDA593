@@ -22,10 +22,8 @@ import view.MissionEditorView;
 public class RobotController implements MissionExecutable{
 	private static final RobotController controller = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
-	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
-	private boolean switc = true;
 
 	private RobotController() {
 	}
@@ -49,9 +47,6 @@ public class RobotController implements MissionExecutable{
 		for(int i = 0; i <numberOfRobots; i++){
 			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
 		}
-		for(RobotHandler r : robots){
-		//	robotThreads.add(new Thread(r));
-		}
 	}
 
 	public void setEnvironment(Environment e) {
@@ -69,55 +64,40 @@ public class RobotController implements MissionExecutable{
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
 		boolean notDone = true;
-        for (Thread t: robotThreads){
-            //t.start();
-        }
 
-                System.out.println(currentMission.getMission().size());
-                currentMission.getMission().forEach(missionPoint -> {
-                    int robotIndex = missionPoint.getRobot();
-                    switch (robotIndex) {
-                        case 1:
-                            robots.get(0).addMissionPoint(missionPoint);
-                            //currentMission.getMission().remove(missionPoint);
-                            break;
-                        case 2:
-                            robots.get(1).addMissionPoint(missionPoint);
-                            //currentMission.getMission().remove(missionPoint);
-                            break;
-                        case 3:
-                            robots.get(2).addMissionPoint(missionPoint);
-                            //currentMission.getMission().remove(missionPoint);
-                            break;
-                        case 4:
-                            robots.get(3).addMissionPoint(missionPoint);
+        System.out.println(currentMission.getMission().size());
+        currentMission.getMission().forEach(missionPoint -> {
+            int robotIndex = missionPoint.getRobot();
+            switch (robotIndex) {
+                case 1:
+                    robots.get(0).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
+                    break;
+                case 2:
+                    robots.get(1).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
+                    break;
+                case 3:
+                    robots.get(2).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
+                    break;
+                case 4:
+                    robots.get(3).addMissionPoint(missionPoint);
 
-                            break;
-                        default:
-                            /*for (RobotHandler r : robots) {
-                                if (r.isAvailable()) {
-                                    r.addMissionPoint(missionPoint);
-                                    currentMission.getMission().remove(missionPoint);
-                                }
-                            }*/
-                            robots.get(1).addMissionPoint(missionPoint);
-                            //currentMission.getMission().remove(missionPoint);
-                            break;
-                    }
-                });
-                Set <RobotHandler> robs = new HashSet<RobotHandler>();
-                for (RobotHandler r:robots){
-                	r.executeMission();
-                	robs.add(r);
-                }
-                if (switc){
-                AbstractSimulatorMonitor simulator = new SimulatorMonitor(robs, currentEnvironment.getEnvironmentDescription());
-                switc=false;
-                }
-        for (Thread r: robotThreads){
-        	
-			//r.start();
-        }
+                    break;
+                default:
+                    /*for (RobotHandler r : robots) {
+                        if (r.isAvailable()) {
+                            r.addMissionPoint(missionPoint);
+                            currentMission.getMission().remove(missionPoint);
+                        }
+                    }*/
+                    robots.get(1).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
+                    break;
+            }
+        });
+        robots.forEach(RobotHandler::executeMission);
 		//needs to be handled
 		/*while (notDone){
 			currentMission.updateMissionList();
@@ -145,7 +125,7 @@ public class RobotController implements MissionExecutable{
 	        throw new Error("No existing robots");
         }
 
-        //AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
+        AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
     }
 	
 	public List<DataObject> getData(){
@@ -155,13 +135,6 @@ public class RobotController implements MissionExecutable{
 		}
 		return d;
 	}
-
-	// TODO: REMOVE THIS METHOD, should not expose robots outside of this class
-	public List<RobotHandler> getRobots() {
-	    return this.robots;
-    }
-
-
 
 	public List<Node> getNodes() {
 	    if (currentEnvironment == null) {
