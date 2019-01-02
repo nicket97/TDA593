@@ -111,9 +111,9 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		}*/
     }
 	private static Point [] task (Environment environment, Point start, Point finish){
-		A_Star test = new A_Star();
-		test.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
-		List<Node> rpath = test.getRouteList(test.findRoute());
+		A_Star aStar = new A_Star();
+		aStar.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
+		List<Node> rpath = aStar.getRouteList(aStar.findRoute());
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
 			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
@@ -121,12 +121,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		commands[commands.length-1]=finish;
 		return commands;
 	}
-/*
- * MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
-		MoveRobot(Main.robot2, new Point[] {new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)},new Point(6, -2.5));
-		MoveRobot(Main.robot3, new Point[] {new Point (2.5, 2.5),new Point (-6, 2.5)},new Point(6, 2.5)); //,new Point (-2.5, 2.5)
-		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
- */
 
     public void setFin (int fin){
 	this.fin=fin;
@@ -168,7 +162,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	}
 
 	private void stop2Sec() {
-
         try {
             Thread.sleep(2000);
         }
@@ -187,12 +180,10 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         	System.out.println("Robot cycle: " + this.robotIndex);
         	path=new Point[concatList.get(0).size()];
         	concatList.remove(0).toArray(path);
-        	pointer=0;
+        	pointer = 0;
         }
-        if (isEqual(this.getPosition(), path[pointer])&&pointer!=path.length-1 ){
-        	
+        if (isEqual(this.getPosition(), path[pointer]) && pointer!=path.length-1 ){
             pointer ++;
-        	
         }
 
 //        System.out.println(currentEnv.getEnvironment(path[pointer]).getPhysical());
@@ -205,16 +196,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
     }
     private boolean isEqual(Point p1, Point p2){
-        if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
-            return true;
-
-        return false;
+        return (p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1);
     }
-    public void setTimer(){
 
+    public void setTimer(){
         stop = System.currentTimeMillis() + 2000;
         timerActive = true;
     }
+
     public boolean canMove(){
         if (System.currentTimeMillis() > stop){
             timerActive = false;

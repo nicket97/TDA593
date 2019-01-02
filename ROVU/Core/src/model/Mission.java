@@ -1,13 +1,10 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 public class Mission {
     private List<MissionPoint> mission;
-    private List<MissionPoint> finishedMission;
-
 
     public Mission(List<MissionPoint> missionPoints) {
         mission = missionPoints;
@@ -26,20 +23,7 @@ public class Mission {
         return points.toString();
     }
 
-    public void finishedPoint(MissionPoint p){
-        finishedMission.add(p);
-    }
-
     public List<MissionPoint> getMission() {
         return mission;
-    }
-
-    public void updateMissionList() {
-        for (int i = 0; i < mission.size(); i++){
-            if(mission.get(i).isDone()){
-                finishedMission.add(mission.get(i));
-                mission.remove(i);
-            }
-        }
     }
 }
