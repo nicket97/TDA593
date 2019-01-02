@@ -1,12 +1,9 @@
 package controller;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
@@ -48,7 +45,7 @@ public class RobotController implements MissionExecutable{
     // Can be confusing since we mix Point and MissionPoint
 	public void addRobots(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
-			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment, this));
+			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
 		}
 		for(RobotHandler r : robots){
 			robotThreads.add(new Thread(r));
@@ -175,9 +172,5 @@ public class RobotController implements MissionExecutable{
 
 	public Environment getEnviroment() {
 		return currentEnvironment;
-	}
-	
-	public MissionEditorView getMissionEditorView(){
-		return this.missionEditor;
 	}
 }
