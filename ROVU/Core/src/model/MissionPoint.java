@@ -1,6 +1,7 @@
 package model;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import project.Point;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class MissionPoint implements Comparable {
     private List<Constraint> constraints = new ArrayList<Constraint>();
     private int priority;
     private RobotAction action;
-    private boolean done = false;
+    private BooleanProperty done = new SimpleBooleanProperty(false);
 
     public MissionPoint(double x, double z){
         point = new Point(x, z);
@@ -59,7 +60,7 @@ public class MissionPoint implements Comparable {
     }
 
     public void done() {
-        done = true;
+        done.setValue(true);
     }
 
     public double getX() {
@@ -95,6 +96,10 @@ public class MissionPoint implements Comparable {
     }
 
     public boolean isDone() {
+        return done.getValue();
+    }
+
+    public BooleanProperty doneProperty() {
         return done;
     }
 
