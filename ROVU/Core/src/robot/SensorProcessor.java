@@ -1,28 +1,46 @@
 package robot;
-
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 /**
  * @author Madeleine
  */
 
-import static robot.Error.Component.HARDWARE;
 
 public class SensorProcessor {
 
-	private List<Error> errors = new ArrayList<>();
+	private PriorityQueue<Error> errors = new PriorityQueue<Error>(11, new CompareError() );
 
 	public Error getError(){
-		return new Error(0,0, HARDWARE);
+		return errors.peek();
 	}
 	
-	public List getErrorData(){
+	public PriorityQueue<Error> getErrorData(){
 		return errors;
 	}
 	
 	public Point getPosition(){
 		return null;
 	}
+
+	public void addError(Error e){
+		errors.add(e);
+	}
+
+
+	private class CompareError implements Comparator<Error>{
+
+		@Override
+		public int compare(Error o1, Error o2) {
+			if(o1.priority > o2.priority){
+				return -1;
+			}
+			if (o1.priority < o2.priority){
+				return 1;
+			}
+			return 0;
+		}
+	}
 }
+

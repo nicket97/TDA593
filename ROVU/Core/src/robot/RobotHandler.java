@@ -13,6 +13,9 @@ import project.Point;
 import java.awt.*;
 import java.util.List;
 import java.util.PriorityQueue;
+
+import static robot.Error.Component.HARDWARE;
+
 /**
  * Class for controlling one robot
  * @author Anthony
@@ -51,7 +54,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
  */
 
     private void evaluateError(){
-        List errors = sensorProcessor.getErrorData();
+        PriorityQueue errors = sensorProcessor.getErrorData();
     }
 
     public void setFin (int fin){
@@ -98,6 +101,12 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
         catch (InterruptedException ie ) {
             ie.printStackTrace();
+        }
+    }
+
+    public void detectError(){
+        if(checkObstacle()){
+            sensorProcessor.addError(new Error(0,0, HARDWARE));
         }
     }
 }

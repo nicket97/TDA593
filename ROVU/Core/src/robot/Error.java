@@ -6,7 +6,7 @@ package robot;
 
 public class Error {
 
-    private int priority;
+    public int priority;
     private Double value;
     private Component component;
 
