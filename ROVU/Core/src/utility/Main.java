@@ -48,56 +48,9 @@ public class Main {
         // TODO: or the ones given from MissionEditor
 //        rc.initSimulator(); // We shouldn't expose our robots outside the robotController
 //        rc.executeMission();
-
-        // TODO: Remove the following section of directly manipulating the robots
-        // TODO: Niclas to implement the run method of the RobotHandler to utilise
-        // TODO: Anthony's pathfinding algorithm
-        int u=0;
-        for(RobotHandler r: rc.getRobots()){
-            for (int h=0;h<startingPoints.length;h++){
-                if (startingPoints[h].getX()==r.getStartingPoint().getX() &&
-                    startingPoints[h].getZ()==r.getStartingPoint().getZ()){
-                    u=h;
-                }
-            }
-            // concatenate the first path and second path
-            Point [] firstPath = task(hospital,startingPoints[u], middlePoints[u]);
-            Point [] secondPath = task(hospital,middlePoints[u],endPoints[u]);
-            List <Point> concat = new ArrayList<Point>(Arrays.asList(firstPath));
-            // Exclude first point of secondPath to avoid duplicate points
-            concat.addAll(Arrays.asList(secondPath).subList(1,secondPath.length));
-
-            // Return it as an array
-            Point [] way = new Point [concat.size()];
-            concat.toArray(way);
-
-            for (Point f : way){
-                System.out.println("For robot "+r.getName()+" X:"+f.getX()+ " Z:"+f.getZ());
-            }
-            r.setPath(way);
-            simRobots.add(r);
-        }
-
-        AbstractSimulatorMonitor <RobotHandler> controller = new SimulatorMonitor(simRobots, e);
-
         // Launch the monitoring
         new Thread(() -> {
             javafx.application.Application.launch(ROVUView.class);
         }).start();
 	}
-
-    // TODO: Move this to the RobotHandler so it can find its own path given
-    // TODO: its personal mission
-    private static Point [] task (Hospital hospital, Point start, Point finish){
-        A_Star test = new A_Star();
-        test.init(hospital.pointNode(start, 0.5), hospital.pointNode(finish, 0.5)); //-6.8,-2.5
-        List <Node> rpath = test.getRouteList(test.findRoute());
-        Point [] commands = new Point [rpath.size()+1];
-        for (int m=0;m<rpath.size();m++){
-            commands[m]=hospital.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
-        }
-        commands[commands.length-1]=finish;
-        return commands;
-    }
-
 }
