@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -30,6 +31,7 @@ public class RobotController extends Application implements MissionExecutable{
 	private Environment currentEnvironment;
 	private MissionEditorView missionView;
 	private MissionEditorView missionEditor;
+	private boolean switc = true;
 
 	public RobotController() {
 		System.out.print("hej");
@@ -67,7 +69,7 @@ public class RobotController extends Application implements MissionExecutable{
 			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment, this));
 		}
 		for(RobotHandler r : robots){
-			robotThreads.add(new Thread(r));
+		//	robotThreads.add(new Thread(r));
 		}
 	}
 
@@ -122,10 +124,18 @@ public class RobotController extends Application implements MissionExecutable{
                             break;
                     }
                 });
-
-
+                Set <RobotHandler> robs = new HashSet<RobotHandler>();
+                for (RobotHandler r:robots){
+                	r.executeMission();
+                	robs.add(r);
+                }
+                if (switc){
+                AbstractSimulatorMonitor simulator = new SimulatorMonitor(robs, currentEnvironment.getEnvironmentDescription());
+                switc=false;
+                }
         for (Thread r: robotThreads){
-			r.start();
+        	
+			//r.start();
         }
 
 		//TODO Should not be done here
@@ -157,7 +167,7 @@ public class RobotController extends Application implements MissionExecutable{
 	        throw new Error("No existing robots");
         }
 
-        AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
+        //AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
     }
 	
 	public List<DataObject> getData(){
