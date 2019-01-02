@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import model.*;
 import project.AbstractSimulatorMonitor;
@@ -24,6 +25,7 @@ public class RobotController implements MissionExecutable{
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
+	private boolean switc = true;
 
 	private RobotController() {
 	}
@@ -48,7 +50,7 @@ public class RobotController implements MissionExecutable{
 			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
 		}
 		for(RobotHandler r : robots){
-			robotThreads.add(new Thread(r));
+		//	robotThreads.add(new Thread(r));
 		}
 	}
 
@@ -103,10 +105,18 @@ public class RobotController implements MissionExecutable{
                             break;
                     }
                 });
-
-
+                Set <RobotHandler> robs = new HashSet<RobotHandler>();
+                for (RobotHandler r:robots){
+                	r.executeMission();
+                	robs.add(r);
+                }
+                if (switc){
+                AbstractSimulatorMonitor simulator = new SimulatorMonitor(robs, currentEnvironment.getEnvironmentDescription());
+                switc=false;
+                }
         for (Thread r: robotThreads){
-			r.start();
+        	
+			//r.start();
         }
 		//needs to be handled
 		/*while (notDone){
@@ -135,7 +145,7 @@ public class RobotController implements MissionExecutable{
 	        throw new Error("No existing robots");
         }
 
-        AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
+        //AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
     }
 	
 	public List<DataObject> getData(){

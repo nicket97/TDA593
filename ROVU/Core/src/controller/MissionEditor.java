@@ -114,6 +114,7 @@ public class MissionEditor implements MissionEditable, Initializable{
 
         runButton.setOnAction(event -> {
             currentMission = missionChoices.getValue();
+            RobotController.getController().cancelExecution();
             RobotController.getController().setMission(currentMission);
             RobotController.getController().executeMission();
             displayExecutedMissionPoints();
