@@ -55,7 +55,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         MissionPoint prev = null;
         MissionPoint thisP = null;
         pointer = 0;
-		this.missionSize=missionPoints.size();
+	this.missionSize=missionPoints.size();
         
         for (int i = 0; i < missionSize; i++){
 		    if(i == 0){
