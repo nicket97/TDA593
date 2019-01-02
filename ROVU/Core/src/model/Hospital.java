@@ -81,13 +81,6 @@ public class Hospital extends Environment {
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 3, 18, 3), "Emergency division");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 3, 18, 3), "Consulting room");
 		
-		//Temporary
-		e.light1SetPosition(5, 0, 3.5);
-		e.light2SetPosition(8, 0, 5.0);
-		Color3f light = new Color3f();
-		light.set(Color.RED);
-		e.light1Color=light;
-		e.light2Color=light;
 	}
 
 }
