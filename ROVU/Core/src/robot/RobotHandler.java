@@ -3,17 +3,14 @@ package robot;
 
 
 import controller.DataObject;
-import controller.RobotController;
 import model.*;
 
 
 import project.AbstractRobotSimulator;
 import project.Point;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
+
 /**
  * Class for controlling one robot
  * @author Anthony
@@ -26,83 +23,78 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private	Point[] path;
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
+    private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
     private Environment currentEnv;
     private int pointer = 0;
     private List<List<Point>> concatList = new ArrayList<List<Point>>();
     private boolean noMission=true;
     private long stop = 0;
     private boolean timerActive = false;
-    private RobotController commander;
-    private List <Point> executedPoints;
     private boolean notFirstMission = false;
 	private int missionSize = 0;
     
-    public RobotHandler(Point position, String name, int i, Environment env ,RobotController commander) {
+    public RobotHandler(Point position, String name, int i, Environment env) {
         super(position, name);
         startingPoint = position;
         robotIndex = i;
         currentEnv=env;
-        this.commander=commander;
-        executedPoints = new ArrayList <Point>();
-        }
+    }
 
     public void executeMission(){
         System.out.println("misize "+missionPoints.size());
 		
-        if (!noMission){
-		concatList = new ArrayList<>();
+        if (!noMission) {
+            concatList = new ArrayList<>();
             available = false;
-        MissionPoint prev = null;
-        MissionPoint thisP = null;
-        pointer = 0;
-	this.missionSize=missionPoints.size();
-        
-        for (int i = 0; i < missionSize; i++){
-		    if(i == 0){
-		    	System.out.println("111");
-		    	List<Point> concat = new ArrayList<>();
-		    	concat.add(this.startingPoint);
-                prev = missionPoints.poll();
-                Point initial = new Point (0, 0);
-                if (!notFirstMission){
-                	initial = this.getStartingPoint();
-                	notFirstMission=true;
-                }else{
-                	initial=this.getPosition();
-                	pointer=1;
+            MissionPoint prev = null;
+            MissionPoint thisP = null;
+            pointer = 0;
+            this.missionSize = missionPoints.size();
+
+            for (int i = 0; i < missionSize; i++){
+                if (i == 0){
+                    System.out.println("111");
+                    List<Point> concat = new ArrayList<>();
+                    concat.add(this.startingPoint);
+                    prev = missionPoints.poll();
+                    processedPoints.add(prev);
+                    Point initial;
+                    if (!notFirstMission) {
+                        initial = this.getStartingPoint();
+                        notFirstMission=true;
+                    } else {
+                        initial=this.getPosition();
+                        pointer=1;
+                    }
+                    concat.addAll(Arrays.asList(task(currentEnv,initial,prev.getPoint())));
+                    concatList.add(concat);
+                } else {
+                    System.out.println("222");
+                    List<Point> concat = new ArrayList<>();
+                    thisP = missionPoints.poll();
+                    processedPoints.add(thisP);
+                    concat.addAll(Arrays.asList(task(currentEnv,prev.getPoint(),thisP.getPoint())));
+                    prev = thisP;
+                    concatList.add(concat);
                 }
-                concat.addAll(Arrays.asList(task(currentEnv,initial,prev.getPoint())));
-                concatList.add(concat);
-            }
-            else{
-            	System.out.println("222");
-            	List<Point> concat = new ArrayList<>();
-                thisP = missionPoints.poll();
-                concat.addAll(Arrays.asList(task(currentEnv,prev.getPoint(),thisP.getPoint())));
-                prev = thisP; 
-                concatList.add(concat);
+		    }
+
+            if (concatList.size()!=0){
+                for (int h=0;h<concatList.size();h++){
+                    List <Point> j=concatList.get(h);
+                    for (Point u:j){
+                        if (this.robotIndex==0)
+                        System.out.println("Route#= "+h+" pointX="+u.getX()+" pointZ="+u.getZ());
+                    }
                 }
+                path = new Point[concatList.get(0).size()];
 
-
-		}
-
-        if (concatList.size()!=0){
-        	for (int h=0;h<concatList.size();h++){
-        		List <Point> j=concatList.get(h);
-        		for (Point u:j){       			
-        			if (this.robotIndex==0)
-        			System.out.println("Route#= "+h+" pointX="+u.getX()+" pointZ="+u.getZ());
-        		}
-        	}
-		path = new Point[concatList.get(0).size()];
-		
-		concatList.remove(0).toArray(path);
-		 for (Point p:path){
-	    		System.out.println("newpath===>"+p.getX()+"--"+p.getZ());
-	    		}
-		 }
+                concatList.remove(0).toArray(path);
+                for (Point p:path){
+                    System.out.println("newpath===>"+p.getX()+"--"+p.getZ());
+                }
+		    }
         }
-       
     }
 
     
@@ -130,9 +122,9 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		}*/
     }
 	private static Point [] task (Environment environment, Point start, Point finish){
-		A_Star test = new A_Star();
-		test.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
-		List<Node> rpath = test.getRouteList(test.findRoute());
+		A_Star aStar = new A_Star();
+		aStar.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
+		List<Node> rpath = aStar.getRouteList(aStar.findRoute());
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
 			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
@@ -140,12 +132,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		commands[commands.length-1]=finish;
 		return commands;
 	}
-/*
- * MoveRobot(Main.robot1, new Point[] {new Point (-2.5, -2.5),new Point (2.5, -2.5),new Point (6, -2.5)},new Point(-6,-2.5)); //robot movement
-		MoveRobot(Main.robot2, new Point[] {new Point (2.5, -2.5),new Point (2.5, 2.5),new Point (6, 2.5)},new Point(6, -2.5));
-		MoveRobot(Main.robot3, new Point[] {new Point (2.5, 2.5),new Point (-6, 2.5)},new Point(6, 2.5)); //,new Point (-2.5, 2.5)
-		MoveRobot(Main.robot4, new Point[] {new Point (-2.5, 2.5),new Point (-2.5, -2.5),new Point (-6,-2.5)},new Point(-6, 2.5));
- */
 
     public void setFin (int fin){
 	this.fin=fin;
@@ -195,7 +181,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	}
 
 	private void stop2Sec() {
-
         try {
             Thread.sleep(2000);
         }
@@ -203,54 +188,49 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             ie.printStackTrace();
         }
     }
+
     public void move() {
+        if (noMission || path == null || pointer >= path.length) return;
         try {
-            if (!noMission || path != null) {
-                //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
-
-                if (pointer == path.length - 1 && !executedPoints.contains(path[path.length - 1])) {
-                    commander.getMissionEditorView().getEditor().updateExecPoints(path[path.length - 1]);
-                    executedPoints.add(path[path.length - 1]);
-                }
-                if (pointer == path.length - 1 && !concatList.isEmpty()) {
-                    System.out.println("Robot cycle: " + this.robotIndex);
-                    path = new Point[concatList.get(0).size()];
-                    concatList.remove(0).toArray(path);
-                    pointer = 0;
-                }
-                if (isEqual(this.getPosition(), path[pointer]) && pointer != path.length - 1) {
-
-                    pointer++;
-
-                }
-                System.out.println("path pointer-->" + pointer);
-                if (!currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) && !timerActive) {
-                    setTimer();
-                    this.setDestination(path[pointer]);
-                }
-                if (canMove()) {
-                    this.setDestination(path[pointer]);
-                }
+            //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
+            if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
+                processedPoints.poll().done(); // Mark mission point as done
+            }
+            if (pointer == path.length - 1 && !concatList.isEmpty()) {
+                System.out.println("Robot cycle: " + this.robotIndex);
+                path = new Point[concatList.get(0).size()];
+                concatList.remove(0).toArray(path);
+                pointer = 0;
+            }
+            if (isAtPosition(path[pointer]) && pointer != path.length - 1) {
+                pointer++;
+            }
+//            System.out.println("path pointer-->" + pointer);
+            if (pointer != path.length - 1 &&
+                !currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) &&
+                !timerActive) {
+                setTimer();
+                this.setDestination(path[pointer]);
+            }
+            if (canMove()) {
+                this.setDestination(path[pointer]);
             }
             if (missionPoints.size() == 0) {
                 available = true;
             }
-        }
-        catch (Exception e){
-            
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
     private boolean isEqual(Point p1, Point p2){
-        if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
-            return true;
-
-        return false;
+        return (p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1);
     }
-    public void setTimer(){
 
+    public void setTimer(){
         stop = System.currentTimeMillis() + 2000;
         timerActive = true;
     }
+
     public boolean canMove(){
         if (System.currentTimeMillis() > stop){
             timerActive = false;
