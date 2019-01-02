@@ -21,18 +21,14 @@ import view.MissionEditorView;
  * @author Niclas
  * @author Madeleine
  */
-public class RobotController extends Application implements MissionExecutable{
-	//can not be final because it was called both by initialation and by JAVAFX
-	private static RobotController controller;
+public class RobotController implements MissionExecutable{
+	private static final RobotController controller = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
 	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
-	private MissionEditorView missionView;
-	private MissionEditorView missionEditor;
 
-	public RobotController() {
-		controller = this;
+	private RobotController() {
 	}
 	public void init(){
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(-2.5,-2.5), new Point(2.5,-2.5), new Point(6,-2.5)};
@@ -42,12 +38,6 @@ public class RobotController extends Application implements MissionExecutable{
 		setEnvironment(hospital);
 		controller.addRobots(4 , startingPoints);
 		initSimulator();
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		missionEditor = new MissionEditorView();
-		missionEditor.start(primaryStage);
 	}
 
 	public static RobotController getController() {
@@ -177,7 +167,10 @@ public class RobotController extends Application implements MissionExecutable{
 	    return nodes;
     }
 	public static void main(String[] args){
-		launch();
+	    getController().init();
+		new Thread(() -> {
+			javafx.application.Application.launch(MissionEditorView.class);
+		}).start();
 	}
 
 	public Environment getEnviroment() {
