@@ -56,7 +56,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
                     concat.add(this.startingPoint);
                     prev = missionPoints.poll();
                     processedPoints.add(prev);
-                    Point initial = new Point (0, 0);
+                    Point initial;
                     if (!notFirstMission) {
                         initial = this.getStartingPoint();
                         notFirstMission=true;
@@ -188,29 +188,30 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 
     public void move() {
+        if (noMission || path == null || pointer >= path.length) return;
         try {
-            if (!noMission || path != null) {
-                //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
-                if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
-                    processedPoints.poll().done(); // Mark mission point as done
-                }
-                if (pointer == path.length - 1 && !concatList.isEmpty()) {
-                    System.out.println("Robot cycle: " + this.robotIndex);
-                    path = new Point[concatList.get(0).size()];
-                    concatList.remove(0).toArray(path);
-                    pointer = 0;
-                }
-                if (isEqual(this.getPosition(), path[pointer]) && pointer != path.length - 1) {
-                    pointer++;
-                }
-                System.out.println("path pointer-->" + pointer);
-                if (!currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) && !timerActive) {
-                    setTimer();
-                    this.setDestination(path[pointer]);
-                }
-                if (canMove()) {
-                    this.setDestination(path[pointer]);
-                }
+            //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
+            if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
+                processedPoints.poll().done(); // Mark mission point as done
+            }
+            if (pointer == path.length - 1 && !concatList.isEmpty()) {
+                System.out.println("Robot cycle: " + this.robotIndex);
+                path = new Point[concatList.get(0).size()];
+                concatList.remove(0).toArray(path);
+                pointer = 0;
+            }
+            if (isAtPosition(path[pointer]) && pointer != path.length - 1) {
+                pointer++;
+            }
+//            System.out.println("path pointer-->" + pointer);
+            if (pointer != path.length - 1 &&
+                !currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) &&
+                !timerActive) {
+                setTimer();
+                this.setDestination(path[pointer]);
+            }
+            if (canMove()) {
+                this.setDestination(path[pointer]);
             }
             if (missionPoints.size() == 0) {
                 available = true;
