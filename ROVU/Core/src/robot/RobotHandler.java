@@ -3,17 +3,14 @@ package robot;
 
 
 import controller.DataObject;
-import controller.RobotController;
 import model.*;
 
 
 import project.AbstractRobotSimulator;
 import project.Point;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
+
 /**
  * Class for controlling one robot
  * @author Anthony
@@ -26,23 +23,20 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private	Point[] path;
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
+    private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
     private Environment currentEnv;
     private int pointer = 0;
     private List<List<Point>> concatList = new ArrayList<List<Point>>();
     private boolean noMission=true;
     private long stop = 0;
     private boolean timerActive = false;
-    private RobotController commander;
-    private List <Point> executedPoints;
-    
-    public RobotHandler(Point position, String name, int i, Environment env ,RobotController commander) {
+
+    public RobotHandler(Point position, String name, int i, Environment env) {
         super(position, name);
         startingPoint = position;
         robotIndex = i;
         currentEnv=env;
-        this.commander=commander;
-        executedPoints = new ArrayList <Point>();
-        }
+    }
 
     public void executeMission(){
         System.out.println("misize "+missionPoints.size());
@@ -59,6 +53,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		    	List<Point> concat = new ArrayList<>();
 		    	concat.add(this.startingPoint);
                 prev = missionPoints.poll();
+                processedPoints.add(prev);
                 concat.addAll(Arrays.asList(task(currentEnv,this.getStartingPoint(),prev.getPoint())));
                 concatList.add(concat);
             }
@@ -66,6 +61,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             	System.out.println("222");
             	List<Point> concat = new ArrayList<>();
                 thisP = missionPoints.poll();
+                processedPoints.add(thisP);
                 concat.addAll(Arrays.asList(task(currentEnv,prev.getPoint(),thisP.getPoint())));
                 prev = thisP; 
                 concatList.add(concat);
@@ -181,14 +177,13 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
     }
     public void move(){
-    	if (!noMission || path != null){
+    	if (noMission || path == null) return;
         //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
-    		
-    	if (pointer==path.length-1 && !executedPoints.contains(path[path.length-1])){
-    		commander.getMissionEditorView().getEditor().updateExecPoints(path[path.length-1]);
-    		executedPoints.add(path[path.length-1]);
-    	}
-        if (pointer==path.length-1 && !concatList.isEmpty()){
+    	if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
+    	    processedPoints.poll().done(); // Mark mission point as done
+        }
+
+        if (pointer == path.length-1 && !concatList.isEmpty()){
         	System.out.println("Robot cycle: " + this.robotIndex);
         	path=new Point[concatList.get(0).size()];
         	concatList.remove(0).toArray(path);
@@ -199,7 +194,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             pointer ++;
         	
         }
-        System.out.println(currentEnv.getEnvironment(path[pointer]).getPhysical());
+
+//        System.out.println(currentEnv.getEnvironment(path[pointer]).getPhysical());
         if(!currentEnv.getEnvironment(path[pointer]).getPhysical().equals((currentEnv.getEnvironment(path[pointer-1]).getPhysical())) && !timerActive){
             setTimer();
             this.setDestination(path[pointer]);
@@ -207,7 +203,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         if (canMove()) {
             this.setDestination(path[pointer]);
         }
-    }
     }
     private boolean isEqual(Point p1, Point p2){
         if ((p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1))
