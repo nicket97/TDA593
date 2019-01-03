@@ -177,7 +177,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	public int getFin() { return this.fin; }
 
 	public DataObject getData() {
-		return null;
+		return new DataObject(this.getPosition(),null);
 	}
 
 	private void stop2Sec() {
