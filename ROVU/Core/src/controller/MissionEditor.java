@@ -18,7 +18,7 @@ public class MissionEditor implements MissionEditable, Initializable{
 	@FXML ChoiceBox<Mission> missionChoices;
     @FXML ChoiceBox<Constraint> constraintChoices;
 	@FXML TextField xTextfield, zTextfield, prioTextfield;
-	@FXML Button addPointBtn, createMissionBtn,runButton;
+	@FXML Button addPointBtn, createMissionBtn, runButton, emergencyStopBtn;
 	@FXML ListView<MissionPoint>  pointListView, executedPointListView;
 	@FXML TabPane missionsTabPane;
 	@FXML Tab customMissionsTab;
@@ -124,6 +124,11 @@ public class MissionEditor implements MissionEditable, Initializable{
             RobotController.getController().executeMission();
             displayExecutedMissionPoints();
             System.out.println("done");
+        });
+
+        emergencyStopBtn.setStyle("-fx-background-color: RED; -fx-text-fill: WHITE;");
+        emergencyStopBtn.setOnAction(event -> {
+            RobotController.getController().cancelExecution();
         });
 	}
 
