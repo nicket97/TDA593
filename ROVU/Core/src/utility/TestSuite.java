@@ -240,7 +240,7 @@ public class TestSuite {
 			Environment testEnv =  new Environment(0.5, etest);
 			
 			testEnv.generateEmptyGrid(40, 0.5);
-			atest.init(testEnv.pointNode(new Point (-2.3,4.5), 0.5), testEnv.pointNode(new Point (-1.8,9.5), 0.5));
+			atest.findPath(testEnv.pointNode(new Point (-2.3,4.5), 0.5), testEnv.pointNode(new Point (-1.8,9.5), 0.5));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-2 && sample.getPoint().getZ()==9.5);
 		}
@@ -264,7 +264,7 @@ public class TestSuite {
 				
 			testEnv.setWalls(testBounds, testWalls);
 			testEnv.generateEmptyGrid(40, 0.5);
-			atest.init(testEnv.pointNode(new Point (-7.2,1.0), 0.5), testEnv.pointNode(new Point (-5.0,0.2), 0.5));
+			atest.findPath(testEnv.pointNode(new Point (-7.2,1.0), 0.5), testEnv.pointNode(new Point (-5.0,0.2), 0.5));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-5 && sample.getPoint().getZ()==0.0);
 		}
