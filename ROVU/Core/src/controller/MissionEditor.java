@@ -7,12 +7,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ChoiceBox;
 import model.Constraint;
 import model.Mission;
 import model.MissionPoint;
@@ -23,8 +20,11 @@ public class MissionEditor implements MissionEditable, Initializable{
 	@FXML TextField xTextfield, zTextfield, prioTextfield;
 	@FXML Button addPointBtn, createMissionBtn,runButton;
 	@FXML ListView<MissionPoint>  pointListView, executedPointListView;
+	@FXML TabPane missionsTabPane;
+	@FXML Tab customMissionsTab;
 	private List<Mission> missions = new ArrayList<>();
 	private Mission currentMission;
+	private boolean customMission;
 
 	public MissionEditor() {
 	    // Hard-coded missions
@@ -68,6 +68,11 @@ public class MissionEditor implements MissionEditable, Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+	    Platform.runLater(() -> {
+            if (!customMission) {
+                missionsTabPane.getTabs().remove(customMissionsTab);
+            }
+        });
         addMissionChoices();
         addConstraintChoices();
 
@@ -121,6 +126,10 @@ public class MissionEditor implements MissionEditable, Initializable{
             System.out.println("done");
         });
 	}
+
+	public void setCustomMission(boolean customMission) {
+	    this.customMission = customMission;
+    }
 
 	private void addMissionChoices() {
         missionChoices.getItems().clear();
