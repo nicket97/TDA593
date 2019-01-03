@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ROVUViewController" prefHeight="100.0" prefWidth="200.0">
+<AnchorPane fx:id="pane" prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ROVUViewController">
 	<children>
-		<Label fx:id="score" text="Score: 0"/>
+      <Label layoutX="20.0" layoutY="15.0" text="Reward Score:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+		<Label fx:id="score" layoutX="117.0" layoutY="15.0" text="0" AnchorPane.leftAnchor="117.0" AnchorPane.topAnchor="15.0" />
 	</children>
 </AnchorPane>

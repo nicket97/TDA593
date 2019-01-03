@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ScrollPane?>
 
-<TabPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MissionEditor">
+<TabPane fx:id="missionsTabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MissionEditor">
 	<tabs>
 		<Tab closable="false" text="Premade missions">
 			<content>
@@ -30,7 +30,7 @@
 				</AnchorPane>
 			</content>
 		</Tab>
-		<Tab closable="false" text="Custom missions">
+		<Tab fx:id="customMissionsTab" closable="false" text="Custom missions">
 			<content>
 				<AnchorPane prefHeight="400.0" prefWidth="600.0">
 					<children>
