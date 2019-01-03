@@ -25,7 +25,8 @@ public class RobotController implements MissionExecutable{
 	private List<RobotHandler> robots = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
-	private List<StringProperty> currentPositions = new ArrayList<>();
+    private List<StringProperty> currentPositions = new ArrayList<>();
+    private List<StringProperty> currentLocations = new ArrayList<>();
 
 	private RobotController() {
 	}
@@ -163,5 +164,11 @@ public class RobotController implements MissionExecutable{
         if (robots == null || robots.size() == 0) return null;
         robots.forEach(robot -> currentPositions.add(robot.currentPositionPropertyProperty()));
         return currentPositions;
+    }
+
+    public List<StringProperty> getCurrentLocations() {
+	    if (robots == null || robots.size() == 0) return null;
+	    robots.forEach(robot -> currentLocations.add(robot.currentLocationPropertyProperty()));
+	    return currentLocations;
     }
 }

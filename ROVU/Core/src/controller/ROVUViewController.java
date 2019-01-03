@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -35,20 +36,23 @@ public class ROVUViewController implements Initializable {
 		}).start();
 
 		// Add the robots' current positions
-		int index = 3;
-		for (StringProperty currentPosition : RobotController.getController().getCurrentPositions()) {
-			Label label = new Label();
-			label.setText(currentPosition.getValue());
-			label.setLayoutX(20);
-			label.setLayoutY(index++ * 20);
-			pane.getChildren().add(label);
-			currentPosition.addListener(((observable, oldValue, newValue) -> {
-				if (newValue == null) return;
-				Platform.runLater(() -> {
-					label.setText(newValue);
-				});
-			}));
-		}
+		addLabels(RobotController.getController().getCurrentPositions(), 3);
+		addLabels(RobotController.getController().getCurrentLocations(), 8);
 	}
 
+	private void addLabels(List<StringProperty> strings, int lineOffset) {
+	    for (StringProperty string : strings) {
+            Label label = new Label();
+            label.setText(string.getValue());
+            label.setLayoutX(20);
+            label.setLayoutY(lineOffset++ * 20);
+            pane.getChildren().add(label);
+            string.addListener(((observable, oldValue, newValue) -> {
+                if (newValue == null) return;
+                Platform.runLater(() -> {
+                    label.setText(newValue);
+                });
+            }));
+        }
+    }
 }

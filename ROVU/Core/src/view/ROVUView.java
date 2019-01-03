@@ -19,7 +19,7 @@ public class ROVUView extends Application {
 		Scene scene = new Scene(view);
 		primaryStage.setScene(scene);
 		primaryStage.setX(800);
-		primaryStage.setY(550);
+		primaryStage.setY(525);
 		primaryStage.show();
 		primaryStage.setOnCloseRequest(event -> System.exit(0));
 
