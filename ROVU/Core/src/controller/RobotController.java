@@ -8,6 +8,7 @@ import java.util.Set;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
+import robot.DataObject;
 import robot.RobotHandler;
 import simbad.sim.EnvironmentDescription;
 import utility.SimulatorMonitor;
