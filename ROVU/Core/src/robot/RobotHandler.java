@@ -1,25 +1,18 @@
 package robot;
 
-
-
 import controller.DataObject;
 import model.Mission;
-
-
 import model.MissionPoint;
 import project.AbstractRobotSimulator;
 import project.Point;
-
-import java.awt.*;
-import java.util.List;
 import java.util.PriorityQueue;
-
-import static robot.Error.Component.HARDWARE;
+import static robot.Error.Component.COLLISION_SENSOR;
 
 /**
  * Class for controlling one robot
  * @author Anthony
  * @author Niclas
+ * @author madeleine
  */
 public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private Point startingPoint;
@@ -106,7 +99,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
     public void detectError(){
         if(checkObstacle()){
-            sensorProcessor.addError(new Error(0,0, HARDWARE));
+            sensorProcessor.addError(new Error(0,0, COLLISION_SENSOR));
         }
     }
 }

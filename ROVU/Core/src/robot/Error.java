@@ -12,7 +12,8 @@ public class Error {
 
     public enum Component{
         HARDWARE,
-        SOFTWARE
+        SOFTWARE,
+        COLLISION_SENSOR,
     }
 
 
