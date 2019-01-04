@@ -3,12 +3,15 @@ package robot;
 
 
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import model.*;
 
 
 import project.AbstractRobotSimulator;
 import project.Point;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -32,7 +35,10 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private boolean timerActive = false;
     private boolean notFirstMission = false;
 	private int missionSize = 0;
-    
+	private StringProperty currentPositionProperty = new SimpleStringProperty("");
+	private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
+    private StringProperty currentLocationProperty = new SimpleStringProperty("");
+
     public RobotHandler(Point position, String name, int i, Environment env) {
         super(position, name);
         startingPoint = position;
@@ -189,6 +195,17 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 
     public void move() {
+        // Update the robot's current position string property that GUI observes 
+        currentPositionProperty
+                .setValue(
+                        this.getName() + "\t \t" +
+                        "x = " + decimalFormat.format(this.getPosition().getX()) + "\t \t" +
+                        "z = " + decimalFormat.format(this.getPosition().getZ()));
+
+        currentLocationProperty.setValue(
+                this.getName() + " is in " + currentEnv.getEnvironment(this.getPosition()).getPhysical()
+        );
+
         if (noMission || path == null || pointer >= path.length) return;
         try {
             //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
@@ -237,5 +254,13 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         else{
             return false;
         }
+    }
+
+    public StringProperty currentPositionPropertyProperty() {
+        return currentPositionProperty;
+    }
+
+    public StringProperty currentLocationPropertyProperty() {
+        return currentLocationProperty;
     }
 }
