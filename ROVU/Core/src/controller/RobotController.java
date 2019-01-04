@@ -3,15 +3,15 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import javafx.beans.property.StringProperty;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
 import robot.RobotHandler;
 import simbad.sim.EnvironmentDescription;
 import utility.SimulatorMonitor;
-import view.MissionEditorView;
+import view.ROVUView;
 
 /**
  * Class for controlling all robots
@@ -20,10 +20,13 @@ import view.MissionEditorView;
  * @author Madeleine
  */
 public class RobotController implements MissionExecutable{
+    private static final String ARGUMENTS = "--customMission=TRUE";
 	private static final RobotController controller = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
+    private List<StringProperty> currentPositions = new ArrayList<>();
+    private List<StringProperty> currentLocations = new ArrayList<>();
 
 	private RobotController() {
 	}
@@ -149,11 +152,23 @@ public class RobotController implements MissionExecutable{
 	public static void main(String[] args){
 	    getController().init();
 		new Thread(() -> {
-			javafx.application.Application.launch(MissionEditorView.class);
+			javafx.application.Application.launch(ROVUView.class, ARGUMENTS);
 		}).start();
 	}
 
 	public Environment getEnviroment() {
 		return currentEnvironment;
 	}
+
+    public List<StringProperty> getCurrentPositions() {
+        if (robots == null || robots.size() == 0) return null;
+        robots.forEach(robot -> currentPositions.add(robot.currentPositionPropertyProperty()));
+        return currentPositions;
+    }
+
+    public List<StringProperty> getCurrentLocations() {
+	    if (robots == null || robots.size() == 0) return null;
+	    robots.forEach(robot -> currentLocations.add(robot.currentLocationPropertyProperty()));
+	    return currentLocations;
+    }
 }
