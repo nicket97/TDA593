@@ -29,7 +29,6 @@ public class ROVUViewController implements Initializable {
             }
         }));
 
-	    rewardCalculator.currentRewardProperty().setValue(12);
 		// Add the robots' current positions
 		addLabels(RobotController.getController().getCurrentPositions(), 3);
 		addLabels(RobotController.getController().getCurrentLocations(), 8);
