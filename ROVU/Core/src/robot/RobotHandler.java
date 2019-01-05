@@ -2,7 +2,7 @@ package robot;
 
 
 
-import controller.DataObject;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.*;
@@ -128,9 +128,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		}*/
     }
 	private static Point [] task (Environment environment, Point start, Point finish){
-		A_Star aStar = new A_Star();
-		aStar.init(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5)); //-6.8,-2.5
-		List<Node> rpath = aStar.getRouteList(aStar.findRoute());
+		PathFinder aStar = new A_Star();		
+		List<Node> rpath = aStar.findPath(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5));
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
 			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
@@ -183,7 +182,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	public int getFin() { return this.fin; }
 
 	public DataObject getData() {
-		return null;
+		return new DataObject(this.getPosition(),null);
 	}
 
 	private void stop2Sec() {

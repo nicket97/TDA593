@@ -8,6 +8,7 @@ import javafx.beans.property.StringProperty;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
+import robot.DataObject;
 import robot.RobotHandler;
 import simbad.sim.EnvironmentDescription;
 import utility.SimulatorMonitor;
@@ -95,7 +96,7 @@ public class RobotController implements MissionExecutable{
                             currentMission.getMission().remove(missionPoint);
                         }
                     }*/
-                    robots.get(1).addMissionPoint(missionPoint);
+                    robots.get(0).addMissionPoint(missionPoint);
                     //currentMission.getMission().remove(missionPoint);
                     break;
             }

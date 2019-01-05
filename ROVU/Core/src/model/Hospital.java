@@ -71,7 +71,7 @@ public class Hospital extends Environment {
 		super.defineNonRoomSpace(corridor);
 		
 		super.addLogicalArea(new Rectangle2D.Double(5, 3.5, 3, 1.5), "Eating");
-		super.addLogicalArea(new Rectangle2D.Double(-5, -5, 7, 8), "Wifi");
+		super.addLogicalArea(new Rectangle2D.Double(-8, 0.4, 10, 2), "Wifi");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 18, 4.85), "Surgery division");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, -5, 4.5, 4.85), "Surgery room 1");
 		super.addPhysicalArea(new Rectangle2D.Double(-4.5, -5, 4.5, 4.85), "Surgery room 2");
@@ -80,7 +80,7 @@ public class Hospital extends Environment {
 
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 3, 18, 3), "Emergency division");
 		super.addPhysicalArea(new Rectangle2D.Double(-9, 3, 18, 3), "Consulting room");
-		
+	
 	}
 
 }

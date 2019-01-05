@@ -136,7 +136,7 @@ public class Zoo extends Environment{
 	walkways.add(new Rectangle2D.Double(4.5, -4.8, 2.5, 8.4));
 	super.defineNonRoomSpace(walkways);
 	
-	super.addLogicalArea(new Rectangle2D.Double(-9, -2, 10, 7), "Wifi");
+	super.addLogicalArea(new Rectangle2D.Double(-7.4, 0, 6.2, 3), "Wifi");
 	
 	super.addPhysicalArea(new Rectangle2D.Double(-8.4f, -4.6f, 3.6, 3.4), "Buffalo cage");
 	super.addPhysicalArea(new Rectangle2D.Double(-4.8f, -4.6f, 3.4, 3.4), "Mountain goat cage");

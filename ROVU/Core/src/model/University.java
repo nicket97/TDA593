@@ -76,7 +76,7 @@ public class University extends Environment {
 		corridor.add(new Rectangle2D.Double(-8, -1, 16, 2));
 		super.defineNonRoomSpace(corridor);
 
-		super.addLogicalArea(new Rectangle2D.Double(-8, -3, 9, 8), "Wifi");
+		super.addLogicalArea(new Rectangle2D.Double(-5.5, -0.8, 8, 1.2), "Wifi");
 		super.addLogicalArea(new Rectangle2D.Double(2.5, 2, 3, 2), "Eating");
 
 		super.addPhysicalArea(new Rectangle2D.Double(-8, -4, 3, 3), "Chemistry laboratory 01");

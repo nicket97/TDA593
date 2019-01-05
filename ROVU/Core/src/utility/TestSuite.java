@@ -19,7 +19,11 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 import controller.RobotController;
+import model.Constraint;
 import model.Environment;
+import model.Hospital;
+import model.Mission;
+import model.MissionPoint;
 import model.Node;
 import robot.A_Star;
 import robot.RobotHandler;
@@ -54,7 +58,7 @@ public class TestSuite {
 		 * Test #1: Robot's initial positioning
 		 */
 		public void robotPositioningTest() {
-			//testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0);
+			testSubject = new RobotHandler(new Point(2.0,2.0), "XM1", 0, new Environment(0.5,new EnvironmentDescription()));
 			testSet.add(testSubject);
 			testController = new SimulatorMonitor(testSet, testEnv);
 			Point[] startingPoints = {new Point(2.0,2.0)};
@@ -69,37 +73,55 @@ public class TestSuite {
 		
 		@Test
 		/**
-		 * Test #2: Robot's movement to two points
+		 * Test #2: Robot's movement to one point
 		 */
 		public void robotMoveTest_1() {
-			/*Point[] testPath = {
-					new Point (4.0,4.0), new Point (6.0,5.0)};
-			testSubject.setPath(testPath);
-		    try {
+			Point[] startingPoints = {new Point(6,-2.0),new Point(-2.7,-2.5)};
+			RobotController rc = RobotController.getController();
+			List <MissionPoint> mpoints = new ArrayList<MissionPoint>();
+			mpoints.add(new MissionPoint(5.5, 1, Constraint.ROBOT2));
+			Mission testMis = new Mission(mpoints);
+			Hospital testH = new Hospital(0.5, new EnvironmentDescription());
+			testH.generateEmptyGrid(40, 0.5);
+			rc.setEnvironment(testH);
+			rc.setMission(testMis);
+			rc.addRobots(2 ,startingPoints);
+			rc.executeMission();
+			rc.initSimulator();
+			try {
 				TimeUnit.SECONDS.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		    Assert.assertTrue(testSubject.isAtPosition(new Point (6.0,5.0)));*/
+			Assert.assertTrue(rc.getData().get(1).extractPosition().getX()>5.4 && rc.getData().get(1).extractPosition().getZ()>0.91
+					&& rc.getData().get(1).extractPosition().getX()<5.6 && rc.getData().get(1).extractPosition().getZ()<1.1);
+			
 		}
 		
 		@Test
 		/**
-		 * Test #3: Robot's movement to one point
+		 * Test #3: Robot's movement to two points
 		 */
 		public void robotMoveTest_2() {
-			/*System.out.println("My position:"+testSubject.getPosition());
-			Point[] testPath = 
-					{new Point (-2.0,4.0)};
-			testSubject.setPath(testPath);
-		    try {
-				TimeUnit.SECONDS.sleep(15);
+			
+			RobotController rc = RobotController.getController();
+			List <MissionPoint> mpoints = new ArrayList<MissionPoint>();
+			mpoints.add(new MissionPoint(-1.7, -3, Constraint.ROBOT3));
+			mpoints.add(new MissionPoint(-2.7, -4, Constraint.ROBOT3));
+			Mission testMis = new Mission(mpoints);
+			Hospital testH = new Hospital(0.5, new EnvironmentDescription());
+			testH.generateEmptyGrid(40, 0.5);
+			rc.setEnvironment(testH);
+			rc.setMission(testMis);
+			rc.executeMission();
+			try {
+				TimeUnit.SECONDS.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		    Assert.assertTrue(testSubject.isAtPosition(new Point (-2.0,-2.0)));*/
+			Assert.assertTrue(rc.getData().get(2).extractPosition().getX()>-2.8 && rc.getData().get(2).extractPosition().getZ()>-4.1
+					&& rc.getData().get(2).extractPosition().getX()<-2.6 && rc.getData().get(2).extractPosition().getZ()<-3.9);
+			
 		}
 		
 		@Test 
@@ -218,7 +240,7 @@ public class TestSuite {
 			Environment testEnv =  new Environment(0.5, etest);
 			
 			testEnv.generateEmptyGrid(40, 0.5);
-			atest.init(testEnv.pointNode(new Point (-2.3,4.5), 0.5), testEnv.pointNode(new Point (-1.8,9.5), 0.5));
+			atest.findPath(testEnv.pointNode(new Point (-2.3,4.5), 0.5), testEnv.pointNode(new Point (-1.8,9.5), 0.5));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-2 && sample.getPoint().getZ()==9.5);
 		}
@@ -242,7 +264,7 @@ public class TestSuite {
 				
 			testEnv.setWalls(testBounds, testWalls);
 			testEnv.generateEmptyGrid(40, 0.5);
-			atest.init(testEnv.pointNode(new Point (-7.2,1.0), 0.5), testEnv.pointNode(new Point (-5.0,0.2), 0.5));
+			atest.findPath(testEnv.pointNode(new Point (-7.2,1.0), 0.5), testEnv.pointNode(new Point (-5.0,0.2), 0.5));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-5 && sample.getPoint().getZ()==0.0);
 		}
