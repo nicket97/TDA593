@@ -16,25 +16,20 @@ import model.Timer;
 public class ROVUViewController implements Initializable {
 	@FXML Label score;
 	@FXML AnchorPane pane;
-	private RewardCalculator rewardCalculator = new RewardCalculator();
-	private Timer timer = new Timer();
+	private RewardCalculator rewardCalculator = RewardCalculator.getRewardCalculator();
 
-	public void updateReward(int reward) {
-        score.setText(Integer.toString(reward));
-	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		new Thread(() -> {
-			while (true) {
-                timer.run();
-                if (timer.isRunning()) {
-                    Platform.runLater(() -> {
-                        updateReward(rewardCalculator.calculateReward());
-                    });
-                }
-			}
-		}).start();
+	    // Listen to the current reward score
+	    rewardCalculator.currentRewardProperty().addListener(((observable, oldValue, newValue) -> {
+	        if (oldValue.intValue() != newValue.intValue()) {
+	            Platform.runLater(() -> {
+	                score.setText(newValue.intValue() + "");
+                });
+            }
+        }));
 
+	    rewardCalculator.currentRewardProperty().setValue(12);
 		// Add the robots' current positions
 		addLabels(RobotController.getController().getCurrentPositions(), 3);
 		addLabels(RobotController.getController().getCurrentLocations(), 8);
