@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,15 +58,6 @@ public class MissionEditor implements MissionEditable, Initializable{
         missions.add(mission4);
     }
 
-	public Mission createMission(List <MissionPoint>missionPoints){
-		return new Mission(missionPoints);
-	}
-
-	// Todo
-	public Mission editMission(Mission currentMission, List <MissionPoint>missionPoints){
-		return null;
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	    Platform.runLater(() -> {
@@ -105,16 +97,6 @@ public class MissionEditor implements MissionEditable, Initializable{
             } else {
                 pointListView.getItems().add(new MissionPoint(x, z, prio));
             }
-        });
-
-        createMissionBtn.setOnAction(event -> {
-            if (pointListView.getItems() == null) return;
-            List<MissionPoint> points = new ArrayList<MissionPoint>();
-            points.addAll(pointListView.getItems());
-            missions.add(createMission(points));
-            addMissionChoices();
-            pointListView.getItems().clear();
-            System.out.println(missions);
         });
 
         runButton.setOnAction(event -> {
@@ -160,4 +142,32 @@ public class MissionEditor implements MissionEditable, Initializable{
             }));
         });
     }
+
+    // Creates a mission when the button is clicked
+    @FXML
+    public void createMission(ActionEvent event) {
+        if (pointListView.getItems() == null || pointListView.getItems().isEmpty()) return;
+        List<MissionPoint> points = new ArrayList<MissionPoint>();
+        points.addAll(pointListView.getItems());
+        missions.add(createMission(points));
+        addMissionChoices();
+        pointListView.getItems().clear();
+        System.out.println(missions);
+    }
+
+    @FXML
+    public void editMission(ActionEvent event) {
+	    // TODO
+    }
+
+    // Helper functions
+    private Mission createMission(List <MissionPoint>missionPoints){
+        return new Mission(missionPoints);
+    }
+
+    // TODO
+    private Mission editMission(Mission currentMission, List <MissionPoint>missionPoints){
+        return null;
+    }
+
 }
