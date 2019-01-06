@@ -37,7 +37,7 @@
 					<children>
 						<ListView fx:id="pointListView" layoutX="285.0" layoutY="68.0" prefHeight="231.0" prefWidth="293.0" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="22.0" />
 						<Label layoutX="285.0" layoutY="38.0" text="Mission Points" />
-						<Button fx:id="createMissionBtn" layoutX="468.0" layoutY="323.0" mnemonicParsing="false" text="Create Mission" AnchorPane.rightAnchor="22.0" />
+						<Button fx:id="createMissionBtn" layoutX="468.0" layoutY="323.0" mnemonicParsing="false" onAction="#createMission" text="Create Mission" AnchorPane.rightAnchor="22.0" />
 						<VBox layoutX="45.0" layoutY="38.0">
 							<children>
 								<Label text="Add Mission Point" />

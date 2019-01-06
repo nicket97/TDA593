@@ -152,6 +152,7 @@ public class RobotController implements MissionExecutable{
     }
 	public static void main(String[] args){
 	    getController().init();
+	    new Thread(new Timer()).start();
 		new Thread(() -> {
 			javafx.application.Application.launch(ROVUView.class, ARGUMENTS);
 		}).start();

@@ -1,16 +1,25 @@
 package model;
 
-import controller.ROVUViewController;
 import controller.RobotController;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import project.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RewardCalculator {
+public class RewardCalculator implements IRewardCalculator {
     private RobotController rc = RobotController.getController();
     private boolean isProcedureA = true;
+    private static final RewardCalculator rewardCalculator = new RewardCalculator();
+    private IntegerProperty currentRewardProperty = new SimpleIntegerProperty(0);
+
+    private RewardCalculator() {}
+
+    public static RewardCalculator getRewardCalculator() {
+        return rewardCalculator;
+    }
 
     // Return a list of random nodes
     private List<Node> mockNodes() {
@@ -26,7 +35,16 @@ public class RewardCalculator {
         return nodes;
     }
 
-    public int calculateReward() {
+    @Override
+    public IntegerProperty currentRewardProperty() {
+        return currentRewardProperty;
+    }
+
+    public void calculateReward() {
+        currentRewardProperty.setValue(calculate());
+    }
+
+    private int calculate() {
         int rewardPoints = -99; // If it returns -99, then something's gone wrong
 
         List<Node> nodes = rc.getNodes();
