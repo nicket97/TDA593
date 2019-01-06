@@ -14,6 +14,8 @@ import project.Point;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import controller.RobotController;
+
 /**
  * Class for controlling one robot
  * @author Anthony
@@ -38,12 +40,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	private StringProperty currentPositionProperty = new SimpleStringProperty("");
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private StringProperty currentLocationProperty = new SimpleStringProperty("");
+    private RobotController commander;
 
-    public RobotHandler(Point position, String name, int i, Environment env) {
+    public RobotHandler(Point position, String name, int i, Environment env, RobotController command) {
         super(position, name);
         startingPoint = position;
         robotIndex = i;
         currentEnv=env;
+        commander=command;
     }
 
     public void executeMission(){
@@ -218,7 +222,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
                 concatList.remove(0).toArray(path);
                 pointer = 0;
             }
-            if (isAtPosition(path[pointer]) && pointer != path.length - 1) {
+            if (isAtPosition(path[pointer]) && pointer != path.length - 1 
+            		&& !commander.isAnotherRobotInRoom(currentEnv.getEnvironment(path[pointer+1]).getPhysical(), this)) {
                 pointer++;
             }
 //            System.out.println("path pointer-->" + pointer);

@@ -49,7 +49,7 @@ public class RobotController implements MissionExecutable{
     // Can be confusing since we mix Point and MissionPoint
 	public void addRobots(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
-			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
+			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment, this));
 		}
 	}
 
@@ -64,6 +64,17 @@ public class RobotController implements MissionExecutable{
 	public void setMission(Mission mission) {
 	    currentMission = mission;
     }
+	
+	public boolean isAnotherRobotInRoom (List<String> room , RobotHandler asking){
+		for (RobotHandler r:robots){
+			if (!r.equals(asking) && currentEnvironment.pointNode(r.getPosition(),0.5).getPhysical().equals(room)
+					&& currentEnvironment.pointNode(r.getPosition(),0.5).isRoom()){
+				return true;
+			}
+		}
+		return false;		
+	}
+
 
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
