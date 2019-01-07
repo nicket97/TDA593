@@ -58,10 +58,6 @@ public class RobotController implements MissionExecutable{
 	    currentEnvironment = e;
     }
 
-	public Mission getMission(){
-	     return currentMission;
-	}
-
 	public void setMission(Mission mission) {
 	    currentMission = mission;
     }
@@ -143,7 +139,10 @@ public class RobotController implements MissionExecutable{
 
         AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
     }
-	
+
+	/**
+	 * @return The data from the robots (sensors, position etc)
+	 */
 	public List<DataObject> getData(){
 		List<DataObject> d = new ArrayList<>();
 		for (RobotHandler r: robots){
