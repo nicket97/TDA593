@@ -48,10 +48,8 @@ public class Environment implements IEnvironment {
 
     /**
 	 * Method to add walls to grid
-	 * @param check
-	 * @param scale
-	 * @param diagonal
-	 * @param map
+	 * @param bounds
+	 * @param walls
 	 * @return
 	 */
 	
@@ -126,7 +124,7 @@ public class Environment implements IEnvironment {
 	 * @param map
 	 * @return
 	 */
-	public static Node [] neighbouring (Node check, double coefficient, boolean diagonal, List <Node> map){
+	public Node [] neighbouring (Node check, double coefficient, boolean diagonal, List <Node> map){
 		//-10,-1,+1,+10
 		//-11,-10,-9,-1,+1,+9,+10,+11
         List <Node> temp = new ArrayList<Node> ();
