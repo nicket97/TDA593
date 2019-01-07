@@ -131,7 +131,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 	private static Point [] task (Environment environment, Point start, Point finish){
 		PathFinder aStar = new A_Star();		
-		List<Node> rpath = aStar.findPath(environment.pointToNode(start, 0.5), environment.pointToNode(finish, 0.5));
+		List<Node> rpath = aStar.findPath(environment.getEnvironmentNode(start), environment.getEnvironmentNode(finish));
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
 			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);

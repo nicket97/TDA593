@@ -182,7 +182,7 @@ public class Environment {
 	 * @param coefficient
 	 * @return
 	 */	
-	public  Node pointToNode(Point p, double coefficient) {
+	private  Node pointToNode(Point p, double coefficient) {
 		for (Node v:map){
 			Rectangle2D.Double temp = nodeToRect(v, coefficient);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
 			if (temp.contains(p.getX(), p.getZ())){
