@@ -16,9 +16,6 @@ import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
 
 public class Environment implements IEnvironment {
-    int xSize;
-    int ySize;
-    
     private List <Pair<Rectangle2D.Double,String>> logicalAreas;
     private List <Pair<Rectangle2D.Double,String>> physicalAreas;
     private List <Rectangle2D.Double> innerSpace;
@@ -32,13 +29,13 @@ public class Environment implements IEnvironment {
 	public Environment (Double coefficient, EnvironmentDescription environmentDescription){
 		this.coefficient = coefficient;
 		this.environmentDescription = environmentDescription;
-		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.innerSpace = new ArrayList <Rectangle2D.Double>();
-		this.noRoom = new ArrayList<Rectangle2D.Double>();
-		this.bounds = new ArrayList <Boundary>();
-		this.walls = new ArrayList <Wall>();
-		this.map=new ArrayList <Node>();
+		this.physicalAreas = new ArrayList <>();
+		this.logicalAreas = new ArrayList <>();
+		this.innerSpace = new ArrayList <>();
+		this.noRoom = new ArrayList<>();
+		this.bounds = new ArrayList <>();
+		this.walls = new ArrayList <>();
+		this.map=new ArrayList <>();
 	}
 
     /**
@@ -366,8 +363,7 @@ public class Environment implements IEnvironment {
 	/**
 	 * Method to place walls onto the grid
 	 * @param toWall
-	 * @param bounds
-	 * @param walls
+	 * @param coefficient
 	 * @return
 	 */
 	private List<Node> walling (List<Node> toWall, double coefficient){
