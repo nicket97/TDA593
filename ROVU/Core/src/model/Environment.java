@@ -1,17 +1,12 @@
 package model;
 
-import java.awt.Color;
-
 import project.Point;
 import java.awt.geom.Rectangle2D;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javafx.util.Pair;
-import model.Node;
-import simbad.sim.AbstractWall;
 import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.HorizontalBoundary;
@@ -190,7 +185,7 @@ public class Environment implements IEnvironment {
 	 * @param coefficient
 	 * @return
 	 */	
-	public  Node pointNode (Point p, double coefficient) {
+	public  Node pointToNode(Point p, double coefficient) {
 		for (Node v:map){
 			Rectangle2D.Double temp = nodeRect(v, coefficient);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
 			if (temp.contains(p.getX(), p.getZ())){
@@ -420,7 +415,7 @@ public class Environment implements IEnvironment {
 	}
 	
 	public Node getEnvironment (Point position){
-		Node temp = pointNode (position, coefficient);
+		Node temp = pointToNode(position, coefficient);
 		return temp;
 	}
 

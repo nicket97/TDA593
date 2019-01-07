@@ -67,8 +67,8 @@ public class RobotController implements MissionExecutable{
 	
 	public boolean isAnotherRobotInRoom (List<String> room , RobotHandler asking){
 		for (RobotHandler r:robots){
-			if (!r.equals(asking) && currentEnvironment.pointNode(r.getPosition(),0.5).getPhysical().equals(room)
-					&& currentEnvironment.pointNode(r.getPosition(),0.5).isRoom()){
+			if (!r.equals(asking) && currentEnvironment.pointToNode(r.getPosition(),0.5).getPhysical().equals(room)
+					&& currentEnvironment.pointToNode(r.getPosition(),0.5).isRoom()){
 				return true;
 			}
 		}
