@@ -197,6 +197,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 
     public void move() {
+        if (noMission || path == null || pointer >= path.length || currentEnv == null) return;
         // Update the robot's current position string property that GUI observes 
         currentPositionProperty
                 .setValue(
@@ -208,7 +209,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
                 this.getName() + " is in " + currentEnv.getEnvironmentNode(this.getPosition()).getPhysical()
         );
 
-        if (noMission || path == null || pointer >= path.length) return;
         try {
             //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
             if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
