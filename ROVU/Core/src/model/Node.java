@@ -15,7 +15,7 @@ public class Node {
     private List <String> physicalArea;
     private List <String> logicalArea;
     private boolean physical, wall, wifi, eating, room;
-    private int nodeID, roomID;
+    private int nodeID;
     private Point point;
     private Node[] neighbors;
     private int distanceFromStart;
@@ -80,10 +80,6 @@ public class Node {
     public Point getPoint() {
         return point;
     }
-
-    public void setDistStart(int startDist){   	
-    	this.setDistanceFromStart(startDist);
-    }
 	
     public Node getParent(){
     	return this.parent;
@@ -140,7 +136,7 @@ public class Node {
 	
 	@Override
     public String toString() {
-        return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + " id:" + roomID + "\n";
+        return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + "\n";
     }
 
 	public List <Node> getPredecessors() {
