@@ -202,7 +202,7 @@ public class Environment implements IEnvironment {
 	 * @param coefficient
 	 * @return
 	 */
-	public Rectangle2D.Double nodeToRect(Node node, double coefficient){
+	private Rectangle2D.Double nodeToRect(Node node, double coefficient){
 		Rectangle2D.Double temp = new Rectangle2D.Double(node.getPoint().getX(),node.getPoint().getZ(),coefficient,coefficient);
 		return temp;
 	}
@@ -213,7 +213,7 @@ public class Environment implements IEnvironment {
 	 * @return
 	 */
 
-	public Rectangle2D.Double verticalWallToRect(VerticalWall wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double verticalWallToRect(VerticalWall wall){ //Float p1z, Float p1x, Float p2x
 		float side=0;
 		if (wall.getP2x()<wall.getP1x()){
 			side=wall.getP2x();
@@ -230,7 +230,7 @@ public class Environment implements IEnvironment {
 	 * @param wall
 	 * @return
 	 */
-	public Rectangle2D.Double horizontalWallToRect(HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double horizontalWallToRect(HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
 //-4.5f, 0.0f, -5.0f
 		float side=0;
 		if (wall.getP2z()<wall.getP1z()){
@@ -245,37 +245,33 @@ public class Environment implements IEnvironment {
 	
 	/**
 	 * Method to get rectangle representing vertical boundary and add it to grid
-	 * @param wall
+	 * @param boundary
 	 * @return
 	 */
-	public Rectangle2D.Double verticalBoundaryToRect(VerticalBoundary wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double verticalBoundaryToRect(VerticalBoundary boundary){ //Float p1z, Float p1x, Float p2x
 		float side=0;
-		if (wall.getP2x()<wall.getP1x()){
-			side=wall.getP2x();
+		if (boundary.getP2x() < boundary.getP1x()){
+			side = boundary.getP2x();
 		}else{
-			side=wall.getP1x();
+			side = boundary.getP1x();
 		}
-		  //  System.out.println("InsideRect:"+Math.abs(wall.getP1x())+"  "+Math.abs(wall.getP2x()));
-			Rectangle2D.Double temp = new Rectangle2D.Double(side,wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
-			return temp;
-	
+		  //  System.out.println("InsideRect:"+Math.abs(boundary.getP1x())+"  "+Math.abs(boundary.getP2x()));
+		return new Rectangle2D.Double(side, boundary.getP1z()-0.15, Math.abs(boundary.getP1x() - boundary.getP2x()),0.3);
 	}
 	
 	/**
 	 * Method to get rectangle representing horizontal boundary and add it to grid
-	 * @param wall
+	 * @param boundary
 	 * @return
 	 */
-	public Rectangle2D.Double horizontalBoundaryToRect(HorizontalBoundary wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double horizontalBoundaryToRect(HorizontalBoundary boundary){ //Float p1z, Float p1x, Float p2x
 		float side=0;
-		if (wall.getP2z()<wall.getP1z()){
-			side=wall.getP2z();
+		if (boundary.getP2z() < boundary.getP1z()){
+			side = boundary.getP2z();
 		}else{
-			side=wall.getP1z();
+			side = boundary.getP1z();
 		}
-		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,side,0.3,Math.abs(wall.getP1z()-wall.getP2z()));
-		return temp;
-
+		return new Rectangle2D.Double(boundary.getP1x()-0.15, side, 0.3, Math.abs(boundary.getP1z() - boundary.getP2z()));
 	}
 	
 	/**
@@ -374,7 +370,7 @@ public class Environment implements IEnvironment {
 	 * @param walls
 	 * @return
 	 */
-	public List<Node> walling (List<Node> toWall, double coefficient){
+	private List<Node> walling (List<Node> toWall, double coefficient){
 		toWall=this.map;//test
 		List <Rectangle2D.Double> obstacles = new ArrayList <Rectangle2D.Double>();
 		Rectangle2D.Double temp;
