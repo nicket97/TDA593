@@ -22,12 +22,13 @@ import view.ROVUView;
  */
 public class RobotController implements MissionExecutable{
     private static final String ARGUMENTS = "--customMission=TRUE";
-	private static final RobotController controller = new RobotController();
+	private static final RobotController CONTROLLER = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
     private List<StringProperty> currentPositions = new ArrayList<>();
     private List<StringProperty> currentLocations = new ArrayList<>();
+    private static Timer timer = new Timer();
 
 	private RobotController() {
 	}
@@ -37,12 +38,12 @@ public class RobotController implements MissionExecutable{
 		Hospital hospital = new Hospital(0.5,e);
 		hospital.generateEmptyGrid(40);
 		setEnvironment(hospital);
-		controller.addRobots(4 , startingPoints);
+		CONTROLLER.addRobots(4 , startingPoints);
 		initSimulator();
 	}
 
 	public static RobotController getController() {
-		return controller;
+		return CONTROLLER;
 	}
 
 	// TODO: Better initialization of robots' starting points
@@ -163,7 +164,7 @@ public class RobotController implements MissionExecutable{
     }
 	public static void main(String[] args){
 	    getController().init();
-	    new Thread(new Timer()).start();
+	    new Thread(timer).start();
 		new Thread(() -> {
 			javafx.application.Application.launch(ROVUView.class, ARGUMENTS);
 		}).start();

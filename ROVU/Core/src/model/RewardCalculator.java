@@ -12,13 +12,13 @@ import java.util.Random;
 public class RewardCalculator implements IRewardCalculator {
     private RobotController rc = RobotController.getController();
     private boolean isProcedureA = true;
-    private static final RewardCalculator rewardCalculator = new RewardCalculator();
+    private static final RewardCalculator REWARD_CALCULATOR = new RewardCalculator();
     private IntegerProperty currentRewardProperty = new SimpleIntegerProperty(0);
 
     private RewardCalculator() {}
 
     public static RewardCalculator getRewardCalculator() {
-        return rewardCalculator;
+        return REWARD_CALCULATOR;
     }
 
     // Return a list of random nodes
