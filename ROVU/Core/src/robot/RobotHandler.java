@@ -40,14 +40,12 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 	private StringProperty currentPositionProperty = new SimpleStringProperty("");
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private StringProperty currentLocationProperty = new SimpleStringProperty("");
-    private RobotController commander;
 
-    public RobotHandler(Point position, String name, int i, Environment env, RobotController command) {
+    public RobotHandler(Point position, String name, int i, Environment env) {
         super(position, name);
         startingPoint = position;
         robotIndex = i;
         currentEnv=env;
-        commander=command;
     }
 
     public void executeMission(){
@@ -216,14 +214,16 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
                 processedPoints.poll().done(); // Mark mission point as done
             }
+            
             if (pointer == path.length - 1 && !concatList.isEmpty()) {
                 System.out.println("Robot cycle: " + this.robotIndex);
                 path = new Point[concatList.get(0).size()];
                 concatList.remove(0).toArray(path);
                 pointer = 0;
             }
+     
             if (isAtPosition(path[pointer]) && pointer != path.length - 1 
-            		&& !commander.isAnotherRobotInRoom(currentEnv.getEnvironment(path[pointer+1]).getPhysical(), this)) {
+            		&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironment(path[pointer+1]).getPhysical(), this)) {
                 pointer++;
             }
 //            System.out.println("path pointer-->" + pointer);
@@ -233,9 +233,11 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
                 setTimer();
                 this.setDestination(path[pointer]);
             }
+            
             if (canMove()) {
                 this.setDestination(path[pointer]);
             }
+            
             if (missionPoints.size() == 0) {
                 available = true;
             }

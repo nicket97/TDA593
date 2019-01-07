@@ -49,7 +49,7 @@ public class RobotController implements MissionExecutable{
     // Can be confusing since we mix Point and MissionPoint
 	public void addRobots(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
-			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment, this));
+			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
 		}
 	}
 
