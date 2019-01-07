@@ -157,7 +157,7 @@ public class RobotController implements MissionExecutable{
         }
 	    List<Node> nodes = new ArrayList<>();
 	    robots.forEach(robot -> {
-	        nodes.add(currentEnvironment.getEnvironment(robot.getPosition()));
+	        nodes.add(currentEnvironment.getEnvironmentNode(robot.getPosition()));
         });
 	    return nodes;
     }

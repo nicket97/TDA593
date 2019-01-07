@@ -205,7 +205,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
                         "z = " + decimalFormat.format(this.getPosition().getZ()));
 
         currentLocationProperty.setValue(
-                this.getName() + " is in " + currentEnv.getEnvironment(this.getPosition()).getPhysical()
+                this.getName() + " is in " + currentEnv.getEnvironmentNode(this.getPosition()).getPhysical()
         );
 
         if (noMission || path == null || pointer >= path.length) return;
@@ -223,13 +223,13 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             }
      
             if (isAtPosition(path[pointer]) && pointer != path.length - 1 
-            		&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironment(path[pointer+1]).getPhysical(), this)) {
+            		&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironmentNode(path[pointer+1]).getPhysical(), this)) {
                 pointer++;
             }
 //            System.out.println("path pointer-->" + pointer);
             if (pointer != path.length - 1 &&
-                !currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) &&
-                !timerActive && currentEnv.getEnvironment(path[pointer + 1]).isRoom()) {
+                !currentEnv.getEnvironmentNode(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironmentNode(path[pointer]).getPhysical())) &&
+                !timerActive && currentEnv.getEnvironmentNode(path[pointer + 1]).isRoom()) {
                 setTimer();
                 this.setDestination(path[pointer]);
             }

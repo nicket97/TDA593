@@ -15,7 +15,7 @@ import simbad.sim.VerticalBoundary;
 import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
 
-public class Environment implements IEnvironment {
+public class Environment {
     private List <Pair<Rectangle2D.Double,String>> logicalAreas;
     private List <Pair<Rectangle2D.Double,String>> physicalAreas;
     private List <Rectangle2D.Double> innerSpace;
@@ -406,9 +406,8 @@ public class Environment implements IEnvironment {
 		return this.map;
 	}
 	
-	public Node getEnvironment (Point position){
-		Node temp = pointToNode(position, coefficient);
-		return temp;
+	public Node getEnvironmentNode (Point position){
+		return pointToNode(position, coefficient);
 	}
 
 	public EnvironmentDescription getEnvironmentDescription() {
