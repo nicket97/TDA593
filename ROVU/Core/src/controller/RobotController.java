@@ -35,7 +35,7 @@ public class RobotController implements MissionExecutable{
 		Point[] startingPoints = {new Point(-6,-2.5), new Point(-2.5,-2.5), new Point(2.5,-2.5), new Point(6,-2.5)};
 		EnvironmentDescription e = new EnvironmentDescription();
 		Hospital hospital = new Hospital(0.5,e);
-		hospital.generateEmptyGrid(40, 0.5);
+		hospital.generateEmptyGrid(40);
 		setEnvironment(hospital);
 		controller.addRobots(4 , startingPoints);
 		initSimulator();

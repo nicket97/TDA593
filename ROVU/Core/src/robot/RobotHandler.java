@@ -134,7 +134,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		List<Node> rpath = aStar.findPath(environment.getEnvironmentNode(start), environment.getEnvironmentNode(finish));
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
-			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
+			commands[m]=environment.getNodeCenter(rpath.get(m));//test.getNodeCenter(path.get(m), 1);
 		}
 		commands[commands.length-1]=finish;
 		return commands;

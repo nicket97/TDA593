@@ -94,14 +94,14 @@ public class Environment {
 	public void addAreasToMap(){
 		for (Pair<Rectangle2D.Double,String> log:logicalAreas){
 			for (Node n:map){
-				if (nodeToRect(n,coefficient).intersects(log.getKey())){
+				if (nodeToRect(n).intersects(log.getKey())){
 					n.setLogical(log.getValue());
 				}
 			}
 		}
 		for (Pair<Rectangle2D.Double,String> phys:physicalAreas){
 			for (Node s:map){
-				if (nodeToRect(s,coefficient).intersects(phys.getKey())){
+				if (nodeToRect(s).intersects(phys.getKey())){
 					s.setPhysical(phys.getValue());
 				}
 			}
@@ -111,12 +111,11 @@ public class Environment {
 	/**
 	 * Method to find and add node's neighbors
 	 * @param check
-	 * @param coefficient
 	 * @param diagonal
 	 * @param map
 	 * @return
 	 */
-	public Node [] neighbouring (Node check, double coefficient, boolean diagonal, List <Node> map){
+	public Node [] neighbouring (Node check, boolean diagonal, List <Node> map){
 		//-10,-1,+1,+10
 		//-11,-10,-9,-1,+1,+9,+10,+11
         List <Node> temp = new ArrayList<Node> ();
@@ -179,12 +178,11 @@ public class Environment {
 	/**
 	 * Method to get a Node containing requested point
 	 * @param p
-	 * @param coefficient
 	 * @return
 	 */	
-	private  Node pointToNode(Point p, double coefficient) {
+	private  Node pointToNode(Point p) {
 		for (Node v:map){
-			Rectangle2D.Double temp = nodeToRect(v, coefficient);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
+			Rectangle2D.Double temp = nodeToRect(v);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
 			if (temp.contains(p.getX(), p.getZ())){
 				return v;
 			}
@@ -196,10 +194,9 @@ public class Environment {
 	/**
 	 * Method to obtain the space occupied by node (in form of rectangle)
 	 * @param node
-	 * @param coefficient
 	 * @return
 	 */
-	private Rectangle2D.Double nodeToRect(Node node, double coefficient){
+	private Rectangle2D.Double nodeToRect(Node node){
 		Rectangle2D.Double temp = new Rectangle2D.Double(node.getPoint().getX(),node.getPoint().getZ(),coefficient,coefficient);
 		return temp;
 	}
@@ -274,21 +271,18 @@ public class Environment {
 	/**
 	 * Method to get center of the node
 	 * @param node
-	 * @param coefficient
 	 * @return
 	 */
-	public Point getNodeCenter(Node node, double coefficient){
-		Point temp = new Point (node.getPoint().getX()+coefficient/2,node.getPoint().getZ()+coefficient/2);
-		return temp;		
+	public Point getNodeCenter(Node node){
+		return new Point (node.getPoint().getX()+coefficient/2,node.getPoint().getZ()+coefficient/2);
 	}
 	
 	/**
 	 * Method for generating grid
 	 * @param scale
-	 * @param coefficient
 	 * @return
 	 */
-	public  List<Node> generateEmptyGrid(int scale, double coefficient){
+	public  List<Node> generateEmptyGrid(int scale){
 		List <Node> exmap = new ArrayList<Node> ();
 		int z=0;
 	    
@@ -328,7 +322,7 @@ public class Environment {
 		}
 		for (Node v:map){
 			
-			Node [] neigh = neighbouring (v, coefficient, false, map);
+			Node [] neigh = neighbouring (v, false, map);
 			v.setNeighbors(neigh);
 			
 			}
@@ -337,7 +331,7 @@ public class Environment {
 		
 		for (Rectangle2D.Double inn:innerSpace){
 			for (Node x:map){
-				if (nodeToRect(x,coefficient).intersects(inn)){
+				if (nodeToRect(x).intersects(inn)){
 					x.setRoom(true);
 				}
 			}
@@ -346,12 +340,12 @@ public class Environment {
 		if (!noRoom.isEmpty()){
 		for (Rectangle2D.Double nRoom:noRoom){
 			for (Node x:map){
-				if (nodeToRect(x,coefficient).intersects(nRoom)){
+				if (nodeToRect(x).intersects(nRoom)){
 					x.setRoom(false);
 				}
 			}
 		}}
-		walling(map,coefficient);
+		walling(map);
 		return map;
 	}
 	
@@ -363,10 +357,9 @@ public class Environment {
 	/**
 	 * Method to place walls onto the grid
 	 * @param toWall
-	 * @param coefficient
 	 * @return
 	 */
-	private List<Node> walling (List<Node> toWall, double coefficient){
+	private List<Node> walling (List<Node> toWall){
 		toWall=this.map;//test
 		List <Rectangle2D.Double> obstacles = new ArrayList <Rectangle2D.Double>();
 		Rectangle2D.Double temp;
@@ -393,7 +386,7 @@ public class Environment {
 		
 		for (Rectangle2D.Double n:obstacles){
 			for (Node v:toWall){
-			if (nodeToRect(v,coefficient).intersects(n)){
+			if (nodeToRect(v).intersects(n)){
 				v.setWall(true);
 			}
 			}
@@ -407,7 +400,7 @@ public class Environment {
 	}
 	
 	public Node getEnvironmentNode (Point position){
-		return pointToNode(position, coefficient);
+		return pointToNode(position);
 	}
 
 	public EnvironmentDescription getEnvironmentDescription() {

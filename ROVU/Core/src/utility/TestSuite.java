@@ -1,5 +1,6 @@
 package utility;
 
+import javafx.application.Application;
 import project.AbstractSimulatorMonitor;
 
 import project.Point;
@@ -32,6 +33,7 @@ import simbad.sim.HorizontalWall;
 import simbad.sim.VerticalBoundary;
 import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
+import view.ROVUView;
 
 @SuppressWarnings("unused")
 
@@ -80,7 +82,7 @@ public class TestSuite {
 			mpoints.add(new MissionPoint(5.5, 1, Constraint.ROBOT2));
 			Mission testMis = new Mission(mpoints);
 			Hospital testH = new Hospital(0.5, new EnvironmentDescription());
-			testH.generateEmptyGrid(40, 0.5);
+			testH.generateEmptyGrid(40);
 			rc.setEnvironment(testH);
 			rc.setMission(testMis);
 			rc.addRobots(2 ,startingPoints);
@@ -108,7 +110,7 @@ public class TestSuite {
 			mpoints.add(new MissionPoint(-2.7, -4, Constraint.ROBOT3));
 			Mission testMis = new Mission(mpoints);
 			Hospital testH = new Hospital(0.5, new EnvironmentDescription());
-			testH.generateEmptyGrid(40, 0.5);
+			testH.generateEmptyGrid(40);
 			rc.setEnvironment(testH);
 			rc.setMission(testMis);
 			rc.executeMission();
@@ -129,7 +131,7 @@ public class TestSuite {
 		public void gridGenerationTest(){
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			Assert.assertTrue(testEnv.getMap().size()==1600);
 		}
 		
@@ -154,7 +156,7 @@ public class TestSuite {
 			testWalls.add(test4);
 				
 			testEnv.setWalls(testBounds, testWalls);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			
 			//Check if nodes occupied by physical walls have Wall type
 			for (double i=-3;i<3;i+=0.5){
@@ -181,7 +183,7 @@ public class TestSuite {
 			
 			testEnv.addLogicalArea(new Rectangle2D.Double(-2, -1, 3, 2), "Wifi");
 			testEnv.addPhysicalArea(new Rectangle2D.Double(-9, -3, 4, 3), "Office");
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			
 			for (double i=-9;i<-5;i+=0.5){
 				for (double z=-3;z<0;z+=0.5){
@@ -203,7 +205,7 @@ public class TestSuite {
 		public void nodeNeighborTest(){
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			
 			Node testNode = testEnv.getMap().get(47);
 			double tX=testNode.getPoint().getX();
@@ -237,7 +239,7 @@ public class TestSuite {
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);
 			
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			atest.findPath(testEnv.getEnvironmentNode(new Point (-2.3,4.5)), testEnv.getEnvironmentNode(new Point (-1.8,9.5)));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-2 && sample.getPoint().getZ()==9.5);
@@ -261,7 +263,7 @@ public class TestSuite {
 			testWalls.add(test2);
 				
 			testEnv.setWalls(testBounds, testWalls);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			atest.findPath(testEnv.getEnvironmentNode(new Point (-7.2,1.0)), testEnv.getEnvironmentNode(new Point (-5.0,0.2)));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-5 && sample.getPoint().getZ()==0.0);
