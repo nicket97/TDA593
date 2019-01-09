@@ -17,7 +17,7 @@ public class MissionEditorView {
 
     public Stage getStage() {
         Stage missionEditorStage = new Stage();
-        FXMLLoader missionEditorLoader = new FXMLLoader(getClass().getResource("../fxml/Root.fxml"));
+        FXMLLoader missionEditorLoader = new FXMLLoader(getClass().getResource("../fxml/MissionEditorView.fxml"));
         try {
             Parent missionEditorRoot = missionEditorLoader.load();
             MissionEditor controller = missionEditorLoader.getController();
