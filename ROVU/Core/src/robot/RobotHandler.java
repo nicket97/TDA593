@@ -3,6 +3,8 @@ package robot;
 
 
 
+import static robot.Error.Component.COLLISION_SENSOR;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.*;
@@ -16,18 +18,24 @@ import java.util.*;
 
 import controller.RobotController;
 
+
 /**
  * Class for controlling one robot
  * @author Anthony
  * @author Niclas
+ * @author madeleine
  */
-public class RobotHandler extends AbstractRobotSimulator implements Runnable{
+public class RobotHandler extends AbstractRobotSimulator implements Runnable, IRobotErrorGraphics{
     private Point startingPoint;
     private int robotIndex;
     private int fin;
     private	Point[] path;
     private boolean available;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
+
+    private SensorProcessor sensorProcessor = new SensorProcessor();
+    private StringProperty errorProperty = new SimpleStringProperty(this.getName() + ": Everything's fine!");
+
     private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
     private Environment currentEnv;
     private int pointer = 0;
@@ -36,12 +44,13 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private long stop = 0;
     private boolean timerActive = false;
     private boolean notFirstMission = false;
-	private int missionSize = 0;
+    private int missionSize = 0;
 	private StringProperty currentPositionProperty = new SimpleStringProperty("");
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private StringProperty currentLocationProperty = new SimpleStringProperty("");
 
     public RobotHandler(Point position, String name, int i, Environment env) {
+
         super(position, name);
         startingPoint = position;
         robotIndex = i;
@@ -140,6 +149,10 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 		return commands;
 	}
 
+    private void evaluateError(){
+        PriorityQueue errors = sensorProcessor.getErrorData();
+    }
+
     public void setFin (int fin){
 	this.fin=fin;
 }
@@ -193,6 +206,14 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         }
         catch (InterruptedException ie ) {
             ie.printStackTrace();
+        }
+    }
+
+
+    public void detectError(){
+        if(checkObstacle()){
+            sensorProcessor.addError(new Error(0,0, COLLISION_SENSOR));
+            errorProperty.setValue(this.getName() + ": OBSTACLE. Can't move. Press Emergency Stop to cancel.");
         }
     }
 
@@ -271,5 +292,10 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
 
     public StringProperty currentLocationPropertyProperty() {
         return currentLocationProperty;
+    }
+
+    @Override
+    public StringProperty criticalErrorProperty() {
+        return errorProperty;
     }
 }
