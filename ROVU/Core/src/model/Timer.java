@@ -6,9 +6,16 @@ package model;
 public class Timer implements Runnable {
     private boolean running = true;
     private final long SLEEP_TIME = 20000;
-    private RewardCalculator rewardCalculator = RewardCalculator.getRewardCalculator();
+    private IRewardCalculator rewardCalculator = RewardCalculator.getRewardCalculator();
     @Override
     public void run() {
+        // Calculate reward the first time
+        try {
+            Thread.sleep(1000);
+            rewardCalculator.calculateReward();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
         while (true) {
             try {
                 Thread.sleep(SLEEP_TIME);

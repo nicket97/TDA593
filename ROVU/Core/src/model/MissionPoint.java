@@ -95,16 +95,12 @@ public class MissionPoint implements Comparable {
         return 0;
     }
 
-    public boolean isDone() {
-        return done.getValue();
-    }
-
     public BooleanProperty doneProperty() {
         return done;
     }
 
-    public void robotDoAction(){
-        action.performAction();
+    public RobotAction getAction() {
+        return action;
     }
 
     public Point getPoint() {

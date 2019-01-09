@@ -19,7 +19,7 @@ public class Main {
         Color color = Color.BLUE;
 
         Hospital hospital = new Hospital(0.5,e);
-        hospital.generateEmptyGrid(40, 0.5);
+        hospital.generateEmptyGrid(40);
         Set<RobotHandler> simRobots = new HashSet<>();
         Point[] startingPoints = {new Point(-6,-2.5), new Point(-1.5,-2.5), new Point(1.5,-2.5), new Point(6,-2.5)};
         Point[] middlePoints = {new Point(-6.8,2.5), new Point(-2.3,2.5), new Point(2.3,2.5), new Point(6.8,2.5)};

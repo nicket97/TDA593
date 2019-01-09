@@ -1,5 +1,6 @@
 package utility;
 
+import javafx.application.Application;
 import project.AbstractSimulatorMonitor;
 
 import project.Point;
@@ -11,8 +12,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.Color;
@@ -34,6 +33,7 @@ import simbad.sim.HorizontalWall;
 import simbad.sim.VerticalBoundary;
 import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
+import view.ROVUView;
 
 @SuppressWarnings("unused")
 
@@ -82,7 +82,7 @@ public class TestSuite {
 			mpoints.add(new MissionPoint(5.5, 1, Constraint.ROBOT2));
 			Mission testMis = new Mission(mpoints);
 			Hospital testH = new Hospital(0.5, new EnvironmentDescription());
-			testH.generateEmptyGrid(40, 0.5);
+			testH.generateEmptyGrid(40);
 			rc.setEnvironment(testH);
 			rc.setMission(testMis);
 			rc.addRobots(2 ,startingPoints);
@@ -110,7 +110,7 @@ public class TestSuite {
 			mpoints.add(new MissionPoint(-2.7, -4, Constraint.ROBOT3));
 			Mission testMis = new Mission(mpoints);
 			Hospital testH = new Hospital(0.5, new EnvironmentDescription());
-			testH.generateEmptyGrid(40, 0.5);
+			testH.generateEmptyGrid(40);
 			rc.setEnvironment(testH);
 			rc.setMission(testMis);
 			rc.executeMission();
@@ -131,7 +131,7 @@ public class TestSuite {
 		public void gridGenerationTest(){
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			Assert.assertTrue(testEnv.getMap().size()==1600);
 		}
 		
@@ -156,20 +156,20 @@ public class TestSuite {
 			testWalls.add(test4);
 				
 			testEnv.setWalls(testBounds, testWalls);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			
 			//Check if nodes occupied by physical walls have Wall type
 			for (double i=-3;i<3;i+=0.5){
-				Assert.assertTrue(testEnv.pointNode(new Point (-5.0,i), 0.5).isWall());
+				Assert.assertTrue(testEnv.getEnvironmentNode(new Point (-5.0,i)).isWall());
 			}
 			for (double i=-6;i<0.5;i+=0.5){
-				Assert.assertTrue(testEnv.pointNode(new Point (i,-8.0), 0.5).isWall());
+				Assert.assertTrue(testEnv.getEnvironmentNode(new Point (i,-8.0)).isWall());
 			}
 			for (double i=-7;i<-6;i+=0.5){
-				Assert.assertTrue(testEnv.pointNode(new Point (-3.5,i), 0.5).isWall());
+				Assert.assertTrue(testEnv.getEnvironmentNode(new Point (-3.5,i)).isWall());
 			}
 			for (double i=-9.5;i<-4;i+=0.5){
-				Assert.assertTrue(testEnv.pointNode(new Point (i,8.0), 0.5).isWall());
+				Assert.assertTrue(testEnv.getEnvironmentNode(new Point (i,8.0)).isWall());
 			}
 		}
 		
@@ -183,17 +183,17 @@ public class TestSuite {
 			
 			testEnv.addLogicalArea(new Rectangle2D.Double(-2, -1, 3, 2), "Wifi");
 			testEnv.addPhysicalArea(new Rectangle2D.Double(-9, -3, 4, 3), "Office");
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			
 			for (double i=-9;i<-5;i+=0.5){
 				for (double z=-3;z<0;z+=0.5){
-					Assert.assertTrue(testEnv.pointNode(new Point (i,z), 0.5).isPhysical() && testEnv.pointNode(new Point (i,z), 0.5).getPhysical().get(0).equalsIgnoreCase("Office"));
+					Assert.assertTrue(testEnv.getEnvironmentNode(new Point (i,z)).isPhysical() && testEnv.getEnvironmentNode(new Point (i,z)).getPhysical().get(0).equalsIgnoreCase("Office"));
 				}
 			}
 			
 			for (double i=-2;i<1;i+=0.5){
 				for (double z=-1;z<1;z+=0.5){
-					Assert.assertTrue(testEnv.pointNode(new Point (i,z), 0.5).isWifi() && testEnv.pointNode(new Point (i,z), 0.5).getLogical().get(0).equalsIgnoreCase("Wifi"));
+					Assert.assertTrue(testEnv.getEnvironmentNode(new Point (i,z)).isWifi() && testEnv.getEnvironmentNode(new Point (i,z)).getLogical().get(0).equalsIgnoreCase("Wifi"));
 				}
 			}
 		}
@@ -205,7 +205,7 @@ public class TestSuite {
 		public void nodeNeighborTest(){
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);
-			testEnv.generateEmptyGrid(40, 0.5);
+			testEnv.generateEmptyGrid(40);
 			
 			Node testNode = testEnv.getMap().get(47);
 			double tX=testNode.getPoint().getX();
@@ -239,8 +239,8 @@ public class TestSuite {
 			EnvironmentDescription etest = new EnvironmentDescription();
 			Environment testEnv =  new Environment(0.5, etest);
 			
-			testEnv.generateEmptyGrid(40, 0.5);
-			atest.findPath(testEnv.pointNode(new Point (-2.3,4.5), 0.5), testEnv.pointNode(new Point (-1.8,9.5), 0.5));
+			testEnv.generateEmptyGrid(40);
+			atest.findPath(testEnv.getEnvironmentNode(new Point (-2.3,4.5)), testEnv.getEnvironmentNode(new Point (-1.8,9.5)));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-2 && sample.getPoint().getZ()==9.5);
 		}
@@ -263,8 +263,8 @@ public class TestSuite {
 			testWalls.add(test2);
 				
 			testEnv.setWalls(testBounds, testWalls);
-			testEnv.generateEmptyGrid(40, 0.5);
-			atest.findPath(testEnv.pointNode(new Point (-7.2,1.0), 0.5), testEnv.pointNode(new Point (-5.0,0.2), 0.5));
+			testEnv.generateEmptyGrid(40);
+			atest.findPath(testEnv.getEnvironmentNode(new Point (-7.2,1.0)), testEnv.getEnvironmentNode(new Point (-5.0,0.2)));
 			Node sample = atest.findRoute();
 			Assert.assertTrue(sample.getPoint().getX()==-5 && sample.getPoint().getZ()==0.0);
 		}

@@ -131,10 +131,10 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 	private static Point [] task (Environment environment, Point start, Point finish){
 		PathFinder aStar = new A_Star();		
-		List<Node> rpath = aStar.findPath(environment.pointNode(start, 0.5), environment.pointNode(finish, 0.5));
+		List<Node> rpath = aStar.findPath(environment.getEnvironmentNode(start), environment.getEnvironmentNode(finish));
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
-			commands[m]=environment.getNodeCenter(rpath.get(m),0.5);//test.getNodeCenter(path.get(m), 1);
+			commands[m]=environment.getNodeCenter(rpath.get(m));//test.getNodeCenter(path.get(m), 1);
 		}
 		commands[commands.length-1]=finish;
 		return commands;
@@ -197,7 +197,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     }
 
     public void move() {
-        // Update the robot's current position string property that GUI observes 
+        if (currentEnv == null) return;
+        // Update the robot's current position string property that GUI observes
         currentPositionProperty
                 .setValue(
                         this.getName() + "\t \t" +
@@ -205,10 +206,11 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
                         "z = " + decimalFormat.format(this.getPosition().getZ()));
 
         currentLocationProperty.setValue(
-                this.getName() + " is in " + currentEnv.getEnvironment(this.getPosition()).getPhysical()
+                this.getName() + " is in " + currentEnv.getEnvironmentNode(this.getPosition()).getPhysical()
         );
 
         if (noMission || path == null || pointer >= path.length) return;
+
         try {
             //System.out.println("Robot: " + this.robotIndex + " is at: " + this.getPosition() + " and is moving to: " + path[pointer]);
             if (pointer == path.length-1 && !processedPoints.isEmpty() && isEqual(path[pointer], processedPoints.peek().getPoint())) {
@@ -223,13 +225,13 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
             }
      
             if (isAtPosition(path[pointer]) && pointer != path.length - 1 
-            		&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironment(path[pointer+1]).getPhysical(), this)) {
+            		&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironmentNode(path[pointer+1]).getPhysical(), this)) {
                 pointer++;
             }
 //            System.out.println("path pointer-->" + pointer);
             if (pointer != path.length - 1 &&
-                !currentEnv.getEnvironment(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironment(path[pointer]).getPhysical())) &&
-                !timerActive && currentEnv.getEnvironment(path[pointer + 1]).isRoom()) {
+                !currentEnv.getEnvironmentNode(path[pointer + 1]).getPhysical().equals((currentEnv.getEnvironmentNode(path[pointer]).getPhysical())) &&
+                !timerActive && currentEnv.getEnvironmentNode(path[pointer + 1]).isRoom()) {
                 setTimer();
                 this.setDestination(path[pointer]);
             }

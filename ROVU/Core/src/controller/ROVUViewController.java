@@ -10,13 +10,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import model.IRewardCalculator;
 import model.RewardCalculator;
 import model.Timer;
 
 public class ROVUViewController implements Initializable {
 	@FXML Label score;
 	@FXML AnchorPane pane;
-	private RewardCalculator rewardCalculator = RewardCalculator.getRewardCalculator();
+	private IRewardCalculator rewardCalculator = RewardCalculator.getRewardCalculator();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
