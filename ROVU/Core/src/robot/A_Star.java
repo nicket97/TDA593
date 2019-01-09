@@ -16,7 +16,7 @@ import model.Mission;
  *
  */
 
-public class A_Star extends PathFinder{
+public class A_Star implements IPathFinder{
 	private  Node start;
 	private  Node destination;
 	
