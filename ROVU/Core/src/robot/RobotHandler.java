@@ -192,6 +192,7 @@ public class RobotHandler extends AbstractRobotSimulator
         if(checkObstacle()){
             sensorProcessor.addError(new Error(0,0, COLLISION_SENSOR));
             errorProperty.setValue(this.getName() + ": OBSTACLE. Can't move. Press Emergency Stop to cancel.");
+	    this.stop();
         }
     }
 
