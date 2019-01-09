@@ -34,7 +34,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable, IR
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
 
     private SensorProcessor sensorProcessor = new SensorProcessor();
-    private StringProperty errorProperty = new SimpleStringProperty("Everything's fine!");
+    private StringProperty errorProperty = new SimpleStringProperty(this.getName() + ": Everything's fine!");
 
     private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
     private Environment currentEnv;
@@ -213,7 +213,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable, IR
     public void detectError(){
         if(checkObstacle()){
             sensorProcessor.addError(new Error(0,0, COLLISION_SENSOR));
-            errorProperty.setValue("OBSTACLE. Can't move. Press Emergency Stop to cancel.");
+            errorProperty.setValue(this.getName() + ": OBSTACLE. Can't move. Press Emergency Stop to cancel.");
         }
     }
 

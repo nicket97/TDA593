@@ -33,6 +33,7 @@ public class ROVUViewController implements Initializable {
 		// Add the robots' current positions
 		addLabels(RobotController.getController().getCurrentPositions(), 3);
 		addLabels(RobotController.getController().getCurrentLocations(), 8);
+		addLabels(RobotController.getController().criticalErrorsProperty(), 13);
 	}
 
 	private void addLabels(List<StringProperty> strings, int lineOffset) {
