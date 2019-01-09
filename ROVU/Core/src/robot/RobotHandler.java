@@ -245,8 +245,9 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable, IR
                 pointer = 0;
             }
      
-            if (isAtPosition(path[pointer]) && pointer != path.length - 1 
-            		&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironmentNode(path[pointer+1]).getPhysical(), this)) {
+            if (isAtPosition(path[pointer]) && pointer != path.length - 1 ){
+            		//&& !RobotController.getController().isAnotherRobotInRoom(currentEnv.getEnvironment(path[pointer+1]).getPhysical(), this)) { 
+            		// one robot per room constraint is disabled, as we are using only custom missions now
                 pointer++;
             }
 //            System.out.println("path pointer-->" + pointer);
