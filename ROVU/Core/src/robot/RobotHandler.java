@@ -25,7 +25,8 @@ import controller.RobotController;
  * @author Niclas
  * @author madeleine
  */
-public class RobotHandler extends AbstractRobotSimulator implements Runnable, IRobotErrorGraphics{
+public class RobotHandler extends AbstractRobotSimulator
+        implements IRobotErrorGraphics, IRobotHandler {
     private Point startingPoint;
     private int robotIndex;
     private int fin;
@@ -114,30 +115,6 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable, IR
         }
     }
 
-    
-    @Override
-    public void run() {
-		executeMission();
-		/*while (true) {
-
-
-			System.out.println(missionPoints.size());
-			if (missionPoints.size() == 0) {
-				available = true;
-                System.out.println(this.robotIndex + " is available");
-			}
-			else{
-				available = false;
-			}
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
-		}*/
-    }
 	private static Point [] task (Environment environment, Point start, Point finish){
 		IPathFinder aStar = new A_Star();
 		List<Node> rpath = aStar.findPath(environment.getEnvironmentNode(start), environment.getEnvironmentNode(finish));
