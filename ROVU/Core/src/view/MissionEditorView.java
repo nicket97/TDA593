@@ -1,25 +1,32 @@
 package view;
 
-import javafx.application.Application;
+import controller.MissionEditor;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MissionEditorView extends Application {
+import java.io.IOException;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Mission Editor");
-        Parent root = FXMLLoader.load(getClass().getResource("../fxml/Root.fxml"));
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+public class MissionEditorView {
+    private boolean customMission;
 
-        primaryStage.setOnCloseRequest(event -> System.exit(0));
+    public void setCustomMission(boolean customMission) {
+        this.customMission = customMission;
     }
 
-    public static void main (String[] args) {
-        launch(args);
+    public Stage getStage() {
+        Stage missionEditorStage = new Stage();
+        FXMLLoader missionEditorLoader = new FXMLLoader(getClass().getResource("../fxml/Root.fxml"));
+        try {
+            Parent missionEditorRoot = missionEditorLoader.load();
+            MissionEditor controller = missionEditorLoader.getController();
+            controller.setCustomMission(customMission);
+            Scene missionEditorScene = new Scene(missionEditorRoot);
+            missionEditorStage.setScene(missionEditorScene);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return missionEditorStage;
     }
 }

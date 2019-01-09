@@ -34,26 +34,32 @@ public class SimulatorMonitor extends AbstractSimulatorMonitor<RobotHandler> {
 
 
 	public void update(RobotHandler arg0) {
+		/*robotList.clear();
 		robotList.addAll(r);
 		robotList.get(0).setFin(1);
 
 		for(int i=0; i < robotList.size(); i++){
 			RobotHandler robot=robotList.get(i);
             Point [] dest = robot.getPath();
-			if (!robot.isAtPosition(dest[dest.length-1]) && (robot.getFin()==1) ){
-			    MoveRobot(robot, robot.getPath(), robot.getStartingPoint());
-			}
+			if(robot.getPath()!=null && robot.getPath().length > 0) {
+				if (!robot.isAtPosition(dest[dest.length - 1])) {
+					robot.move();
+					//MoveRobot(robot, robot.getPath(), robot.getPosition());
+				}
 
-			if ((robot.getFin()!=3) && robot.isAtPosition(dest[dest.length-1]) && !robot.isAvailable()){
-				robot.setAvailable(true);
-				robot.setFin(3);
-				
-				if (robotList.get(i).getRobotIndex()!=robotList.size()-1){
-				    System.out.println ("Next=========================:"+robotList.get(robotList.indexOf(robot)+1).getRobotIndex());
-				    robotList.get(robotList.indexOf(robot)+1).setFin(1);
+
+				if ((robot.getFin() != 3) && robot.isAtPosition(dest[dest.length - 1]) && !robot.isAvailable()) {
+					robot.setAvailable(true);
+					robot.setFin(3);
+
+					if (robotList.get(i).getRobotIndex() != robotList.size() - 1) {
+						//System.out.println("Next=========================:" + robotList.get(robotList.indexOf(robot) + 1).getRobotIndex());
+						//robotList.get(robotList.indexOf(robot) + 1).setFin(1);
+					}
 				}
 			}
-		}
+		}*/
+		arg0.move();
 	}
 	
 	private void MoveRobot (RobotHandler robot, Point[] commands, Point position){

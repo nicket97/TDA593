@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 
+import javafx.event.ActionEvent;
 import model.Mission;
 import model.MissionPoint;
 
@@ -10,17 +11,16 @@ public interface MissionEditable {
 	
 	/**
 	 * Creates mission
-	 * @param missionPoints
+	 * @param event The event that is sent through the JavaFX Button.
 	 * @return
 	 */
-Mission createMission(List <MissionPoint>missionPoints);
+void createMission(ActionEvent event);
 
 
     /** 
-     * Edits mission
-     * @param currentMission
-     * @param missionPoints
+     * Edits the current mission
+     * @param event The event that is sent through the JavaFX Button.
      * @return
      */
-Mission editMission(Mission currentMission, List <MissionPoint>missionPoints);
+void editMission(ActionEvent event);
 }

@@ -55,7 +55,7 @@ public class Dijkstra {
 			if (!settledNodes.contains(e))	{ //choose yet unvisited node            // && !e.wall
 				e.getPredecessors().add(check);		//add current node to predecessors
 				int distStart = check.getDistanceFromStart()+e.getWeight();
-				e.setDistStart(distStart);
+				e.setDistanceFromStart(distStart);
 				return e;  //return new node
 			}
 		}

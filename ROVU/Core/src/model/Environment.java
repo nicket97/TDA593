@@ -1,17 +1,12 @@
 package model;
 
-import java.awt.Color;
-
 import project.Point;
 import java.awt.geom.Rectangle2D;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javafx.util.Pair;
-import model.Node;
-import simbad.sim.AbstractWall;
 import simbad.sim.Boundary;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.HorizontalBoundary;
@@ -20,10 +15,7 @@ import simbad.sim.VerticalBoundary;
 import simbad.sim.VerticalWall;
 import simbad.sim.Wall;
 
-public class Environment implements IEnvironment {
-    int xSize;
-    int ySize;
-    
+public class Environment {
     private List <Pair<Rectangle2D.Double,String>> logicalAreas;
     private List <Pair<Rectangle2D.Double,String>> physicalAreas;
     private List <Rectangle2D.Double> innerSpace;
@@ -37,19 +29,19 @@ public class Environment implements IEnvironment {
 	public Environment (Double coefficient, EnvironmentDescription environmentDescription){
 		this.coefficient = coefficient;
 		this.environmentDescription = environmentDescription;
-		this.physicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.logicalAreas = new ArrayList <Pair<Rectangle2D.Double,String>>();
-		this.innerSpace = new ArrayList <Rectangle2D.Double>();
-		this.noRoom = new ArrayList<Rectangle2D.Double>();
-		this.map=new ArrayList <Node>();
+		this.physicalAreas = new ArrayList <>();
+		this.logicalAreas = new ArrayList <>();
+		this.innerSpace = new ArrayList <>();
+		this.noRoom = new ArrayList<>();
+		this.bounds = new ArrayList <>();
+		this.walls = new ArrayList <>();
+		this.map=new ArrayList <>();
 	}
 
     /**
 	 * Method to add walls to grid
-	 * @param check
-	 * @param scale
-	 * @param diagonal
-	 * @param map
+	 * @param bounds
+	 * @param walls
 	 * @return
 	 */
 	
@@ -102,14 +94,14 @@ public class Environment implements IEnvironment {
 	public void addAreasToMap(){
 		for (Pair<Rectangle2D.Double,String> log:logicalAreas){
 			for (Node n:map){
-				if (nodeRect(n,coefficient).intersects(log.getKey())){
+				if (nodeToRect(n).intersects(log.getKey())){
 					n.setLogical(log.getValue());
 				}
 			}
 		}
 		for (Pair<Rectangle2D.Double,String> phys:physicalAreas){
 			for (Node s:map){
-				if (nodeRect(s,coefficient).intersects(phys.getKey())){
+				if (nodeToRect(s).intersects(phys.getKey())){
 					s.setPhysical(phys.getValue());
 				}
 			}
@@ -119,12 +111,11 @@ public class Environment implements IEnvironment {
 	/**
 	 * Method to find and add node's neighbors
 	 * @param check
-	 * @param coefficient
 	 * @param diagonal
 	 * @param map
 	 * @return
 	 */
-	public static Node [] neighbouring (Node check, double coefficient, boolean diagonal, List <Node> map){
+	public Node [] neighbouring (Node check, boolean diagonal, List <Node> map){
 		//-10,-1,+1,+10
 		//-11,-10,-9,-1,+1,+9,+10,+11
         List <Node> temp = new ArrayList<Node> ();
@@ -187,12 +178,11 @@ public class Environment implements IEnvironment {
 	/**
 	 * Method to get a Node containing requested point
 	 * @param p
-	 * @param coefficient
 	 * @return
 	 */	
-	public  Node pointNode (Point p, double coefficient) {
+	private  Node pointToNode(Point p) {
 		for (Node v:map){
-			Rectangle2D.Double temp = nodeRect(v, coefficient);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
+			Rectangle2D.Double temp = nodeToRect(v);//new Rectangle2D.Double(v.getPoint().getX(),v.getPoint().getX(),coefficient,coefficient);
 			if (temp.contains(p.getX(), p.getZ())){
 				return v;
 			}
@@ -204,10 +194,9 @@ public class Environment implements IEnvironment {
 	/**
 	 * Method to obtain the space occupied by node (in form of rectangle)
 	 * @param node
-	 * @param coefficient
 	 * @return
 	 */
-	public Rectangle2D.Double nodeRect (Node node, double coefficient){
+	private Rectangle2D.Double nodeToRect(Node node){
 		Rectangle2D.Double temp = new Rectangle2D.Double(node.getPoint().getX(),node.getPoint().getZ(),coefficient,coefficient);
 		return temp;
 	}
@@ -218,7 +207,7 @@ public class Environment implements IEnvironment {
 	 * @return
 	 */
 
-	public Rectangle2D.Double verticalWallRect (VerticalWall wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double verticalWallToRect(VerticalWall wall){ //Float p1z, Float p1x, Float p2x
 		float side=0;
 		if (wall.getP2x()<wall.getP1x()){
 			side=wall.getP2x();
@@ -235,7 +224,7 @@ public class Environment implements IEnvironment {
 	 * @param wall
 	 * @return
 	 */
-	public Rectangle2D.Double horizontalWallRect (HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double horizontalWallToRect(HorizontalWall wall){ //Float p1z, Float p1x, Float p2x
 //-4.5f, 0.0f, -5.0f
 		float side=0;
 		if (wall.getP2z()<wall.getP1z()){
@@ -250,57 +239,50 @@ public class Environment implements IEnvironment {
 	
 	/**
 	 * Method to get rectangle representing vertical boundary and add it to grid
-	 * @param wall
+	 * @param boundary
 	 * @return
 	 */
-	public Rectangle2D.Double verticalBoundaryRect (VerticalBoundary wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double verticalBoundaryToRect(VerticalBoundary boundary){ //Float p1z, Float p1x, Float p2x
 		float side=0;
-		if (wall.getP2x()<wall.getP1x()){
-			side=wall.getP2x();
+		if (boundary.getP2x() < boundary.getP1x()){
+			side = boundary.getP2x();
 		}else{
-			side=wall.getP1x();
+			side = boundary.getP1x();
 		}
-		    System.out.println("InsideRect:"+Math.abs(wall.getP1x())+"  "+Math.abs(wall.getP2x()));
-			Rectangle2D.Double temp = new Rectangle2D.Double(side,wall.getP1z()-0.15,Math.abs(wall.getP1x()-wall.getP2x()),0.3);
-			return temp;
-	
+		  //  System.out.println("InsideRect:"+Math.abs(boundary.getP1x())+"  "+Math.abs(boundary.getP2x()));
+		return new Rectangle2D.Double(side, boundary.getP1z()-0.15, Math.abs(boundary.getP1x() - boundary.getP2x()),0.3);
 	}
 	
 	/**
 	 * Method to get rectangle representing horizontal boundary and add it to grid
-	 * @param wall
+	 * @param boundary
 	 * @return
 	 */
-	public Rectangle2D.Double horizontalBoundaryRect (HorizontalBoundary wall){ //Float p1z, Float p1x, Float p2x
+	private Rectangle2D.Double horizontalBoundaryToRect(HorizontalBoundary boundary){ //Float p1z, Float p1x, Float p2x
 		float side=0;
-		if (wall.getP2z()<wall.getP1z()){
-			side=wall.getP2z();
+		if (boundary.getP2z() < boundary.getP1z()){
+			side = boundary.getP2z();
 		}else{
-			side=wall.getP1z();
+			side = boundary.getP1z();
 		}
-		Rectangle2D.Double temp = new Rectangle2D.Double(wall.getP1x()-0.15,side,0.3,Math.abs(wall.getP1z()-wall.getP2z()));
-		return temp;
-
+		return new Rectangle2D.Double(boundary.getP1x()-0.15, side, 0.3, Math.abs(boundary.getP1z() - boundary.getP2z()));
 	}
 	
 	/**
 	 * Method to get center of the node
 	 * @param node
-	 * @param coefficient
 	 * @return
 	 */
-	public Point getNodeCenter(Node node, double coefficient){
-		Point temp = new Point (node.getPoint().getX()+coefficient/2,node.getPoint().getZ()+coefficient/2);
-		return temp;		
+	public Point getNodeCenter(Node node){
+		return new Point (node.getPoint().getX()+coefficient/2,node.getPoint().getZ()+coefficient/2);
 	}
 	
 	/**
 	 * Method for generating grid
 	 * @param scale
-	 * @param coefficient
 	 * @return
 	 */
-	public  List<Node> generateEmptyGrid(int scale, double coefficient){
+	public  List<Node> generateEmptyGrid(int scale){
 		List <Node> exmap = new ArrayList<Node> ();
 		int z=0;
 	    
@@ -310,8 +292,6 @@ public class Environment implements IEnvironment {
 				Node temp = new Node (false, false, false, z, new Point(BigDecimal.valueOf(coefficient*k).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue(),
 						BigDecimal.valueOf(coefficient*i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue()));	
 				exmap.add(temp);
-				System.out.println("Null "+map==null);
-				System.out.println("Null2== "+temp==null);
 				map.add(temp);
 				z++;
 			}
@@ -342,7 +322,7 @@ public class Environment implements IEnvironment {
 		}
 		for (Node v:map){
 			
-			Node [] neigh = neighbouring (v, coefficient, false, map);
+			Node [] neigh = neighbouring (v, false, map);
 			v.setNeighbors(neigh);
 			
 			}
@@ -351,7 +331,7 @@ public class Environment implements IEnvironment {
 		
 		for (Rectangle2D.Double inn:innerSpace){
 			for (Node x:map){
-				if (nodeRect(x,coefficient).intersects(inn)){
+				if (nodeToRect(x).intersects(inn)){
 					x.setRoom(true);
 				}
 			}
@@ -360,12 +340,12 @@ public class Environment implements IEnvironment {
 		if (!noRoom.isEmpty()){
 		for (Rectangle2D.Double nRoom:noRoom){
 			for (Node x:map){
-				if (nodeRect(x,coefficient).intersects(nRoom)){
+				if (nodeToRect(x).intersects(nRoom)){
 					x.setRoom(false);
 				}
 			}
 		}}
-		walling(map,coefficient);
+		walling(map);
 		return map;
 	}
 	
@@ -377,38 +357,36 @@ public class Environment implements IEnvironment {
 	/**
 	 * Method to place walls onto the grid
 	 * @param toWall
-	 * @param bounds
-	 * @param walls
 	 * @return
 	 */
-	public List<Node> walling (List<Node> toWall, double coefficient){
+	private List<Node> walling (List<Node> toWall){
 		toWall=this.map;//test
 		List <Rectangle2D.Double> obstacles = new ArrayList <Rectangle2D.Double>();
 		Rectangle2D.Double temp;
 		for (Boundary b:bounds){
 		    if (b.getClass()==VerticalBoundary.class){		    	
-		    	temp=verticalBoundaryRect((VerticalBoundary)b);
+		    	temp= verticalBoundaryToRect((VerticalBoundary)b);
 		    	obstacles.add(temp);
 		    }else{
-		    	temp=horizontalBoundaryRect((HorizontalBoundary)b);
+		    	temp= horizontalBoundaryToRect((HorizontalBoundary)b);
 		    	obstacles.add(temp);
 		    }
 		}
 		
 		for (Wall w:walls){
 		    if (w.getClass()==VerticalWall.class){		    	
-		    	temp=verticalWallRect((VerticalWall)w);
+		    	temp= verticalWallToRect((VerticalWall)w);
 		    	obstacles.add(temp);
 		    }else{
-		    	temp=horizontalWallRect((HorizontalWall)w);
-		    	System.out.println("RectangleX, Y, W, H: "+temp.getX()+" "+temp.getY()+" "+temp.getWidth()+" "+temp.getHeight()+" ");
+		    	temp= horizontalWallToRect((HorizontalWall)w);
+		    	//System.out.println("RectangleX, Y, W, H: "+temp.getX()+" "+temp.getY()+" "+temp.getWidth()+" "+temp.getHeight()+" ");
 		    	obstacles.add(temp);
 		    }
 		}
 		
 		for (Rectangle2D.Double n:obstacles){
 			for (Node v:toWall){
-			if (nodeRect(v,coefficient).intersects(n)){
+			if (nodeToRect(v).intersects(n)){
 				v.setWall(true);
 			}
 			}
@@ -421,9 +399,8 @@ public class Environment implements IEnvironment {
 		return this.map;
 	}
 	
-	public Node getEnvironment (Point position){
-		Node temp = pointNode (position, coefficient);
-		return temp;
+	public Node getEnvironmentNode (Point position){
+		return pointToNode(position);
 	}
 
 	public EnvironmentDescription getEnvironmentDescription() {

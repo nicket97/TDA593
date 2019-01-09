@@ -13,9 +13,9 @@ import project.Point;
 public class Node {
     private int weight;
     private List <String> physicalArea;
-    private String logicalArea;
+    private List <String> logicalArea;
     private boolean physical, wall, wifi, eating, room;
-    private int nodeID, roomID;
+    private int nodeID;
     private Point point;
     private Node[] neighbors;
     private int distanceFromStart;
@@ -80,10 +80,6 @@ public class Node {
     public Point getPoint() {
         return point;
     }
-
-    public void setDistStart(int startDist){   	
-    	this.setDistanceFromStart(startDist);
-    }
 	
     public Node getParent(){
     	return this.parent;
@@ -91,6 +87,10 @@ public class Node {
 	
     public List<String> getPhysical(){
     	return this.physicalArea;
+    }
+    
+    public List<String> getLogical(){
+    	return this.logicalArea;
     }
     
     public Node() {
@@ -108,8 +108,8 @@ public class Node {
         this.eating = eat;
         this.nodeID = id;
         this.point = p;
-        this.physicalArea= new ArrayList <String>();
-        this.logicalArea="default";
+        this.physicalArea = new ArrayList <String>();
+        this.logicalArea = new ArrayList <String>();;
         if (wall){
             weight = 999999;
         }
@@ -122,10 +122,10 @@ public class Node {
 	public void setLogical(String value) {
 		if (value.equalsIgnoreCase("wifi")){
 			this.wifi=true;
-			this.logicalArea=value;
+			this.logicalArea.add(value);
 		}else if (value.equalsIgnoreCase("eating")){
 			this.eating=true;
-			this.logicalArea=value;
+			this.logicalArea.add(value);
 		}
 	}
 
@@ -136,7 +136,7 @@ public class Node {
 	
 	@Override
     public String toString() {
-        return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + " id:" + roomID + "\n";
+        return point.toString() + " w:" + wall + " wifi:" + wifi + " eat:" + eating + "\n";
     }
 
 	public List <Node> getPredecessors() {

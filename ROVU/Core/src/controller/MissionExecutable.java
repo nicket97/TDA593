@@ -13,12 +13,6 @@ public interface MissionExecutable {
 	void setMission(Mission mission);
 
 	/**
-	 * Gets mission from MissionEditor
-	 * @return
-	 */
-	Mission getMission();
-
-	/**
 	 * Executes selected mission
 	 */
 	void executeMission();
@@ -28,12 +22,4 @@ public interface MissionExecutable {
 	 * Cancels all execution
 	 */
 	void cancelExecution();
-	
-	
-	/**
-	 * Gets data from the robot (sensors, position etc)
-	 * @return
-	 */
-	List getData();
-	
 }

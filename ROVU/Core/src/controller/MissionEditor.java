@@ -6,51 +6,69 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ChoiceBox;
 import model.Constraint;
 import model.Mission;
 import model.MissionPoint;
 
-public class MissionEditor implements MissionEditable, Initializable {
+public class MissionEditor implements MissionEditable, Initializable{
 	@FXML ChoiceBox<Mission> missionChoices;
     @FXML ChoiceBox<Constraint> constraintChoices;
 	@FXML TextField xTextfield, zTextfield, prioTextfield;
-	@FXML Button addPointBtn, createMissionBtn;
-	@FXML ListView<MissionPoint>  pointListView;
-	private List<Mission> premadeMissions = new ArrayList<>();
-	private Mission mission;
+	@FXML Button addPointBtn, createMissionBtn, runButton, emergencyStopBtn;
+	@FXML ListView<MissionPoint>  pointListView, executedPointListView;
+	@FXML TabPane missionsTabPane;
+	@FXML Tab customMissionsTab;
+	private List<Mission> missions = new ArrayList<>();
+	private Mission currentMission;
+	private boolean customMission;
 
 	public MissionEditor() {
 	    // Hard-coded missions
         List<MissionPoint> points1 = Arrays.asList(new MissionPoint(-2,2), new MissionPoint(3,1));
         Mission mission1 = new Mission(points1);
 
+        List<MissionPoint> points3 = Arrays.asList(new MissionPoint(-2.5,4), new MissionPoint(2.5,-2.5));
+        Mission mission4 = new Mission(points3);
+
         List<MissionPoint> points2 = Arrays.asList(new MissionPoint(5,4), new MissionPoint(1,4));
         Mission mission2 = new Mission(points2);
-        premadeMissions.add(mission1);
-        premadeMissions.add(mission2);
+        List<MissionPoint> mission = new ArrayList<>();
+        mission.add(new MissionPoint(-6, -2.5, Constraint.ROBOT1, 3));
+        mission.add(new MissionPoint(-6.8, 2.4, Constraint.ROBOT1, 2));
+        mission.add(new MissionPoint(-7.5, -4, Constraint.ROBOT1, 1));
+        mission.add(new MissionPoint(-1.5, -2.5, Constraint.ROBOT2, 3));
+        mission.add(new MissionPoint(-2.3, 2.2, Constraint.ROBOT2, 2));
+        mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2, 1));
+        mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3, 3));
+        mission.add(new MissionPoint(-2.3, 2.0, Constraint.ROBOT3, 2));
+        mission.add(new MissionPoint(3, -4, Constraint.ROBOT3, 1));
+        mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4, 3));
+        mission.add(new MissionPoint(6.8, 2.3, Constraint.ROBOT4, 2));
+        mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4, 1));
+
+        Mission mission3 = new Mission(mission);
+        missions.add(mission1);
+        missions.add(mission2);
+        missions.add(mission3);
+        missions.add(mission4);
     }
-
-	public Mission createMission(List <MissionPoint>missionPoints){
-		return new Mission(missionPoints);
-	}
-
-	// Todo
-	public Mission editMission(Mission currentMission, List <MissionPoint>missionPoints){
-		return null;
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+	    Platform.runLater(() -> {
+            if (!customMission) {
+                missionsTabPane.getTabs().remove(customMissionsTab);
+            }
+        });
         addMissionChoices();
         addConstraintChoices();
+
+        displayExecutedMissionPoints();
 
         // Only allows double values that can also be negative
         Arrays.asList(xTextfield, zTextfield).forEach(textField ->
@@ -81,17 +99,28 @@ public class MissionEditor implements MissionEditable, Initializable {
             }
         });
 
-        createMissionBtn.setOnAction(event -> {
-            if (pointListView.getItems() == null) return;
-            List<MissionPoint> points = pointListView.getItems();
-            mission = createMission(points);
-            System.out.println(mission);
+        runButton.setOnAction(event -> {
+            currentMission = missionChoices.getValue();
+            RobotController.getController().cancelExecution();
+            RobotController.getController().setMission(currentMission);
+            RobotController.getController().executeMission();
+            displayExecutedMissionPoints();
+            System.out.println("done");
         });
 
+        emergencyStopBtn.setStyle("-fx-background-color: RED; -fx-text-fill: WHITE;");
+        emergencyStopBtn.setOnAction(event -> {
+            RobotController.getController().cancelExecution();
+        });
 	}
 
+	public void setCustomMission(boolean customMission) {
+	    this.customMission = customMission;
+    }
+
 	private void addMissionChoices() {
-        premadeMissions.forEach(premadeMission -> missionChoices.getItems().add(premadeMission));
+        missionChoices.getItems().clear();
+        missions.forEach(premadeMission -> missionChoices.getItems().add(premadeMission));
         missionChoices.getSelectionModel().selectFirst();
     }
 
@@ -101,6 +130,44 @@ public class MissionEditor implements MissionEditable, Initializable {
         for (Constraint constraint : Constraint.values()) {
             constraintChoices.getItems().add(constraint);
         }
+    }
+
+    private void displayExecutedMissionPoints() {
+	    if (currentMission == null) return;
+        currentMission.getMission().forEach(missionPoint -> {
+            missionPoint.doneProperty().addListener(((observable, oldValue, newValue) -> {
+                if (oldValue != newValue) {
+                    Platform.runLater(() -> executedPointListView.getItems().add(missionPoint));
+                }
+            }));
+        });
+    }
+
+    // Creates a mission when the button is clicked
+    @FXML
+    public void createMission(ActionEvent event) {
+        if (pointListView.getItems() == null || pointListView.getItems().isEmpty()) return;
+        List<MissionPoint> points = new ArrayList<MissionPoint>();
+        points.addAll(pointListView.getItems());
+        missions.add(createMission(points));
+        addMissionChoices();
+        pointListView.getItems().clear();
+        System.out.println(missions);
+    }
+
+    @FXML
+    public void editMission(ActionEvent event) {
+	    // TODO
+    }
+
+    // Helper functions
+    private Mission createMission(List <MissionPoint>missionPoints){
+        return new Mission(missionPoints);
+    }
+
+    // TODO
+    private Mission editMission(Mission currentMission, List <MissionPoint>missionPoints){
+        return null;
     }
 
 }

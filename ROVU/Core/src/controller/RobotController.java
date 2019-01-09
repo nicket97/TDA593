@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import javafx.beans.property.StringProperty;
 import model.*;
 import project.AbstractSimulatorMonitor;
 import project.Point;
+import robot.DataObject;
 import robot.RobotHandler;
+import simbad.sim.EnvironmentDescription;
 import utility.SimulatorMonitor;
+import view.ROVUView;
 
 /**
  * Class for controlling all robots
@@ -17,27 +21,36 @@ import utility.SimulatorMonitor;
  * @author Madeleine
  */
 public class RobotController implements MissionExecutable{
-	
-	private static final RobotController controller = new RobotController();
+    private static final String ARGUMENTS = "--customMission=TRUE";
+	private static final RobotController CONTROLLER = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
-	private List<Thread> robotThreads = new ArrayList<>();
 	private Mission currentMission;
 	private Environment currentEnvironment;
+    private List<StringProperty> currentPositions = new ArrayList<>();
+    private List<StringProperty> currentLocations = new ArrayList<>();
+    private static Timer timer = new Timer();
 
-	private RobotController() {}
+	private RobotController() {
+	}
+	public void init(){
+		Point[] startingPoints = {new Point(-6,-2.5), new Point(-2.5,-2.5), new Point(2.5,-2.5), new Point(6,-2.5)};
+		EnvironmentDescription e = new EnvironmentDescription();
+		Hospital hospital = new Hospital(0.5,e);
+		hospital.generateEmptyGrid(40);
+		setEnvironment(hospital);
+		CONTROLLER.addRobots(4 , startingPoints);
+		initSimulator();
+	}
 
 	public static RobotController getController() {
-		return controller;
+		return CONTROLLER;
 	}
 
 	// TODO: Better initialization of robots' starting points
     // Can be confusing since we mix Point and MissionPoint
 	public void addRobots(int numberOfRobots, Point[] startingPoints) {
 		for(int i = 0; i <numberOfRobots; i++){
-			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i));
-		}
-		for(RobotHandler r : robots){
-			robotThreads.add(new Thread(r));
+			robots.add(new RobotHandler(startingPoints[i], "Robot " + i+1, i, currentEnvironment));
 		}
 	}
 
@@ -45,41 +58,60 @@ public class RobotController implements MissionExecutable{
 	    currentEnvironment = e;
     }
 
-	public Mission getMission(){
-	     return currentMission;
-	}
-
 	public void setMission(Mission mission) {
 	    currentMission = mission;
     }
+	
+	public boolean isAnotherRobotInRoom (List<String> room , RobotHandler asking){
+		for (RobotHandler r:robots){
+			if (!r.equals(asking) && currentEnvironment.getEnvironmentNode(r.getPosition()).getPhysical().equals(room)
+					&& currentEnvironment.getEnvironmentNode(r.getPosition()).isRoom()){
+				return true;
+			}
+		}
+		return false;		
+	}
+
 
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
 		boolean notDone = true;
+
+        System.out.println(currentMission.getMission().size());
         currentMission.getMission().forEach(missionPoint -> {
             int robotIndex = missionPoint.getRobot();
             switch (robotIndex) {
                 case 1:
                     robots.get(0).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
                     break;
                 case 2:
                     robots.get(1).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
                     break;
                 case 3:
                     robots.get(2).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
                     break;
                 case 4:
                     robots.get(3).addMissionPoint(missionPoint);
+
                     break;
                 default:
-                    //TODO add general mission
+                    /*for (RobotHandler r : robots) {
+                        if (r.isAvailable()) {
+                            r.addMissionPoint(missionPoint);
+                            currentMission.getMission().remove(missionPoint);
+                        }
+                    }*/
+                    robots.get(0).addMissionPoint(missionPoint);
+                    //currentMission.getMission().remove(missionPoint);
                     break;
             }
         });
-
-        robotThreads.forEach(Thread::start);
-
-		while (notDone){
+        robots.forEach(RobotHandler::executeMission);
+		//needs to be handled
+		/*while (notDone){
 			currentMission.updateMissionList();
 			if(currentMission.getMission().size() > 0)
 			for (RobotHandler r : robots){
@@ -89,7 +121,7 @@ public class RobotController implements MissionExecutable{
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void cancelExecution(){
@@ -107,7 +139,10 @@ public class RobotController implements MissionExecutable{
 
         AbstractSimulatorMonitor simulator = new SimulatorMonitor(new HashSet<>(robots), currentEnvironment.getEnvironmentDescription());
     }
-	
+
+	/**
+	 * @return The data from the robots (sensors, position etc)
+	 */
 	public List<DataObject> getData(){
 		List<DataObject> d = new ArrayList<>();
 		for (RobotHandler r: robots){
@@ -116,24 +151,37 @@ public class RobotController implements MissionExecutable{
 		return d;
 	}
 
-	// TODO: REMOVE THIS METHOD, should not expose robots outside of this class
-	public List<RobotHandler> getRobots() {
-	    return this.robots;
-    }
-
-	public static void main(String [] args){
-		Point[] startingPoints = {new Point(-6,-2.5), new Point(6,-2.5), new Point(6,2.5), new Point(-6,2.5)};
-		controller.addRobots(4 , startingPoints);
-	}
-
 	public List<Node> getNodes() {
 	    if (currentEnvironment == null) {
 	        throw new Error ("There's no environment set!");
         }
 	    List<Node> nodes = new ArrayList<>();
 	    robots.forEach(robot -> {
-	        nodes.add(currentEnvironment.getEnvironment(robot.getPosition()));
+	        nodes.add(currentEnvironment.getEnvironmentNode(robot.getPosition()));
         });
 	    return nodes;
+    }
+	public static void main(String[] args){
+	    getController().init();
+	    new Thread(timer).start();
+		new Thread(() -> {
+			javafx.application.Application.launch(ROVUView.class, ARGUMENTS);
+		}).start();
+	}
+
+	public Environment getEnviroment() {
+		return currentEnvironment;
+	}
+
+    public List<StringProperty> getCurrentPositions() {
+        if (robots == null || robots.size() == 0) return null;
+        robots.forEach(robot -> currentPositions.add(robot.currentPositionPropertyProperty()));
+        return currentPositions;
+    }
+
+    public List<StringProperty> getCurrentLocations() {
+	    if (robots == null || robots.size() == 0) return null;
+	    robots.forEach(robot -> currentLocations.add(robot.currentLocationPropertyProperty()));
+	    return currentLocations;
     }
 }

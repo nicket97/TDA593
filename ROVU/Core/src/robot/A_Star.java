@@ -24,24 +24,18 @@ public class A_Star extends PathFinder{
 	private  List <Node> closed;
 
 	/**
+	 * @param start
+	 * @param destination
 	 * Method to get route to the destination node
 	 * @return
 	 */
-	public List <Node> findPath(){
-		return getRouteList(findRoute());
-	}
-	
-	/**
-	 * Method to set start and destination for calculating the route
-	 * @param start
-	 * @param destination
-	 */
-	public void init(Node start, Node destination){
+	public List <Node> findPath(Node start, Node destination){
 		this.closed=  new ArrayList <Node>();
 		this.fringe = new ArrayList <Node>();
 		this.start=start;
 		this.destination=destination;
 		fringe.add(start);
+		return getRouteList(findRoute());
 	}
 	
 	/**
@@ -74,7 +68,6 @@ public class A_Star extends PathFinder{
 		    if (!listContains(temp, closed)) {
 		        closed.add(temp);
 		        neighborFringe(temp);
-		        findPath();
             }
         }
 		return findRoute();
@@ -139,9 +132,9 @@ public class A_Star extends PathFinder{
 			temp=par;
 		}	
 
-		for (Node node:path){
-			System.out.println("Returning==PointX======"+node.getPoint().getX()+" PointZ======"+node.getPoint().getZ());
-		}
+		//for (Node node:path){
+			//System.out.println("Returning==PointX======"+node.getPoint().getX()+" PointZ======"+node.getPoint().getZ());
+		//}
 		return path;
 	}
 	
