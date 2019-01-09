@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
  */
 
 
-public class SensorProcessor {
+public class SensorProcessor implements ErrorHandler{
 
 	private PriorityQueue<Error> errors = new PriorityQueue<Error>(11, new CompareError() );
 
