@@ -12,7 +12,7 @@ import model.Node;
  *
  */
 
-public class Dijkstra {
+public class Dijkstra implements IPathFinder {
 
 	private static List <Node> settledNodes;
 	private static List <Node> unsettledNodes;
@@ -69,8 +69,12 @@ public class Dijkstra {
 		}
 		return null;
 	}
-	
-	
+
+	// Dummy method
+	public List<Node> findPath (Node n1, Node n2) {
+		return null;
+	}
+
 	/*
 	 //Testing method
 	public static void main (String [] args){
