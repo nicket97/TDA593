@@ -197,7 +197,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable, IR
 	public int getFin() { return this.fin; }
 
 	public DataObject getData() {
-		return new DataObject(this.getPosition(),null);
+		ArrayList <Error> errors = new ArrayList<Error>(sensorProcessor.getErrorData());
+		return new DataObject(this.getPosition(),errors);
 	}
 
 	private void stop2Sec() {
