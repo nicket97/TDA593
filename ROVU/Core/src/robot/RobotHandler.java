@@ -25,7 +25,7 @@ import controller.RobotController;
  * @author Niclas
  * @author madeleine
  */
-public class RobotHandler extends AbstractRobotSimulator implements Runnable{
+public class RobotHandler extends AbstractRobotSimulator implements Runnable, IRobotErrorGraphics{
     private Point startingPoint;
     private int robotIndex;
     private int fin;
@@ -34,6 +34,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
 
     private SensorProcessor sensorProcessor = new SensorProcessor();
+    private StringProperty errorProperty = new SimpleStringProperty("Everything's fine!");
 
     private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
     private Environment currentEnv;
@@ -43,9 +44,9 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     private long stop = 0;
     private boolean timerActive = false;
     private boolean notFirstMission = false;
-	  private int missionSize = 0;
-	  private StringProperty currentPositionProperty = new SimpleStringProperty("");
-	  private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
+    private int missionSize = 0;
+	private StringProperty currentPositionProperty = new SimpleStringProperty("");
+	private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private StringProperty currentLocationProperty = new SimpleStringProperty("");
 
     public RobotHandler(Point position, String name, int i, Environment env) {
@@ -212,6 +213,7 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
     public void detectError(){
         if(checkObstacle()){
             sensorProcessor.addError(new Error(0,0, COLLISION_SENSOR));
+            errorProperty.setValue("OBSTACLE. Can't move. Press Emergency Stop to cancel.");
         }
     }
 
@@ -292,4 +294,8 @@ public class RobotHandler extends AbstractRobotSimulator implements Runnable{
         return currentLocationProperty;
     }
 
+    @Override
+    public StringProperty criticalErrorProperty() {
+        return errorProperty;
+    }
 }
