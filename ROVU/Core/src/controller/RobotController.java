@@ -20,7 +20,7 @@ import view.ROVUView;
  * @author Niclas
  * @author Madeleine
  */
-public class RobotController implements MissionExecutable{
+public class RobotController implements MissionExecutable, IRobotsGraphicsProperty{
     private static final String ARGUMENTS = "--customMission=TRUE";
 	private static final RobotController CONTROLLER = new RobotController();
 	private List<RobotHandler> robots = new ArrayList<>();
@@ -28,6 +28,7 @@ public class RobotController implements MissionExecutable{
 	private Environment currentEnvironment;
     private List<StringProperty> currentPositions = new ArrayList<>();
     private List<StringProperty> currentLocations = new ArrayList<>();
+    private List<StringProperty> criticalErrors = new ArrayList<>();
     private static Timer timer = new Timer();
 
 	private RobotController() {
@@ -183,5 +184,12 @@ public class RobotController implements MissionExecutable{
 	    if (robots == null || robots.size() == 0) return null;
 	    robots.forEach(robot -> currentLocations.add(robot.currentLocationPropertyProperty()));
 	    return currentLocations;
+    }
+
+    @Override
+    public List<StringProperty> criticalErrorsProperty() {
+	    if (robots == null || robots.size() == 0) return null;
+	    robots.forEach(robot -> criticalErrors.add(robot.criticalErrorProperty()));
+	    return criticalErrors;
     }
 }
