@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Node;
 import project.Point;
-import model.Mission;
-
 
 /**
  * 
@@ -152,12 +150,4 @@ public class A_Star implements IPathFinder{
 		}
 		return false;		
 	}
-	
-	/**
-	 * 
-	 */
-	public List getPath(Mission mission){
-		return null;
-	}
-	
 }

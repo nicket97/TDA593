@@ -29,25 +29,29 @@ public class RobotHandler extends AbstractRobotSimulator
         implements IRobotErrorGraphics, IRobotHandler {
     private Point startingPoint;
     private int robotIndex;
-    private int fin;
-    private	Point[] path;
     private boolean available;
+    private	Point[] path;
+    private int pointer = 0;
+    private List<List<Point>> joinedPaths = new ArrayList<>();
+    private IPathFinder aStar = new A_Star();
+    private int missionSize = 0;
     private PriorityQueue<MissionPoint> missionPoints = new PriorityQueue<>();
+    private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
+    private Environment currentEnv;
 
     private SensorProcessor sensorProcessor = new SensorProcessor();
     private StringProperty errorProperty = new SimpleStringProperty(this.getName() + ": Everything's fine!");
 
-    private LinkedList<MissionPoint> processedPoints = new LinkedList<>();
-    private Environment currentEnv;
-    private int pointer = 0;
-    private List<List<Point>> concatList = new ArrayList<List<Point>>();
-    private boolean noMission=true;
+    // Unused. Will be used for future purposes if the code is deployed to physical robots.
+    private NetworkModule networkModule;
+
+    private boolean noMission = true;
     private long stop = 0;
     private boolean timerActive = false;
     private boolean notFirstMission = false;
-    private int missionSize = 0;
+
 	private StringProperty currentPositionProperty = new SimpleStringProperty("");
-	private final DecimalFormat decimalFormat = new DecimalFormat("#.#");
+	private final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
     private StringProperty currentLocationProperty = new SimpleStringProperty("");
 
     public RobotHandler(Point position, String name, int i, Environment env) {
@@ -62,7 +66,7 @@ public class RobotHandler extends AbstractRobotSimulator
         System.out.println("misize "+missionPoints.size());
 		
         if (!noMission) {
-            concatList = new ArrayList<>();
+            joinedPaths = new ArrayList<>();
             available = false;
             MissionPoint prev = null;
             MissionPoint thisP = null;
@@ -84,30 +88,30 @@ public class RobotHandler extends AbstractRobotSimulator
                         initial=this.getPosition();
                         pointer=1;
                     }
-                    concat.addAll(Arrays.asList(task(currentEnv,initial,prev.getPoint())));
-                    concatList.add(concat);
+                    concat.addAll(Arrays.asList(getCommands(currentEnv,initial,prev.getPoint())));
+                    joinedPaths.add(concat);
                 } else {
                     System.out.println("222");
                     List<Point> concat = new ArrayList<>();
                     thisP = missionPoints.poll();
                     processedPoints.add(thisP);
-                    concat.addAll(Arrays.asList(task(currentEnv,prev.getPoint(),thisP.getPoint())));
+                    concat.addAll(Arrays.asList(getCommands(currentEnv,prev.getPoint(),thisP.getPoint())));
                     prev = thisP;
-                    concatList.add(concat);
+                    joinedPaths.add(concat);
                 }
 		    }
 
-            if (concatList.size()!=0){
-                for (int h=0;h<concatList.size();h++){
-                    List <Point> j=concatList.get(h);
+            if (joinedPaths.size()!=0){
+                for (int h=0;h<joinedPaths.size();h++){
+                    List <Point> j=joinedPaths.get(h);
                     for (Point u:j){
                         if (this.robotIndex==0)
                         System.out.println("Route#= "+h+" pointX="+u.getX()+" pointZ="+u.getZ());
                     }
                 }
-                path = new Point[concatList.get(0).size()];
+                path = new Point[joinedPaths.get(0).size()];
 
-                concatList.remove(0).toArray(path);
+                joinedPaths.remove(0).toArray(path);
                 for (Point p:path){
                     System.out.println("newpath===>"+p.getX()+"--"+p.getZ());
                 }
@@ -115,8 +119,7 @@ public class RobotHandler extends AbstractRobotSimulator
         }
     }
 
-	private static Point [] task (Environment environment, Point start, Point finish){
-		IPathFinder aStar = new A_Star();
+	private Point [] getCommands (Environment environment, Point start, Point finish){
 		List<Node> rpath = aStar.findPath(environment.getEnvironmentNode(start), environment.getEnvironmentNode(finish));
 		Point [] commands = new Point [rpath.size()+1];
 		for (int m=0;m<rpath.size();m++){
@@ -129,18 +132,6 @@ public class RobotHandler extends AbstractRobotSimulator
     private void evaluateError(){
         PriorityQueue errors = sensorProcessor.getErrorData();
     }
-
-    public void setFin (int fin){
-	this.fin=fin;
-}
-
-	public Point[] getPath() {
-	return this.path;
-}
-
-	public void setPath(Point [] newpath){
-		this.path = newpath;
-	}
 
 	public boolean isAvailable() {
 	    return available;
@@ -171,22 +162,10 @@ public class RobotHandler extends AbstractRobotSimulator
 
 	public int getRobotIndex() { return this.robotIndex; }
 
-	public int getFin() { return this.fin; }
-
 	public DataObject getData() {
 		ArrayList <Error> errors = new ArrayList<Error>(sensorProcessor.getErrorData());
 		return new DataObject(this.getPosition(),errors);
 	}
-
-	private void stop2Sec() {
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException ie ) {
-            ie.printStackTrace();
-        }
-    }
-
 
     public void detectError(){
         if(checkObstacle()){
@@ -202,8 +181,8 @@ public class RobotHandler extends AbstractRobotSimulator
         currentPositionProperty
                 .setValue(
                         this.getName() + "\t \t" +
-                        "x = " + decimalFormat.format(this.getPosition().getX()) + "\t \t" +
-                        "z = " + decimalFormat.format(this.getPosition().getZ()));
+                        "x = " + DECIMAL_FORMAT.format(this.getPosition().getX()) + "\t \t" +
+                        "z = " + DECIMAL_FORMAT.format(this.getPosition().getZ()));
 
         currentLocationProperty.setValue(
                 this.getName() + " is in " + currentEnv.getEnvironmentNode(this.getPosition()).getPhysical()
@@ -217,10 +196,10 @@ public class RobotHandler extends AbstractRobotSimulator
                 processedPoints.poll().done(); // Mark mission point as done
             }
             
-            if (pointer == path.length - 1 && !concatList.isEmpty()) {
+            if (pointer == path.length - 1 && !joinedPaths.isEmpty()) {
                 System.out.println("Robot cycle: " + this.robotIndex);
-                path = new Point[concatList.get(0).size()];
-                concatList.remove(0).toArray(path);
+                path = new Point[joinedPaths.get(0).size()];
+                joinedPaths.remove(0).toArray(path);
                 pointer = 0;
             }
      
@@ -252,12 +231,12 @@ public class RobotHandler extends AbstractRobotSimulator
         return (p1.getX() < p2.getX()+0.1 && p1.getX() > p2.getX()-0.1) && (p1.getZ() < p2.getZ()+0.1 && p1.getZ() > p2.getZ()-0.1);
     }
 
-    public void setTimer(){
+    private void setTimer(){
         stop = System.currentTimeMillis() + 2000;
         timerActive = true;
     }
 
-    public boolean canMove(){
+    private boolean canMove(){
         if (System.currentTimeMillis() > stop){
             timerActive = false;
             return true;}

@@ -4,9 +4,9 @@ import java.net.Socket;
 import java.util.List;
 
 public class NetworkModule {
-  public Socket socket;
+  private Socket socket;
   
-  public void sendData(List data){
+  public void sendData(List<Object> data){
 	 
   }
   
@@ -14,11 +14,11 @@ public class NetworkModule {
 	  return null;
   }
   
-  public List messageToData(String data){
+  public List<Object> messageToData(String data){
 	  return null;
   }
   
-  public List getSensorData(){
+  public List<Object> getSensorData(){
 	  return null;
   }
   

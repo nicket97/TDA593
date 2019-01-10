@@ -40,8 +40,4 @@ public class ROVUView extends Application {
 		missionEditorStage.show();
 		missionEditorStage.setOnCloseRequest(event -> System.exit(0));
 	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 }
