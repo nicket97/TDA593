@@ -39,16 +39,16 @@ public class MissionEditor implements MissionEditable, Initializable{
         Mission mission2 = new Mission(points2);
         List<MissionPoint> mission = new ArrayList<>();
         mission.add(new MissionPoint(-6, -2.5, Constraint.ROBOT1, 3));
-        mission.add(new MissionPoint(-6.8, 2.4, Constraint.ROBOT1, 2));
+        mission.add(new MissionPoint(4.2, 4.2, Constraint.ROBOT1, 2));
         mission.add(new MissionPoint(-7.5, -4, Constraint.ROBOT1, 1));
         mission.add(new MissionPoint(-1.5, -2.5, Constraint.ROBOT2, 3));
-        mission.add(new MissionPoint(-2.3, 2.2, Constraint.ROBOT2, 2));
+        mission.add(new MissionPoint(4.4, 4.2, Constraint.ROBOT2, 2));
         mission.add(new MissionPoint(-3, -4, Constraint.ROBOT2, 1));
         mission.add(new MissionPoint(1.5, -2.5, Constraint.ROBOT3, 3));
-        mission.add(new MissionPoint(-2.3, 2.0, Constraint.ROBOT3, 2));
+        mission.add(new MissionPoint(4, 4.5, Constraint.ROBOT3, 2));
         mission.add(new MissionPoint(3, -4, Constraint.ROBOT3, 1));
         mission.add(new MissionPoint(6, -2.5, Constraint.ROBOT4, 3));
-        mission.add(new MissionPoint(6.8, 2.3, Constraint.ROBOT4, 2));
+        mission.add(new MissionPoint(5, 3.8, Constraint.ROBOT4, 2));
         mission.add(new MissionPoint(7.5, -4, Constraint.ROBOT4, 1));
 
         Mission mission3 = new Mission(mission);
