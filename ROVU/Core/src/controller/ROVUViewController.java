@@ -1,9 +1,9 @@
 package controller;
 
 import java.net.URL;
+
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import model.IRewardCalculator;
 import model.RewardCalculator;
-import model.Timer;
 
 public class ROVUViewController implements Initializable {
 	@FXML Label score;

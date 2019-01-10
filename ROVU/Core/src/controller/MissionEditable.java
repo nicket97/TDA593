@@ -1,10 +1,6 @@
 package controller;
 
-import java.util.List;
-
 import javafx.event.ActionEvent;
-import model.Mission;
-import model.MissionPoint;
 
 public interface MissionEditable {
 	
