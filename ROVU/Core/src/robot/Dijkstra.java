@@ -62,14 +62,6 @@ public class Dijkstra implements IPathFinder {
 		return null;
 	}
 
-	
-	public List getPath(Mission mission){
-		if (!destination.getPredecessors().isEmpty()){
-			return destination.getPredecessors();
-		}
-		return null;
-	}
-
 	// Dummy method
 	public List<Node> findPath (Node n1, Node n2) {
 		return null;
