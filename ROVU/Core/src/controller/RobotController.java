@@ -76,7 +76,6 @@ public class RobotController implements MissionExecutable, IRobotsGraphicsProper
 
 	public void executeMission(){
 	    if (currentMission == null) throw new Error ("Mission is null");
-		boolean notDone = true;
 
         System.out.println(currentMission.getMission().size());
         currentMission.getMission().forEach(missionPoint -> {

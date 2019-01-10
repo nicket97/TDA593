@@ -1,13 +1,10 @@
 package model;
 
 import controller.RobotController;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import project.Point;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class RewardCalculator implements IRewardCalculator {
     private RobotController rc = RobotController.getController();
@@ -19,20 +16,6 @@ public class RewardCalculator implements IRewardCalculator {
 
     public static RewardCalculator getRewardCalculator() {
         return REWARD_CALCULATOR;
-    }
-
-    // Return a list of random nodes
-    private List<Node> mockNodes() {
-        Random r = new Random();
-        int rangeMax = 10;
-        int rangeMin = -10;
-        List<Node> nodes = new ArrayList<>();
-        double r1 = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
-        double r2 = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
-        for (int i=0; i<4; i++) {
-            nodes.add(new Node(r.nextBoolean(), r.nextBoolean(), r.nextBoolean(), i, new Point(r1, r2)));
-        }
-        return nodes;
     }
 
     @Override
